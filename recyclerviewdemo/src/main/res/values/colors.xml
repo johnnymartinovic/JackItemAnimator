@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="general_background_color">#ffffff</color>
+
+    <color name="taxi_list_item_star">#FED406</color>
+    <color name="taxi_list_item_route">#ACABAA</color>
+    <color name="taxi_list_item_status_available">#6BC89C</color>
+    <color name="taxi_list_item_status_unavailable">#FF0059</color>
+
+</resources>
