@@ -1,6 +1,7 @@
-package com.johnnym.recyclerviewdemo.recyclerviewfull
+package com.johnnym.recyclerviewdemo.recyclerviewfull.domain
 
-data class TaxiListItemPresentable(
+data class TaxiListItem(
+        val taxiId: String,
         val taxiStatus: TaxiStatus,
         val driverPhotoUrl: String,
         val driverName: String,

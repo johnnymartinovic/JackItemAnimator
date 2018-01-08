@@ -1,20 +1,21 @@
-package com.johnnym.recyclerviewdemo.recyclerviewfull
+package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnCheckedChanged
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
+import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
 import javax.inject.Inject
 
-class TaxiListActivity: AppCompatActivity(), TaxiListContract.View {
+class TaxiListActivity : AppCompatActivity(), TaxiListContract.View {
 
     companion object {
 
@@ -23,7 +24,7 @@ class TaxiListActivity: AppCompatActivity(), TaxiListContract.View {
         }
     }
 
-    @BindView(R.id.availability_visibility_switch_container) lateinit var switchContainer: View
+    @BindView(R.id.taxi_list_loading_view) lateinit var taxiListLoadingView: SwipeRefreshLayout
     @BindView(R.id.taxi_list) lateinit var taxiList: RecyclerView
 
     @Inject lateinit var presenter: TaxiListContract.Presenter
@@ -40,17 +41,33 @@ class TaxiListActivity: AppCompatActivity(), TaxiListContract.View {
         taxiList.adapter = taxiListAdapter
         taxiList.layoutManager = LinearLayoutManager(this)
 
+        taxiListLoadingView.isEnabled = false
+
         rvdApplication.rvdApplicationComponent
                 .newTaxiListComponent(TaxiListModule(this))
                 .inject(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.viewDestroyed()
     }
 
     override fun showTaxiListPresentable(taxiListPresentable: TaxiListPresentable) {
         taxiListAdapter.setItems(taxiListPresentable.taxiListItemPresentables)
     }
 
+    override fun showLoading() {
+        taxiListLoadingView.isRefreshing = true
+    }
+
+    override fun hideLoading() {
+        taxiListLoadingView.isRefreshing = false
+    }
+
     @OnCheckedChanged(R.id.availability_visibility_switch)
-    fun onVisibilitySwitchChecked(checked: Boolean) {
-        presenter.visibilitySwitchChecked(checked)
+    fun onAvailabilityVisibilitySwitchChecked(checked: Boolean) {
+        presenter.availabilityVisibilitySwitchChecked(checked)
     }
 }

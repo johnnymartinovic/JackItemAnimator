@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".recyclerviewfull.TaxiListActivity"
+            android:name=".recyclerviewfull.presentation.TaxiListActivity"
             android:label="@string/recycler_view_demo_full_label" />
     </application>
 

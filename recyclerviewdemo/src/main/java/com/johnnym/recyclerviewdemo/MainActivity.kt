@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListActivity
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListActivity
 
 class MainActivity : AppCompatActivity() {
 
