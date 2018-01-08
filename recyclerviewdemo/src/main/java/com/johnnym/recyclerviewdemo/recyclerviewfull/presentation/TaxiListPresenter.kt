@@ -5,6 +5,11 @@ import com.johnnym.recyclerviewdemo.common.presentation.GeneralSingleObserver
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.GetTaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+
 
 class TaxiListPresenter(
         private val taxiListView: TaxiListContract.View,
@@ -15,7 +20,11 @@ class TaxiListPresenter(
     private var currentTaxiStatusFilter = TaxiStatusFilter.ONLY_AVAILABLE
 
     init {
-        getAndShowTaxiList()
+        Observable
+                .interval(0, 4, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { getAndShowTaxiList() }
     }
 
     override fun availabilityVisibilitySwitchChecked(checked: Boolean) {

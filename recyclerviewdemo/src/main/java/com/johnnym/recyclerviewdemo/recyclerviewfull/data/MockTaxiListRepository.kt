@@ -10,8 +10,8 @@ class MockTaxiListRepository : TaxiListRepository {
     override fun getTaxiListSingle(): Single<TaxiList> {
         return Single
                 .create<TaxiList> {
-                    it.onSuccess(TaxiListMockFactory.getTaxiList())
+                    it.onSuccess(TaxiListMockFactory.createTaxiList())
                 }
-                .delay(2, TimeUnit.SECONDS)
+                .delay(1, TimeUnit.SECONDS)
     }
 }
