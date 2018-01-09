@@ -26,14 +26,11 @@ class GetTaxiList(
 
         return taxiListSingle.map {
             TaxiList(it.taxiListItems
-                    .sortedWith(DistanceComparator()))
+                    .sortedWith(params.taxiSortOption.createComparator()))
         }
     }
 
-    class Params(val taxiStatusFilter: TaxiStatusFilter)
-}
-
-class DistanceComparator : Comparator<TaxiListItem> {
-    override fun compare(o1: TaxiListItem, o2: TaxiListItem): Int =
-            o1.distance.compareTo(o2.distance)
+    class Params(
+            val taxiStatusFilter: TaxiStatusFilter,
+            val taxiSortOption: TaxiSortOption)
 }

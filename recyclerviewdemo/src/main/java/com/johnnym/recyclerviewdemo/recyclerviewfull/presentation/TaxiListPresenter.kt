@@ -4,6 +4,7 @@ import com.johnnym.recyclerviewdemo.common.mvp.AbsPresenter
 import com.johnnym.recyclerviewdemo.common.presentation.GeneralSingleObserver
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.GetTaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiList
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,6 +18,7 @@ class TaxiListPresenter(
 ) : AbsPresenter(), TaxiListContract.Presenter {
 
     private var currentTaxiStatusFilter = TaxiStatusFilter.ONLY_AVAILABLE
+    private var currentTaxiSortOption = TaxiSortOption.BY_STARS_DESCENDING
 
     init {
         Observable
@@ -40,7 +42,7 @@ class TaxiListPresenter(
         getTaxiList.disposePendingExecutions()
         getTaxiList.execute(
                 GetTaxiListObserver(),
-                GetTaxiList.Params(currentTaxiStatusFilter))
+                GetTaxiList.Params(currentTaxiStatusFilter, currentTaxiSortOption))
     }
 
     inner class GetTaxiListObserver : GeneralSingleObserver<TaxiList>(this) {
