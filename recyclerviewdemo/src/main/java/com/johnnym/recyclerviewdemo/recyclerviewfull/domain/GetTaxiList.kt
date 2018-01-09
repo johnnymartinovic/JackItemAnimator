@@ -24,7 +24,8 @@ class GetTaxiList(
             TaxiStatusFilter.NO_FILTER -> taxiListSingle
         }
 
-        return taxiListSingle.map {
+        return if (params.taxiSortOption == null) taxiListSingle
+        else taxiListSingle.map {
             TaxiList(it.taxiListItems
                     .sortedWith(params.taxiSortOption.createComparator()))
         }
@@ -32,5 +33,5 @@ class GetTaxiList(
 
     class Params(
             val taxiStatusFilter: TaxiStatusFilter,
-            val taxiSortOption: TaxiSortOption)
+            val taxiSortOption: TaxiSortOption? = null)
 }
