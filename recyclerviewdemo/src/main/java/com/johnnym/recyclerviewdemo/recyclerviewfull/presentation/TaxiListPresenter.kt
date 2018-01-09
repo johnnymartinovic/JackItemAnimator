@@ -10,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-
 class TaxiListPresenter(
         private val taxiListView: TaxiListContract.View,
         private val getTaxiList: GetTaxiList,
@@ -21,7 +20,7 @@ class TaxiListPresenter(
 
     init {
         Observable
-                .interval(0, 4, TimeUnit.SECONDS)
+                .interval(0, 6, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { getAndShowTaxiList() }

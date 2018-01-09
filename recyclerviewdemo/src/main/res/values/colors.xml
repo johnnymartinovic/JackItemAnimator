@@ -11,5 +11,8 @@
     <color name="taxi_list_item_route">#ACABAA</color>
     <color name="taxi_list_item_status_available">#6BC89C</color>
     <color name="taxi_list_item_status_unavailable">#FF0059</color>
+    <color name="taxi_list_item_distance_background">@android:color/transparent</color>
+    <color name="taxi_list_item_distance_decreased_signal">#6BC89C</color>
+    <color name="taxi_list_item_distance_increased_signal">#FF0059</color>
 
 </resources>
