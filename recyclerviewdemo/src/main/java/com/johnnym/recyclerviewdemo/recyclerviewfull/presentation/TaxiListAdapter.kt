@@ -94,7 +94,8 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
                     .apply(RequestOptions()
                             .centerCrop()
                             .placeholder(R.drawable.ic_star)
-                            .error(R.drawable.ic_distance))
+                            .error(R.drawable.ic_distance)
+                            .dontAnimate())
                     .into(driverPhoto)
 
             when (item.taxiStatus) {
