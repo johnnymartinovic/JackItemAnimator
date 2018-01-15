@@ -5,6 +5,8 @@
     <string name="recycler_view_demo_full_label">RecyclerView Full Demo</string>
 
     <!-- Taxi list screen -->
+    <string name="sort_menu_item">Sort</string>
+    <string name="sort_options_dialog_title">Select sort option:</string>
     <string name="availability_visibility_switch">Show unavailable taxicabs</string>
     <string name="taxi_list_item_stars_format" translatable="false">%1$.1f</string>
     <string name="taxi_list_item_distance_format" translatable="false">%1$.2f km</string>

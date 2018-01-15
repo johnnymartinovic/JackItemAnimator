@@ -11,10 +11,18 @@ interface TaxiListContract {
         fun showLoading()
 
         fun hideLoading()
+
+        fun showSortOptionsDialog(
+                sortOptionList: List<String>,
+                initiallySelectedSortOptionPosition: Int)
     }
 
     interface Presenter: BasePresenter {
 
         fun availabilityVisibilitySwitchChecked(checked: Boolean)
+
+        fun onSortButtonPressed()
+
+        fun onSortOptionSelected(selectedSortOptionPosition: Int)
     }
 }

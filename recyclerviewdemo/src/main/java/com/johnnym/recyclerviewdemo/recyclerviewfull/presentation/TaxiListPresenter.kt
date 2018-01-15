@@ -4,6 +4,7 @@ import com.johnnym.recyclerviewdemo.common.mvp.AbsPresenter
 import com.johnnym.recyclerviewdemo.common.presentation.GeneralSingleObserver
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.GetTaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiList
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +18,7 @@ class TaxiListPresenter(
 ) : AbsPresenter(), TaxiListContract.Presenter {
 
     private var currentTaxiStatusFilter = TaxiStatusFilter.ONLY_AVAILABLE
-    private var currentTaxiSortOption = null
+    private var currentTaxiSortOption = TaxiSortOption.BY_DISTANCE_ASCENDING
 
     init {
         Observable
@@ -31,6 +32,19 @@ class TaxiListPresenter(
         currentTaxiStatusFilter =
                 if (checked) TaxiStatusFilter.NO_FILTER
                 else TaxiStatusFilter.ONLY_AVAILABLE
+
+        getAndShowTaxiList()
+    }
+
+    override fun onSortButtonPressed() {
+        taxiListView.showSortOptionsDialog(
+                TaxiSortOption.values()
+                        .map { it.getTaxiSortOptionName() },
+                currentTaxiSortOption.ordinal)
+    }
+
+    override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
+        currentTaxiSortOption = TaxiSortOption.values()[selectedSortOptionPosition]
 
         getAndShowTaxiList()
     }

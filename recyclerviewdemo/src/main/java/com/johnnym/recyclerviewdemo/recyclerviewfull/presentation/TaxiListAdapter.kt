@@ -4,7 +4,6 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -18,6 +17,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
+import android.view.ViewAnimationUtils
+import android.os.Build
+import butterknife.BindColor
+import butterknife.BindString
+
 
 class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiListAdapter.ItemViewHolder>() {
 
@@ -64,11 +68,21 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
+        @BindView(R.id.reveal_helper_view) lateinit var revealHelperView: View
         @BindView(R.id.status_bar) lateinit var statusBar: View
         @BindView(R.id.driver_photo) lateinit var driverPhoto: ImageView
         @BindView(R.id.driver_name) lateinit var driverName: TextView
         @BindView(R.id.stars) lateinit var stars: TextView
         @BindView(R.id.distance) lateinit var distance: TextView
+
+        @BindString(R.string.taxi_list_item_stars_format) lateinit var starsFormattedText: String
+        @BindString(R.string.taxi_list_item_distance_format) lateinit var distanceFormattedText: String
+
+        @JvmField @ColorInt @BindColor(R.color.taxi_list_item_status_available) var statusAvailableColor: Int = 0
+        @JvmField @ColorInt @BindColor(R.color.taxi_list_item_status_unavailable) var statusUnavailableColor: Int = 0
+        @JvmField @ColorInt @BindColor(R.color.taxi_list_item_distance_decreased_signal) var distanceDecreasedSignalColor: Int = 0
+        @JvmField @ColorInt @BindColor(R.color.taxi_list_item_distance_increased_signal) var distanceIncreasedSignalColor: Int = 0
+        @JvmField @ColorInt @BindColor(android.R.color.transparent) var transparentColor: Int = 0
 
         init {
             ButterKnife.bind(this, itemView)
@@ -84,26 +98,24 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
                     .into(driverPhoto)
 
             when (item.taxiStatus) {
-                TaxiStatus.AVAILABLE -> statusBar.setBackgroundColor(
-                        ContextCompat.getColor(context, R.color.taxi_list_item_status_available))
-                TaxiStatus.OCCUPIED -> statusBar.setBackgroundColor(
-                        ContextCompat.getColor(context, R.color.taxi_list_item_status_unavailable))
+                TaxiStatus.AVAILABLE -> statusBar.setBackgroundColor(statusAvailableColor)
+                TaxiStatus.OCCUPIED -> statusBar.setBackgroundColor(statusUnavailableColor)
             }
 
             driverName.text = item.driverName
-            stars.text = context.getString(R.string.taxi_list_item_stars_format, item.stars)
-            distance.text = context.getString(R.string.taxi_list_item_distance_format, item.distance)
+            stars.text = String.format(starsFormattedText, item.stars)
+            distance.text = String.format(distanceFormattedText, item.distance)
         }
 
         fun animateTaxiStatusColorChange(taxiStatusChange: Change<TaxiStatus>) {
             @ColorInt val startColor: Int
             @ColorInt val endColor: Int
             if (taxiStatusChange.old == TaxiStatus.AVAILABLE) {
-                startColor = ContextCompat.getColor(context, R.color.taxi_list_item_status_available)
-                endColor = ContextCompat.getColor(context, R.color.taxi_list_item_status_unavailable)
+                startColor = statusAvailableColor
+                endColor = statusUnavailableColor
             } else {
-                startColor = ContextCompat.getColor(context, R.color.taxi_list_item_status_unavailable)
-                endColor = ContextCompat.getColor(context, R.color.taxi_list_item_status_available)
+                startColor = statusUnavailableColor
+                endColor = statusAvailableColor
             }
             ValueAnimator().apply {
                 setIntValues(startColor, endColor)
@@ -117,22 +129,36 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
         fun animateDistanceChange(distanceChange: Change<Float>) {
             ValueAnimator().apply {
                 setFloatValues(distanceChange.old, distanceChange.new)
-                addUpdateListener { distance.text = context.getString(R.string.taxi_list_item_distance_format, it.animatedValue as Float) }
+                addUpdateListener { distance.text = String.format(distanceFormattedText, it.animatedValue as Float) }
                 duration = 1000
                 start()
             }
 
-            @ColorInt val normalColor = ContextCompat.getColor(context, R.color.taxi_list_item_distance_background)
-            @ColorInt val effectColor =
-                    if (distanceChange.old > distanceChange.new) ContextCompat.getColor(context, R.color.taxi_list_item_distance_decreased_signal)
-                    else ContextCompat.getColor(context, R.color.taxi_list_item_distance_increased_signal)
+            val x = (distance.x + distance.width / 2).toInt()
+            val y = (distance.y + distance.height / 2).toInt()
 
-            ValueAnimator().apply {
-                setIntValues(normalColor, effectColor, normalColor)
-                setEvaluator(ArgbEvaluator())
-                addUpdateListener { distance.setBackgroundColor(it.animatedValue as Int) }
-                duration = 1000
-                start()
+            val startRadius = 0
+            val endRadius = Math.hypot(distance.width.toDouble(), distance.height.toDouble()).toInt()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val anim = ViewAnimationUtils.createCircularReveal(revealHelperView, x, y, startRadius.toFloat(), endRadius.toFloat())
+                        .apply {
+                            duration = 1000
+                        }
+                anim.start()
+
+                @ColorInt val normalColor = transparentColor
+                @ColorInt val effectColor =
+                        if (distanceChange.old > distanceChange.new) distanceDecreasedSignalColor
+                        else distanceIncreasedSignalColor
+
+                ValueAnimator().apply {
+                    setIntValues(normalColor, effectColor, normalColor)
+                    setEvaluator(ArgbEvaluator())
+                    addUpdateListener { revealHelperView.setBackgroundColor(it.animatedValue as Int) }
+                    duration = 1000
+                    start()
+                }
             }
         }
     }
