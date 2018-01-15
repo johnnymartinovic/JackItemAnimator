@@ -17,6 +17,7 @@ import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
 import javax.inject.Inject
+import android.support.v7.widget.DividerItemDecoration
 
 class TaxiListActivity : AppCompatActivity(),
         TaxiListContract.View,
@@ -48,6 +49,7 @@ class TaxiListActivity : AppCompatActivity(),
         taxiListAdapter = TaxiListAdapter(this)
         taxiList.adapter = taxiListAdapter
         taxiList.layoutManager = LinearLayoutManager(this)
+        taxiList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         taxiListLoadingView.isEnabled = false
 

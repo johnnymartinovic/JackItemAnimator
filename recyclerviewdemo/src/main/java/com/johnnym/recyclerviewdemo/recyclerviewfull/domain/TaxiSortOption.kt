@@ -26,7 +26,7 @@ enum class TaxiSortOption {
                 StarsDescendingComparator()
 
         override fun getTaxiSortOptionName(): String {
-            return "By start (descending)"
+            return "By stars (descending)"
         }
     };
 
