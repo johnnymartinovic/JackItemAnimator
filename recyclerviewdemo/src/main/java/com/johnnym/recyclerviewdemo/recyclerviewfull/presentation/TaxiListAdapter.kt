@@ -25,6 +25,11 @@ import butterknife.BindString
 
 class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiListAdapter.ItemViewHolder>() {
 
+    companion object {
+
+        const val CHANGE_ANIMATION_DURATION = 1000L
+    }
+
     private var items = mutableListOf<TaxiListItemPresentable>()
 
     override fun getItemCount(): Int =
@@ -122,7 +127,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
                 setIntValues(startColor, endColor)
                 setEvaluator(ArgbEvaluator())
                 addUpdateListener { statusBar.setBackgroundColor(it.animatedValue as Int) }
-                duration = 1000
+                duration = CHANGE_ANIMATION_DURATION
                 start()
             }
         }
@@ -131,7 +136,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
             ValueAnimator().apply {
                 setFloatValues(distanceChange.old, distanceChange.new)
                 addUpdateListener { distance.text = String.format(distanceFormattedText, it.animatedValue as Float) }
-                duration = 1000
+                duration = CHANGE_ANIMATION_DURATION
                 start()
             }
 
@@ -144,7 +149,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val anim = ViewAnimationUtils.createCircularReveal(revealHelperView, x, y, startRadius.toFloat(), endRadius.toFloat())
                         .apply {
-                            duration = 1000
+                            duration = CHANGE_ANIMATION_DURATION
                         }
                 anim.start()
 
@@ -157,7 +162,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
                     setIntValues(normalColor, effectColor, normalColor)
                     setEvaluator(ArgbEvaluator())
                     addUpdateListener { revealHelperView.setBackgroundColor(it.animatedValue as Int) }
-                    duration = 1000
+                    duration = CHANGE_ANIMATION_DURATION
                     start()
                 }
             }
