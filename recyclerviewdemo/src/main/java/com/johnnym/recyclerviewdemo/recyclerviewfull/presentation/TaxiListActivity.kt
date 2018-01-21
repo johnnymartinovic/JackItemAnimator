@@ -12,12 +12,15 @@ import android.view.Menu
 import android.view.MenuItem
 import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.OnCheckedChanged
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
 import javax.inject.Inject
 import android.support.v7.widget.DividerItemDecoration
+import android.widget.Button
+import android.widget.Switch
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 
 class TaxiListActivity : AppCompatActivity(),
         TaxiListContract.View,
@@ -33,8 +36,10 @@ class TaxiListActivity : AppCompatActivity(),
     }
 
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.availability_visibility_switch) lateinit var availabilityVisibilitySwitch: Switch
     @BindView(R.id.taxi_list_loading_view) lateinit var taxiListLoadingView: SwipeRefreshLayout
     @BindView(R.id.taxi_list) lateinit var taxiList: RecyclerView
+    @BindView(R.id.refresh_button) lateinit var refreshButton: Button
 
     @Inject lateinit var presenter: TaxiListContract.Presenter
 
@@ -42,8 +47,11 @@ class TaxiListActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.taxi_list_activity)
 
+        val initialTaxiStatusFilter = TaxiStatusFilter.NO_FILTER
+        val initialTaxiSortOption = TaxiSortOption.BY_DRIVER_NAME_ASCENDING
+
+        setContentView(R.layout.taxi_list_activity)
         ButterKnife.bind(this)
 
         taxiListAdapter = TaxiListAdapter(this)
@@ -58,8 +66,15 @@ class TaxiListActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        availabilityVisibilitySwitch.isChecked = initialTaxiStatusFilter == TaxiStatusFilter.NO_FILTER
+        availabilityVisibilitySwitch.setOnCheckedChangeListener { _, isChecked -> presenter.availabilityVisibilitySwitchChecked(isChecked) }
+        refreshButton.setOnClickListener { presenter.onRefreshButtonPressed() }
+
         rvdApplication.rvdApplicationComponent
-                .newTaxiListComponent(TaxiListModule(this))
+                .newTaxiListComponent(TaxiListModule(
+                        this,
+                        initialTaxiStatusFilter,
+                        initialTaxiSortOption))
                 .inject(this)
     }
 
@@ -109,10 +124,5 @@ class TaxiListActivity : AppCompatActivity(),
 
     override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
         presenter.onSortOptionSelected(selectedSortOptionPosition)
-    }
-
-    @OnCheckedChanged(R.id.availability_visibility_switch)
-    fun onAvailabilityVisibilitySwitchChecked(checked: Boolean) {
-        presenter.availabilityVisibilitySwitchChecked(checked)
     }
 }

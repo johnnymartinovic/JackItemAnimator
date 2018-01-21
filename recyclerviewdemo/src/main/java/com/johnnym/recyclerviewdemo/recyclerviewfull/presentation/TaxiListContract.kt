@@ -24,5 +24,7 @@ interface TaxiListContract {
         fun onSortButtonPressed()
 
         fun onSortOptionSelected(selectedSortOptionPosition: Int)
+
+        fun onRefreshButtonPressed()
     }
 }

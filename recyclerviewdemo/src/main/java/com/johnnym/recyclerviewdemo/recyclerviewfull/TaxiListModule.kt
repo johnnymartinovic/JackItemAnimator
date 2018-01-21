@@ -3,6 +3,8 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull
 import com.johnnym.recyclerviewdemo.recyclerviewfull.data.MockTaxiListRepository
 import com.johnnym.recyclerviewdemo.recyclerviewfull.data.TaxiListRepository
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.GetTaxiList
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListContract
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListPresentableMapper
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListPresenter
@@ -13,7 +15,9 @@ import io.reactivex.schedulers.Schedulers
 
 @Module
 class TaxiListModule(
-        private val taxiListView: TaxiListContract.View) {
+        private val taxiListView: TaxiListContract.View,
+        private var initialTaxiStatusFilter : TaxiStatusFilter,
+        private var initialTaxiSortOption : TaxiSortOption) {
 
     @Provides
     fun provideTaxiListPresenter(
@@ -23,7 +27,9 @@ class TaxiListModule(
             TaxiListPresenter(
                     taxiListView,
                     getTaxiList,
-                    taxiListPresentableMapper)
+                    taxiListPresentableMapper,
+                    initialTaxiStatusFilter,
+                    initialTaxiSortOption)
 
     @Provides
     fun provideGetTaxiList(

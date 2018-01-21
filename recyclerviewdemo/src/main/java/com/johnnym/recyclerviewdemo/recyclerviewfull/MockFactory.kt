@@ -100,6 +100,48 @@ class TaxiListMockFactory {
                                 "http://www.monologuedb.com/wp-content/uploads/2011/06/Samuel-L.-Jackson-Jules-Winnfield-Pulp-Fiction.png",
                                 "Jules Winnfield",
                                 3.587f,
+                                getRandomDistanceValue()),
+                        TaxiListItem(
+                                "id_12",
+                                getRandomTaxiStatusValue(),
+                                "https://vignette.wikia.nocookie.net/lotrfanon/images/c/c0/Legolas.jpg",
+                                "Legolas",
+                                4.433f,
+                                getRandomDistanceValue()),
+                        TaxiListItem(
+                                "id_13",
+                                getRandomTaxiStatusValue(),
+                                "https://upload.wikimedia.org/wikipedia/commons/9/90/Charlton_Heston_in_Ben_Hur_trailer.jpg",
+                                "Judah Ben-Hur",
+                                4.997f,
+                                getRandomDistanceValue()),
+                        TaxiListItem(
+                                "id_14",
+                                getRandomTaxiStatusValue(),
+                                "http://s3.amazonaws.com/digitaltrends-uploads-prod/2015/06/indiana-jones.jpg",
+                                "Indiana Jones",
+                                2.429f,
+                                getRandomDistanceValue()),
+                        TaxiListItem(
+                                "id_15",
+                                getRandomTaxiStatusValue(),
+                                "http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2015/12/terminator-2-arnold-schwarzenegger.jpg",
+                                "The Terminator",
+                                3.587f,
+                                getRandomDistanceValue()),
+                        TaxiListItem(
+                                "id_16",
+                                getRandomTaxiStatusValue(),
+                                "https://vignette.wikia.nocookie.net/thebiglebowski/images/7/7e/The_Dude.jpeg",
+                                "The Dude",
+                                1.000f,
+                                getRandomDistanceValue()),
+                        TaxiListItem(
+                                "id_17",
+                                getRandomTaxiStatusValue(),
+                                "https://vignette.wikia.nocookie.net/homealone/images/8/80/Oh_no.jpg",
+                                "Kevin McCallister",
+                                1.232f,
                                 getRandomDistanceValue())))
     }
 }

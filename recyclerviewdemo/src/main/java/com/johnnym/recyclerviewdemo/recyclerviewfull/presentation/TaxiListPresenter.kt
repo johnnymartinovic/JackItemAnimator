@@ -6,26 +6,17 @@ import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.GetTaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 class TaxiListPresenter(
         private val taxiListView: TaxiListContract.View,
         private val getTaxiList: GetTaxiList,
-        private val taxiListPresentableMapper: TaxiListPresentableMapper
+        private val taxiListPresentableMapper: TaxiListPresentableMapper,
+        private var currentTaxiStatusFilter: TaxiStatusFilter,
+        private var currentTaxiSortOption: TaxiSortOption
 ) : AbsPresenter(), TaxiListContract.Presenter {
 
-    private var currentTaxiStatusFilter = TaxiStatusFilter.ONLY_AVAILABLE
-    private var currentTaxiSortOption = TaxiSortOption.BY_DISTANCE_ASCENDING
-
     init {
-        Observable
-                .interval(0, 6, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { getAndShowTaxiList() }
+        getAndShowTaxiList()
     }
 
     override fun availabilityVisibilitySwitchChecked(checked: Boolean) {
@@ -46,6 +37,10 @@ class TaxiListPresenter(
     override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
         currentTaxiSortOption = TaxiSortOption.values()[selectedSortOptionPosition]
 
+        getAndShowTaxiList()
+    }
+
+    override fun onRefreshButtonPressed() {
         getAndShowTaxiList()
     }
 
