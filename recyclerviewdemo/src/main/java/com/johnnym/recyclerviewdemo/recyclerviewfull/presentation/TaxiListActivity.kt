@@ -21,6 +21,8 @@ import android.widget.Button
 import android.widget.Switch
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListAdapter
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListItemAnimator
 
 class TaxiListActivity : AppCompatActivity(),
         TaxiListContract.View,

@@ -1,4 +1,4 @@
-package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation
+package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
 import android.content.Context
 import android.support.annotation.ColorInt
@@ -17,6 +17,7 @@ import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import butterknife.BindColor
 import butterknife.BindString
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemPresentable
 
 class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiListAdapter.ItemViewHolder>() {
 
