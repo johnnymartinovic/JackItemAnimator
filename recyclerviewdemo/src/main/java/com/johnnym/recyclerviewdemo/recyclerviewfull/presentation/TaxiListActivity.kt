@@ -44,11 +44,12 @@ class TaxiListActivity : AppCompatActivity(),
     @Inject lateinit var presenter: TaxiListContract.Presenter
 
     private lateinit var taxiListAdapter: TaxiListAdapter
+    private lateinit var taxiListLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val initialTaxiStatusFilter = TaxiStatusFilter.NO_FILTER
+        val initialTaxiStatusFilter = TaxiStatusFilter.ONLY_AVAILABLE
         val initialTaxiSortOption = TaxiSortOption.BY_DRIVER_NAME_ASCENDING
 
         setContentView(R.layout.taxi_list_activity)
@@ -56,8 +57,10 @@ class TaxiListActivity : AppCompatActivity(),
 
         taxiListAdapter = TaxiListAdapter(this)
         taxiList.adapter = taxiListAdapter
-        taxiList.layoutManager = LinearLayoutManager(this)
+        taxiListLayoutManager = LinearLayoutManager(this)
+        taxiList.layoutManager = taxiListLayoutManager
         taxiList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        taxiList.itemAnimator = TaxiListItemAnimator()
 
         taxiListLoadingView.isEnabled = false
 
