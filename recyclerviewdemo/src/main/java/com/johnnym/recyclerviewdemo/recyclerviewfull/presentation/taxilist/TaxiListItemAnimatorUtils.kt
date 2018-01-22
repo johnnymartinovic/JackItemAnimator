@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewAnimationUtils
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import android.animation.AnimatorSet
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 
 const val CHANGE_ANIMATION_DURATION = 1000L
 
@@ -28,12 +30,47 @@ fun createTaxiStatusChangeAnimator(
         startColor = itemViewHolder.statusUnavailableColor
         endColor = itemViewHolder.statusAvailableColor
     }
-    return ValueAnimator.ofInt(startColor, endColor)
+
+    val spinningFirstHalf = ValueAnimator.ofFloat(0f, 810f)
+            .apply {
+                addUpdateListener { itemViewHolder.statusBar.rotationY = it.animatedValue as Float }
+                addListener(object : AnimatorListenerAdapter() {
+
+                    override fun onAnimationStart(animation: Animator) {
+                        itemViewHolder.statusBar.setBackgroundColor(startColor)
+                    }
+                })
+                interpolator = AccelerateInterpolator()
+            }
+
+    val spinningSecondHalf = ValueAnimator.ofFloat(-810f, 0f)
+            .apply {
+                addUpdateListener { itemViewHolder.statusBar.rotationY = it.animatedValue as Float }
+                interpolator = DecelerateInterpolator()
+            }
+
+    val colorChange = ValueAnimator.ofInt(startColor, endColor)
             .apply {
                 setEvaluator(ArgbEvaluator())
                 addUpdateListener { itemViewHolder.statusBar.setBackgroundColor(it.animatedValue as Int) }
                 duration = CHANGE_ANIMATION_DURATION
             }
+
+    val spinningFull = AnimatorSet().apply {
+        playSequentially(spinningFirstHalf, spinningSecondHalf)
+    }
+
+    return AnimatorSet().apply {
+        playTogether(spinningFull, colorChange)
+        addListener(object : AnimatorListenerAdapter() {
+
+            override fun onAnimationEnd(animation: Animator) {
+                // in case that animation is ended during the first half spinning, color
+                // will be set to the old one. That is not what we want
+                itemViewHolder.statusBar.setBackgroundColor(endColor)
+            }
+        })
+    }
 }
 
 fun createDistanceChangeAnimator(
