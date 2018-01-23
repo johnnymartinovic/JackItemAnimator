@@ -57,11 +57,14 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
+        @BindView(R.id.background_helper_view) lateinit var backgroundHelperView: View
         @BindView(R.id.reveal_helper_view) lateinit var revealHelperView: View
         @BindView(R.id.status_bar) lateinit var statusBar: View
         @BindView(R.id.driver_photo) lateinit var driverPhoto: ImageView
         @BindView(R.id.driver_name) lateinit var driverName: TextView
+        @BindView(R.id.star_icon) lateinit var starIcon: ImageView
         @BindView(R.id.stars) lateinit var stars: TextView
+        @BindView(R.id.distance_icon) lateinit var distanceIcon: ImageView
         @BindView(R.id.distance) lateinit var distance: TextView
 
         @BindString(R.string.taxi_list_item_stars_format) lateinit var starsFormattedText: String

@@ -17,6 +17,52 @@ class TaxiListItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
     var payloads: MutableList<Any> = mutableListOf()
 }
 
+fun createTaxiListItemRemoveAnimator(
+        itemViewHolder: TaxiListAdapter.ItemViewHolder
+): Animator {
+    val subviewsDissapearAnimation = ValueAnimator.ofFloat(1f, 0f)
+            .apply {
+                addUpdateListener {
+                    val alpha = it.animatedValue as Float
+                    itemViewHolder.backgroundHelperView.alpha = alpha
+                    itemViewHolder.statusBar.alpha = alpha
+                    itemViewHolder.driverName.alpha = alpha
+                    itemViewHolder.starIcon.alpha = alpha
+                    itemViewHolder.stars.alpha = alpha
+                    itemViewHolder.distanceIcon.alpha = alpha
+                    itemViewHolder.distance.alpha = alpha
+                }
+            }
+
+    val itemView = itemViewHolder.itemView
+    val itemMoveToRight = ValueAnimator.ofFloat(0f, itemView.width.toFloat())
+            .apply {
+                addUpdateListener {
+                    itemView.translationX = it.animatedValue as Float
+                }
+                interpolator = AccelerateInterpolator()
+            }
+
+    return AnimatorSet().apply {
+        playSequentially(subviewsDissapearAnimation, itemMoveToRight)
+        addListener(object : AnimatorListenerAdapter() {
+
+            // reset view state when it will have to be reused
+            override fun onAnimationEnd(animation: Animator) {
+                itemViewHolder.backgroundHelperView.alpha = 1f
+                itemViewHolder.statusBar.alpha = 1f
+                itemViewHolder.driverName.alpha = 1f
+                itemViewHolder.starIcon.alpha = 1f
+                itemViewHolder.stars.alpha = 1f
+                itemViewHolder.distanceIcon.alpha = 1f
+                itemViewHolder.distance.alpha = 1f
+
+                itemView.translationX = 0f
+            }
+        })
+    }
+}
+
 fun createTaxiStatusChangeAnimator(
         itemViewHolder: TaxiListAdapter.ItemViewHolder,
         taxiStatusChange: Change<TaxiStatus>

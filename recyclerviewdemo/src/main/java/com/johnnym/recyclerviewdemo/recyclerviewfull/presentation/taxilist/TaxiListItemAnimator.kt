@@ -41,6 +41,26 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         super.endAnimations()
     }
 
+    override fun animateRemove(holder: RecyclerView.ViewHolder?): Boolean {
+        val removeAnimator = createTaxiListItemRemoveAnimator(holder as TaxiListAdapter.ItemViewHolder)
+
+        removeAnimator.addListener(object : AnimatorListenerAdapter() {
+
+            override fun onAnimationStart(animation: Animator) {
+                viewHolderAnimatorMap.put(holder, animation)
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                dispatchRemoveFinished(holder)
+                viewHolderAnimatorMap.remove(holder)
+            }
+        })
+
+        removeAnimator.start()
+
+        return false
+    }
+
     override fun animateChange(
             oldHolder: RecyclerView.ViewHolder,
             newHolder: RecyclerView.ViewHolder,
@@ -88,6 +108,6 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
 
         changeAnimator.start()
 
-        return true
+        return false
     }
 }
