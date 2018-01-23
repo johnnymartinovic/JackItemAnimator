@@ -6,18 +6,19 @@ import android.support.v7.widget.RecyclerView
 import android.animation.AnimatorSet
 import android.support.annotation.ColorInt
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
+import java.util.concurrent.ConcurrentHashMap
 
 class TaxiListItemAnimator : DefaultItemAnimator() {
 
-    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
 
-    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeAdds: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeMoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeChanges: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val activeAdds: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val activeMoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val activeChanges: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
 
     override fun obtainHolderInfo(): ItemHolderInfo {
         return TaxiListItemHolderInfo()
