@@ -5,7 +5,6 @@ import android.os.Build
 import android.support.annotation.ColorInt
 import android.support.v7.widget.RecyclerView
 import android.view.ViewAnimationUtils
-import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import android.animation.AnimatorSet
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -20,7 +19,7 @@ class TaxiListItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
 fun createTaxiListItemRemoveAnimator(
         itemViewHolder: TaxiListAdapter.ItemViewHolder
 ): Animator {
-    val subviewsDissapearAnimation = ValueAnimator.ofFloat(1f, 0f)
+    val subviewsDisappearAnimation = ValueAnimator.ofFloat(1f, 0f)
             .apply {
                 addUpdateListener {
                     val alpha = it.animatedValue as Float
@@ -44,7 +43,7 @@ fun createTaxiListItemRemoveAnimator(
             }
 
     return AnimatorSet().apply {
-        playSequentially(subviewsDissapearAnimation, itemMoveToRight)
+        playSequentially(subviewsDisappearAnimation, itemMoveToRight)
         addListener(object : AnimatorListenerAdapter() {
 
             // reset view state when it will have to be reused
@@ -63,20 +62,42 @@ fun createTaxiListItemRemoveAnimator(
     }
 }
 
+fun createTaxiListItemAddAnimator(
+        itemViewHolder: TaxiListAdapter.ItemViewHolder
+): Animator {
+    val view = itemViewHolder.itemView
+    val deltaX = (-itemViewHolder.itemView.width / 5).toFloat()
+
+    val translationXAnimator = ValueAnimator.ofFloat(deltaX, 0f)
+            .apply {
+                addUpdateListener {
+                    view.translationX = it.animatedValue as Float
+                }
+            }
+
+    val appearAnimation = ValueAnimator.ofFloat(0f, 1f)
+            .apply {
+                addUpdateListener {
+                    val alpha = it.animatedValue as Float
+                    itemViewHolder.itemView.alpha = alpha
+                }
+            }
+
+    return AnimatorSet().apply {
+        addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                view.alpha = 0f
+            }
+        })
+        playTogether(translationXAnimator, appearAnimation)
+    }
+}
+
 fun createTaxiStatusChangeAnimator(
         itemViewHolder: TaxiListAdapter.ItemViewHolder,
-        taxiStatusChange: Change<TaxiStatus>
+        @ColorInt startColor: Int,
+        @ColorInt endColor: Int
 ): Animator {
-    @ColorInt val startColor: Int
-    @ColorInt val endColor: Int
-    if (taxiStatusChange.old == TaxiStatus.AVAILABLE) {
-        startColor = itemViewHolder.statusAvailableColor
-        endColor = itemViewHolder.statusUnavailableColor
-    } else {
-        startColor = itemViewHolder.statusUnavailableColor
-        endColor = itemViewHolder.statusAvailableColor
-    }
-
     val spinningFirstHalf = ValueAnimator.ofFloat(0f, 810f)
             .apply {
                 addUpdateListener { itemViewHolder.statusBar.rotationY = it.animatedValue as Float }
@@ -176,23 +197,20 @@ fun createDistanceChangeAnimator(
     return distanceChangeAnimator
 }
 
-fun createMoveChangeAnimator(
+fun createMoveAnimator(
         itemViewHolder: TaxiListAdapter.ItemViewHolder,
-        fromX: Int, fromY: Int,
-        toX: Int, toY: Int
+        deltaX: Float, deltaY: Float
 ): Animator {
     val view = itemViewHolder.itemView
-    val deltaX = toX - fromX - view.translationX
-    val deltaY = toY - fromY - view.translationY
 
-    val xAnimator = ValueAnimator.ofFloat(-deltaX, 0f)
+    val translationXAnimator = ValueAnimator.ofFloat(-deltaX, 0f)
             .apply {
                 addUpdateListener {
                     view.translationX = it.animatedValue as Float
                 }
                 duration = CHANGE_ANIMATION_DURATION
             }
-    val yAnimator = ValueAnimator.ofFloat(-deltaY, 0f)
+    val translationYAnimator = ValueAnimator.ofFloat(-deltaY, 0f)
             .apply {
                 addUpdateListener {
                     view.translationY = it.animatedValue as Float
@@ -201,7 +219,7 @@ fun createMoveChangeAnimator(
             }
 
     val xyAnimator = AnimatorSet()
-    xyAnimator.playTogether(xAnimator, yAnimator)
+    xyAnimator.playTogether(translationXAnimator, translationYAnimator)
 
     return xyAnimator
 }
