@@ -123,14 +123,15 @@ fun createDistanceChangeAnimator(
         itemViewHolder: TaxiListAdapter.ItemViewHolder,
         distanceChange: Change<Float>
 ): Animator {
-    val distanceTextChangeAnimator = ValueAnimator.ofFloat(distanceChange.old, distanceChange.new)
-            .apply {
-                addUpdateListener {
-                    itemViewHolder.distance.text =
-                            String.format(itemViewHolder.distanceFormattedText, it.animatedValue as Float)
-                }
-                duration = CHANGE_ANIMATION_DURATION
-            }
+    // Distance text will be set directly through onBind adapter method for presentation purposes
+//    val distanceTextChangeAnimator = ValueAnimator.ofFloat(distanceChange.old, distanceChange.new)
+//            .apply {
+//                addUpdateListener {
+//                    itemViewHolder.distance.text =
+//                            String.format(itemViewHolder.distanceFormattedText, it.animatedValue as Float)
+//                }
+//                duration = CHANGE_ANIMATION_DURATION
+//            }
 
     val x = (itemViewHolder.distance.x + itemViewHolder.distance.width / 2).toInt()
     val y = (itemViewHolder.distance.y + itemViewHolder.distance.height / 2).toInt()
@@ -163,12 +164,11 @@ fun createDistanceChangeAnimator(
 
     if (distanceChangeCircuralRevealAnimator != null) {
         distanceChangeAnimator.playTogether(
-                distanceTextChangeAnimator,
+//                distanceTextChangeAnimator,
                 distanceChangeCircuralRevealAnimator,
                 distanceChangeCircuralRevealColorAnimator)
     } else {
         distanceChangeAnimator.playTogether(
-                distanceChangeCircuralRevealAnimator,
                 distanceChangeCircuralRevealColorAnimator
         )
     }

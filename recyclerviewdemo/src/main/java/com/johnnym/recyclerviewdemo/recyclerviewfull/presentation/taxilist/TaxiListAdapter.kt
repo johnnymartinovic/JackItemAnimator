@@ -41,7 +41,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
         } else {
-            // all payloads are animated so there is nothing to be done here
+            val taxiListItemPayload = payloads.last() as TaxiListItemPayload
+            val distanceChange = taxiListItemPayload.distanceChange
+            if (distanceChange != null) {
+                holder.setDistanceValue(distanceChange.new)
+            }
         }
     }
 
@@ -112,7 +116,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
 
             driverName.text = item.driverName
             stars.text = String.format(starsFormattedText, item.stars)
-            distance.text = String.format(distanceFormattedText, item.distance)
+            setDistanceValue(item.distance)
+        }
+
+        fun setDistanceValue(distance: Float) {
+            this.distance.text = String.format(distanceFormattedText, distance)
         }
     }
 }
