@@ -6,8 +6,10 @@ import android.support.annotation.ColorInt
 import android.support.v7.widget.RecyclerView
 import android.view.ViewAnimationUtils
 import android.animation.AnimatorSet
+import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import com.johnnym.recyclerviewdemo.R
 
 const val CHANGE_ANIMATION_DURATION = 1000L
 
@@ -62,11 +64,45 @@ fun createTaxiListItemRemoveAnimator(
     }
 }
 
-fun createTaxiListItemAddAnimator(
-        itemViewHolder: TaxiListAdapter.ItemViewHolder
+fun createTaxiListSquareItemRemoveAnimator(
+        itemViewHolder: TaxiListAdapter.SquareItemViewHolder
 ): Animator {
-    val view = itemViewHolder.itemView
-    val deltaX = (-itemViewHolder.itemView.width / 5).toFloat()
+    val subviewsDisappearAnimation = ValueAnimator.ofFloat(1f, 0f)
+            .apply {
+                addUpdateListener {
+                    val alpha = it.animatedValue as Float
+                    itemViewHolder.statusBar.alpha = alpha
+                }
+            }
+
+    val itemView = itemViewHolder.itemView
+    val itemMoveToRight = ValueAnimator.ofFloat(0f, itemView.width.toFloat())
+            .apply {
+                addUpdateListener {
+                    itemView.translationX = it.animatedValue as Float
+                }
+                interpolator = AccelerateInterpolator()
+            }
+
+    return AnimatorSet().apply {
+        playSequentially(subviewsDisappearAnimation, itemMoveToRight)
+        addListener(object : AnimatorListenerAdapter() {
+
+            // reset view state when it will have to be reused
+            override fun onAnimationEnd(animation: Animator) {
+                itemViewHolder.statusBar.alpha = 1f
+
+                itemView.translationX = 0f
+            }
+        })
+    }
+}
+
+fun createTaxiListItemAddAnimator(
+        viewHolder: RecyclerView.ViewHolder
+): Animator {
+    val view = viewHolder.itemView
+    val deltaX = (-viewHolder.itemView.width / 5).toFloat()
 
     val translationXAnimator = ValueAnimator.ofFloat(deltaX, 0f)
             .apply {
@@ -79,7 +115,7 @@ fun createTaxiListItemAddAnimator(
             .apply {
                 addUpdateListener {
                     val alpha = it.animatedValue as Float
-                    itemViewHolder.itemView.alpha = alpha
+                    viewHolder.itemView.alpha = alpha
                 }
             }
 
@@ -140,6 +176,21 @@ fun createTaxiStatusChangeAnimator(
     }
 }
 
+fun createViewTypeChangeAnimator(
+        oldHolder: RecyclerView.ViewHolder,
+        newHolder: RecyclerView.ViewHolder
+): Animator {
+    val oldStatusBar: View = oldHolder.itemView.findViewById(R.id.status_bar)
+    val oldDriverPhoto: View = oldHolder.itemView.findViewById(R.id.driver_photo)
+    val newStatusBar: View = newHolder.itemView.findViewById(R.id.status_bar)
+    val newDriverPhoto: View = newHolder.itemView.findViewById(R.id.driver_photo)
+
+    return ValueAnimator.ofFloat(oldStatusBar.width.toFloat()/newStatusBar.width, 1f)
+            .apply {
+                addUpdateListener { newStatusBar.scaleX = it.animatedValue as Float }
+            }
+}
+
 fun createDistanceChangeAnimator(
         itemViewHolder: TaxiListAdapter.ItemViewHolder,
         distanceChange: Change<Float>
@@ -198,10 +249,10 @@ fun createDistanceChangeAnimator(
 }
 
 fun createMoveAnimator(
-        itemViewHolder: TaxiListAdapter.ItemViewHolder,
+        viewHolder: RecyclerView.ViewHolder,
         deltaX: Float, deltaY: Float
 ): Animator {
-    val view = itemViewHolder.itemView
+    val view = viewHolder.itemView
 
     val translationXAnimator = ValueAnimator.ofFloat(-deltaX, 0f)
             .apply {

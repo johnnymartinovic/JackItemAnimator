@@ -3,4 +3,6 @@
 
     <dimen name="main_demo_button_width">240dp</dimen>
 
+    <dimen name="taxi_list_item_decoration_spacing">6dp</dimen>
+
 </resources>

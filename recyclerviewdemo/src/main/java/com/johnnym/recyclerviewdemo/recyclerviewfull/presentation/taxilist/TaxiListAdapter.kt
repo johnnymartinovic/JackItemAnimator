@@ -19,31 +19,51 @@ import butterknife.BindColor
 import butterknife.BindString
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemPresentable
 
-class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiListAdapter.ItemViewHolder>() {
+class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        const val NORMAL_VIEW_TYPE = 0
+        const val SQUARE_VIEW_TYPE = 1
+    }
+
+    private var viewType = NORMAL_VIEW_TYPE
 
     private var items = mutableListOf<TaxiListItemPresentable>()
 
     override fun getItemCount(): Int =
             items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+    override fun getItemViewType(position: Int): Int {
+        return viewType
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ItemViewHolder(
-                context,
-                inflater.inflate(R.layout.taxi_list_item, parent, false))
+        return when (viewType) {
+            NORMAL_VIEW_TYPE -> ItemViewHolder(
+                    context,
+                    inflater.inflate(R.layout.taxi_list_item, parent, false))
+            SQUARE_VIEW_TYPE -> SquareItemViewHolder(
+                    context,
+                    inflater.inflate(R.layout.taxi_list_item_grid, parent, false))
+            else -> throw IllegalStateException("Undefined view type.")
+        }
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(items[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ItemViewHolder -> holder.bind(items[position])
+            is SquareItemViewHolder -> holder.bind(items[position])
+        }
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int, payloads: List<Any>) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
         } else {
             val taxiListItemPayload = payloads.last() as TaxiListItemPayload
             val distanceChange = taxiListItemPayload.distanceChange
-            if (distanceChange != null) {
+            if (distanceChange != null && holder is ItemViewHolder) {
                 holder.setDistanceValue(distanceChange.new)
             }
         }
@@ -54,6 +74,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
 
         this.items.clear()
         this.items.addAll(items)
+    }
+
+    fun setViewType(viewType: Int) {
+        this.viewType = viewType
+        notifyItemRangeChanged(0, itemCount)
     }
 
     class ItemViewHolder(
@@ -121,6 +146,44 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<TaxiL
 
         fun setDistanceValue(distance: Float) {
             this.distance.text = String.format(distanceFormattedText, distance)
+        }
+    }
+
+    class SquareItemViewHolder(
+            private val context: Context,
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        @BindView(R.id.status_bar) lateinit var statusBar: View
+        @BindView(R.id.driver_photo) lateinit var driverPhoto: ImageView
+
+        @JvmField
+        @ColorInt
+        @BindColor(R.color.taxi_list_item_status_available)
+        var statusAvailableColor: Int = 0
+        @JvmField
+        @ColorInt
+        @BindColor(R.color.taxi_list_item_status_unavailable)
+        var statusUnavailableColor: Int = 0
+
+        init {
+            ButterKnife.bind(this, itemView)
+        }
+
+        fun bind(item: TaxiListItemPresentable) {
+            Glide.with(context)
+                    .load(item.driverPhotoUrl)
+                    .apply(RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.ic_star)
+                            .error(R.drawable.ic_distance)
+                            .dontAnimate())
+                    .into(driverPhoto)
+
+            when (item.taxiStatus) {
+                TaxiStatus.AVAILABLE -> statusBar.setBackgroundColor(statusAvailableColor)
+                TaxiStatus.OCCUPIED -> statusBar.setBackgroundColor(statusUnavailableColor)
+            }
         }
     }
 }

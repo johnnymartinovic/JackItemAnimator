@@ -97,8 +97,12 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         }
     }
 
-    override fun animateRemove(holder: RecyclerView.ViewHolder?): Boolean {
-        val removeAnimator = createTaxiListItemRemoveAnimator(holder as TaxiListAdapter.ItemViewHolder)
+    override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
+        val removeAnimator = when (holder) {
+            is TaxiListAdapter.ItemViewHolder -> createTaxiListItemRemoveAnimator(holder)
+            is TaxiListAdapter.SquareItemViewHolder -> createTaxiListSquareItemRemoveAnimator(holder)
+            else -> throw IllegalStateException("Undefined ViewHolder.")
+        }
 
         removeAnimator.addListener(object : AnimatorListenerAdapter() {
 
@@ -122,7 +126,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
     override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
         holder.itemView.alpha = 0f
 
-        val addAnimator = createTaxiListItemAddAnimator(holder as TaxiListAdapter.ItemViewHolder)
+        val addAnimator = createTaxiListItemAddAnimator(holder)
 
         addAnimator.addListener(object : AnimatorListenerAdapter() {
 
@@ -151,7 +155,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         view.translationX = -deltaX
         view.translationY = -deltaY
 
-        val moveAnimator = createMoveAnimator(holder as TaxiListAdapter.ItemViewHolder, deltaX, deltaY)
+        val moveAnimator = createMoveAnimator(holder, deltaX, deltaY)
 
         moveAnimator.addListener(object : AnimatorListenerAdapter() {
 
@@ -178,7 +182,11 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             preInfo: ItemHolderInfo,
             postInfo: ItemHolderInfo
     ): Boolean {
-        val viewHolder = newHolder as TaxiListAdapter.ItemViewHolder
+        if (oldHolder != newHolder || newHolder !is TaxiListAdapter.ItemViewHolder) {
+            return super.animateChange(oldHolder, newHolder, preInfo, postInfo)
+        }
+
+        val viewHolder = newHolder
         val view = viewHolder.itemView
 
         val oldInfo = preInfo as TaxiListItemHolderInfo
