@@ -61,10 +61,24 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
         } else {
+            // It isn't exactly necessary to changes that will be animated with
+            // TaxiListItemAnimator, but it is done because we don't want to depend on whether the
+            // correct ItemAnimator is selected or not
             val taxiListItemPayload = payloads.last() as TaxiListItemPayload
+
+            val taxiStatusChange = taxiListItemPayload.taxiStatusChange
             val distanceChange = taxiListItemPayload.distanceChange
-            if (distanceChange != null && holder is ItemViewHolder) {
-                holder.setDistanceValue(distanceChange.new)
+
+            if (taxiStatusChange != null) {
+                when (holder) {
+                    is ItemViewHolder -> holder.setTaxiStatus(taxiStatusChange.new)
+                    is SquareItemViewHolder -> holder.setTaxiStatus(taxiStatusChange.new)
+                }
+            }
+            if (distanceChange != null) {
+                when (holder) {
+                    is ItemViewHolder -> holder.setDistanceValue(distanceChange.new)
+                }
             }
         }
     }
@@ -134,14 +148,17 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
                             .dontAnimate())
                     .into(driverPhoto)
 
-            when (item.taxiStatus) {
+            driverName.text = item.driverName
+            stars.text = String.format(starsFormattedText, item.stars)
+            setTaxiStatus(item.taxiStatus)
+            setDistanceValue(item.distance)
+        }
+
+        fun setTaxiStatus(taxiStatus: TaxiStatus) {
+            when (taxiStatus) {
                 TaxiStatus.AVAILABLE -> statusBar.setBackgroundColor(statusAvailableColor)
                 TaxiStatus.OCCUPIED -> statusBar.setBackgroundColor(statusUnavailableColor)
             }
-
-            driverName.text = item.driverName
-            stars.text = String.format(starsFormattedText, item.stars)
-            setDistanceValue(item.distance)
         }
 
         fun setDistanceValue(distance: Float) {
@@ -180,7 +197,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
                             .dontAnimate())
                     .into(driverPhoto)
 
-            when (item.taxiStatus) {
+            setTaxiStatus(item.taxiStatus)
+        }
+
+        fun setTaxiStatus(taxiStatus: TaxiStatus) {
+            when (taxiStatus) {
                 TaxiStatus.AVAILABLE -> statusBar.setBackgroundColor(statusAvailableColor)
                 TaxiStatus.OCCUPIED -> statusBar.setBackgroundColor(statusUnavailableColor)
             }
