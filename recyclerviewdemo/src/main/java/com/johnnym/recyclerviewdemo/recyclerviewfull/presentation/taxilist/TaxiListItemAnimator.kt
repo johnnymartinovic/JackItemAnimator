@@ -4,8 +4,6 @@ import android.animation.*
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
 import android.animation.AnimatorSet
-import android.support.annotation.ColorInt
-import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import java.util.concurrent.ConcurrentHashMap
 
 class TaxiListItemAnimator : DefaultItemAnimator() {
@@ -74,7 +72,14 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         super.endAnimations()
     }
 
+    internal fun dispatchAnimationsFinishedIfNoneIsRunning() {
+        if (!isRunning) {
+            dispatchAnimationsFinished()
+        }
+    }
+
     override fun runPendingAnimations() {
+        super.runPendingAnimations()
         val removeAnimators = AnimatorSet().apply {
             playTogether(pendingRemoves.values)
         }
@@ -99,40 +104,39 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
 
     override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
         val removeAnimator = when (holder) {
-            is TaxiListAdapter.ItemViewHolder -> createTaxiListItemRemoveAnimator(holder)
-            is TaxiListAdapter.SquareItemViewHolder -> createTaxiListSquareItemRemoveAnimator(holder)
-            else -> throw IllegalStateException("Undefined ViewHolder.")
+            is TaxiListAdapter.ItemViewHolder -> setupItemViewHolderAndCreateRemoveAnimator(holder)
+            is TaxiListAdapter.SquareItemViewHolder -> setupSquareItemViewHolderAndCreateRemoveAnimator(holder)
+            else -> return super.animateRemove(holder)
         }
 
         removeAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
                 pendingRemoves.remove(holder)
-                activeRemoves.put(holder, animation)
+                activeRemoves[holder] = animation
                 dispatchRemoveStarting(holder)
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 dispatchRemoveFinished(holder)
                 activeRemoves.remove(holder)
+                dispatchAnimationsFinishedIfNoneIsRunning()
             }
         })
 
-        pendingRemoves.put(holder, removeAnimator)
+        pendingRemoves[holder] = removeAnimator
 
         return true
     }
 
     override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
-        holder.itemView.alpha = 0f
-
-        val addAnimator = createTaxiListItemAddAnimator(holder)
+        val addAnimator = setupHolderAndCreateAddAnimator(holder)
 
         addAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
                 pendingAdds.remove(holder)
-                activeAdds.put(holder, animation)
+                activeAdds[holder] = animation
                 dispatchAddStarting(holder)
             }
 
@@ -142,26 +146,22 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             }
         })
 
-        pendingAdds.put(holder, addAnimator)
+        pendingAdds[holder] = addAnimator
 
         return true
     }
 
     override fun animateMove(holder: RecyclerView.ViewHolder, fromX: Int, fromY: Int, toX: Int, toY: Int): Boolean {
-        val view = holder.itemView
+        val deltaX = toX - fromX - holder.itemView.translationX
+        val deltaY = toY - fromY - holder.itemView.translationY
 
-        val deltaX = toX - fromX - view.translationX
-        val deltaY = toY - fromY - view.translationY
-        view.translationX = -deltaX
-        view.translationY = -deltaY
-
-        val moveAnimator = createMoveAnimator(holder, deltaX, deltaY)
+        val moveAnimator = setupHolderAndCreateMoveAnimator(holder, deltaX, deltaY)
 
         moveAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
                 pendingMoves.remove(holder)
-                activeMoves.put(holder, animation)
+                activeMoves[holder] = animation
                 dispatchMoveStarting(holder)
             }
 
@@ -171,7 +171,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             }
         })
 
-        pendingMoves.put(holder, moveAnimator)
+        pendingMoves[holder] = moveAnimator
 
         return true
     }
@@ -182,71 +182,40 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             preInfo: ItemHolderInfo,
             postInfo: ItemHolderInfo
     ): Boolean {
-        if (oldHolder != newHolder || newHolder !is TaxiListAdapter.ItemViewHolder) {
+        if (oldHolder !is TaxiListAdapter.ItemViewHolder
+                || newHolder !is TaxiListAdapter.ItemViewHolder
+                || oldHolder != newHolder) {
             return super.animateChange(oldHolder, newHolder, preInfo, postInfo)
         }
 
-        val viewHolder = newHolder
-        val view = viewHolder.itemView
+        val holder = newHolder
 
-        val oldInfo = preInfo as TaxiListItemHolderInfo
-        val newInfo = postInfo as TaxiListItemHolderInfo
-
-        val animatorNullableList: MutableList<Animator?> = mutableListOf()
-
-        val itemPayload = createCombinedTaxiListItemPayload(oldInfo.payloads)
-
-        val taxiStatusChange = itemPayload.taxiStatusChange
-        if (taxiStatusChange != null && taxiStatusChange.old != taxiStatusChange.new) {
-            @ColorInt val startColor: Int
-            @ColorInt val endColor: Int
-            if (taxiStatusChange.old == TaxiStatus.AVAILABLE) {
-                startColor = viewHolder.statusAvailableColor
-                endColor = viewHolder.statusUnavailableColor
-            } else {
-                startColor = viewHolder.statusUnavailableColor
-                endColor = viewHolder.statusAvailableColor
-            }
-
-            viewHolder.statusBar.setBackgroundColor(startColor)
-
-            animatorNullableList.add(createTaxiStatusChangeAnimator(viewHolder, startColor, endColor))
-        }
-
-        val distanceChange = itemPayload.distanceChange
-        if (distanceChange != null && distanceChange.old != distanceChange.new) {
-            animatorNullableList.add(createDistanceChangeAnimator(viewHolder, itemPayload.distanceChange))
-        }
-
-        if (oldInfo.left != newInfo.left || oldInfo.top != newInfo.top) {
-            val deltaX = newInfo.left - oldInfo.left - view.translationX
-            val deltaY = newInfo.top - oldInfo.top - view.translationY
-            view.translationX = -deltaX
-            view.translationY = -deltaY
-
-            animatorNullableList.add(createMoveAnimator(viewHolder, deltaX, deltaY))
-        }
-
-        val animatorList = animatorNullableList.filterNotNull()
-        val changeAnimator = AnimatorSet()
-        changeAnimator.playTogether(animatorList)
+        val changeAnimator = setupItemViewHolderAndCreateChangeAnimator(
+                holder,
+                preInfo as TaxiListItemHolderInfo,
+                postInfo as TaxiListItemHolderInfo)
 
         changeAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
-                pendingChanges.remove(viewHolder)
-                activeChanges.put(viewHolder, animation)
-                dispatchAnimationStarted(viewHolder)
+                pendingChanges.remove(holder)
+                activeChanges[holder] = animation
+                dispatchAnimationStarted(holder)
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                dispatchAnimationFinished(viewHolder)
-                activeChanges.remove(viewHolder)
+                dispatchAnimationFinished(holder)
+                activeChanges.remove(holder)
             }
         })
 
-        pendingChanges.put(viewHolder, changeAnimator)
+        pendingChanges[holder] = changeAnimator
 
         return true
     }
+}
+
+class TaxiListItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
+
+    var payloads: MutableList<Any> = mutableListOf()
 }
