@@ -13,6 +13,10 @@ class TaxiListItemDecoration(
         val itemCount = parent.adapter.itemCount
         val itemPosition = parent.getChildAdapterPosition(view)
 
+        if (itemPosition == RecyclerView.NO_POSITION) {
+            return
+        }
+
         val numberOfRows = calculateNumberOfRows(itemCount)
 
         val isItemInTheFirstRow = itemPosition < columnNumber
@@ -27,7 +31,6 @@ class TaxiListItemDecoration(
         outRect.bottom =
                 if (isItemInTheLastRow) spacingBetweenElements
                 else spacingBetweenElements / 2
-
 
         outRect.left =
                 if (isItemOnTheLeft) spacingBetweenElements
