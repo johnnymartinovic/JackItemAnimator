@@ -49,26 +49,95 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
     }
 
     override fun endAnimation(item: RecyclerView.ViewHolder) {
-        pendingRemoves.remove(item)
-        pendingAdds.remove(item)
-        pendingMoves.remove(item)
-        pendingChanges.remove(item)
-        activeRemoves[item]?.end()
-        activeAdds[item]?.end()
-        activeMoves[item]?.end()
-        activeChanges[item]?.end()
+        if (pendingRemoves.containsKey(item)) {
+            pendingRemoves.remove(item)
+            dispatchRemoveFinished(item)
+        }
+        if (pendingAdds.containsKey(item)) {
+            pendingAdds.remove(item)
+            dispatchAddFinished(item)
+        }
+        if (pendingMoves.containsKey(item)) {
+            pendingMoves.remove(item)
+            dispatchMoveFinished(item)
+        }
+        if (pendingChanges.containsKey(item)) {
+            pendingChanges.remove(item)
+            dispatchAnimationFinished(item)
+        }
+
+        var animator = activeRemoves.remove(item)
+        if (animator != null) {
+            animator.end()
+            dispatchRemoveFinished(item)
+        }
+
+        animator = activeAdds.remove(item)
+        if (animator != null) {
+            animator.end()
+            dispatchAddFinished(item)
+        }
+
+        animator = activeMoves.remove(item)
+        if (animator != null) {
+            animator.end()
+            dispatchMoveFinished(item)
+        }
+
+        animator = activeChanges.remove(item)
+        if (animator != null) {
+            animator.end()
+            dispatchAnimationFinished(item)
+        }
+
         super.endAnimation(item)
     }
 
     override fun endAnimations() {
+        pendingRemoves.keys.forEach {
+            dispatchRemoveFinished(it)
+        }
         pendingRemoves.clear()
+
+        pendingAdds.keys.forEach {
+            dispatchAddFinished(it)
+        }
         pendingAdds.clear()
+
+        pendingMoves.keys.forEach {
+            dispatchMoveFinished(it)
+        }
         pendingMoves.clear()
+
+        pendingChanges.keys.forEach {
+            dispatchAnimationFinished(it)
+        }
         pendingChanges.clear()
-        activeRemoves.values.forEach { it.end() }
-        activeAdds.values.forEach { it.end() }
-        activeMoves.values.forEach { it.end() }
-        activeChanges.values.forEach { it.end() }
+
+        activeRemoves.entries.forEach {
+            it.value.end()
+            dispatchRemoveFinished(it.key)
+        }
+        activeRemoves.clear()
+
+        activeAdds.entries.forEach {
+            it.value.end()
+            dispatchAddFinished(it.key)
+        }
+        activeAdds.clear()
+
+        activeMoves.entries.forEach {
+            it.value.end()
+            dispatchMoveFinished(it.key)
+        }
+        activeMoves.clear()
+
+        activeChanges.entries.forEach {
+            it.value.end()
+            dispatchAnimationFinished(it.key)
+        }
+        activeChanges.clear()
+
         super.endAnimations()
     }
 
@@ -143,6 +212,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             override fun onAnimationEnd(animation: Animator) {
                 dispatchAddFinished(holder)
                 activeAdds.remove(holder)
+                dispatchAnimationsFinishedIfNoneIsRunning()
             }
         })
 
@@ -168,6 +238,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             override fun onAnimationEnd(animation: Animator) {
                 dispatchMoveFinished(holder)
                 activeMoves.remove(holder)
+                dispatchAnimationsFinishedIfNoneIsRunning()
             }
         })
 
@@ -206,6 +277,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             override fun onAnimationEnd(animation: Animator) {
                 dispatchAnimationFinished(holder)
                 activeChanges.remove(holder)
+                dispatchAnimationsFinishedIfNoneIsRunning()
             }
         })
 
