@@ -4,19 +4,18 @@ import android.animation.*
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.RecyclerView
 import android.animation.AnimatorSet
-import java.util.concurrent.ConcurrentHashMap
 
 class TaxiListItemAnimator : DefaultItemAnimator() {
 
-    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
-    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
-    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
-    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
 
-    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
-    private val activeAdds: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
-    private val activeMoves: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
-    private val activeChanges: MutableMap<RecyclerView.ViewHolder, Animator> = ConcurrentHashMap()
+    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val activeAdds: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val activeMoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val activeChanges: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
 
     override fun obtainHolderInfo(): ItemHolderInfo {
         return TaxiListItemHolderInfo()
@@ -66,29 +65,13 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
             dispatchAnimationFinished(item)
         }
 
-        var animator = activeRemoves.remove(item)
-        if (animator != null) {
-            animator.end()
-            dispatchRemoveFinished(item)
-        }
+        activeRemoves.remove(item)?.end()
 
-        animator = activeAdds.remove(item)
-        if (animator != null) {
-            animator.end()
-            dispatchAddFinished(item)
-        }
+        activeAdds.remove(item)?.end()
 
-        animator = activeMoves.remove(item)
-        if (animator != null) {
-            animator.end()
-            dispatchMoveFinished(item)
-        }
+        activeMoves.remove(item)?.end()
 
-        animator = activeChanges.remove(item)
-        if (animator != null) {
-            animator.end()
-            dispatchAnimationFinished(item)
-        }
+        activeChanges.remove(item)?.end()
 
         super.endAnimation(item)
     }
@@ -114,27 +97,23 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         }
         pendingChanges.clear()
 
-        activeRemoves.entries.forEach {
-            it.value.end()
-            dispatchRemoveFinished(it.key)
+        activeRemoves.values.forEach {
+            it.end()
         }
         activeRemoves.clear()
 
-        activeAdds.entries.forEach {
-            it.value.end()
-            dispatchAddFinished(it.key)
+        activeAdds.values.forEach {
+            it.end()
         }
         activeAdds.clear()
 
-        activeMoves.entries.forEach {
-            it.value.end()
-            dispatchMoveFinished(it.key)
+        activeMoves.values.forEach {
+            it.end()
         }
         activeMoves.clear()
 
-        activeChanges.entries.forEach {
-            it.value.end()
-            dispatchAnimationFinished(it.key)
+        activeChanges.values.forEach {
+            it.end()
         }
         activeChanges.clear()
 
@@ -149,6 +128,7 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
 
     override fun runPendingAnimations() {
         super.runPendingAnimations()
+
         val removeAnimators = AnimatorSet().apply {
             playTogether(pendingRemoves.values)
         }
@@ -181,9 +161,11 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         removeAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
-                pendingRemoves.remove(holder)
-                activeRemoves[holder] = animation
+                val animator = pendingRemoves.remove(holder)
                 dispatchRemoveStarting(holder)
+                if (animator != null) {
+                    activeRemoves[holder] = animator
+                }
             }
 
             override fun onAnimationEnd(animation: Animator) {
@@ -204,9 +186,11 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         addAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
-                pendingAdds.remove(holder)
-                activeAdds[holder] = animation
+                val animator = pendingAdds.remove(holder)
                 dispatchAddStarting(holder)
+                if (animator != null) {
+                    activeAdds[holder] = animator
+                }
             }
 
             override fun onAnimationEnd(animation: Animator) {
@@ -230,9 +214,11 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         moveAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
-                pendingMoves.remove(holder)
-                activeMoves[holder] = animation
+                val animator = pendingMoves.remove(holder)
                 dispatchMoveStarting(holder)
+                if (animator != null) {
+                    activeMoves[holder] = animator
+                }
             }
 
             override fun onAnimationEnd(animation: Animator) {
@@ -269,14 +255,16 @@ class TaxiListItemAnimator : DefaultItemAnimator() {
         changeAnimator.addListener(object : AnimatorListenerAdapter() {
 
             override fun onAnimationStart(animation: Animator) {
-                pendingChanges.remove(holder)
-                activeChanges[holder] = animation
+                val animator = pendingChanges.remove(holder)
                 dispatchAnimationStarted(holder)
+                if (animator != null) {
+                    activeChanges[holder] = animator
+                }
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                dispatchAnimationFinished(holder)
                 activeChanges.remove(holder)
+                dispatchAnimationFinished(holder)
                 dispatchAnimationsFinishedIfNoneIsRunning()
             }
         })
