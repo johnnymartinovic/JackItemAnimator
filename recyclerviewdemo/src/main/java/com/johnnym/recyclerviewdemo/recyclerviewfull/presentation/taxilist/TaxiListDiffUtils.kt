@@ -2,11 +2,11 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
 import android.support.v7.util.DiffUtil
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
-import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemPresentable
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemViewModel
 
 class DiffCallback(
-        private var oldItems: List<TaxiListItemPresentable>,
-        private var newItems: List<TaxiListItemPresentable>
+        private var oldItems: List<TaxiListItemViewModel>,
+        private var newItems: List<TaxiListItemViewModel>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldItems.size

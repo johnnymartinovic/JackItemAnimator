@@ -6,7 +6,7 @@ import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.GetTaxiList
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListContract
-import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListPresentableMapper
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListViewModelMapper
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListPresenter
 import dagger.Module
 import dagger.Provides
@@ -22,12 +22,12 @@ class TaxiListModule(
     @Provides
     fun provideTaxiListPresenter(
             getTaxiList: GetTaxiList,
-            taxiListPresentableMapper: TaxiListPresentableMapper
+            taxiListViewModelMapper: TaxiListViewModelMapper
     ): TaxiListContract.Presenter =
             TaxiListPresenter(
                     taxiListView,
                     getTaxiList,
-                    taxiListPresentableMapper,
+                    taxiListViewModelMapper,
                     initialTaxiStatusFilter,
                     initialTaxiSortOption)
 
@@ -45,6 +45,6 @@ class TaxiListModule(
             MockTaxiListRepository()
 
     @Provides
-    fun provideTaxiListPresentableMapper(): TaxiListPresentableMapper =
-            TaxiListPresentableMapper()
+    fun provideTaxiListViewModelMapper(): TaxiListViewModelMapper =
+            TaxiListViewModelMapper()
 }

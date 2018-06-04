@@ -117,8 +117,8 @@ class TaxiListActivity : AppCompatActivity(),
         presenter.viewDestroyed()
     }
 
-    override fun showTaxiListPresentable(taxiListPresentable: TaxiListPresentable) {
-        taxiListAdapter.setItems(taxiListPresentable.taxiListItemPresentables)
+    override fun showTaxiListViewModel(taxiListViewModel: TaxiListViewModel) {
+        taxiListAdapter.setItems(taxiListViewModel.taxiListItemViewModels)
     }
 
     override fun showLoading() {

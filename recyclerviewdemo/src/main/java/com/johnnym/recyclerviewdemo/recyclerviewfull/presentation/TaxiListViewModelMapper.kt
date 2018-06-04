@@ -2,12 +2,12 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation
 
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiList
 
-class TaxiListPresentableMapper {
+class TaxiListViewModelMapper {
 
-    fun map(taxiList: TaxiList) : TaxiListPresentable {
-        val taxiListItemPresentables: List<TaxiListItemPresentable> =
+    fun map(taxiList: TaxiList) : TaxiListViewModel {
+        val taxiListItemViewModels: List<TaxiListItemViewModel> =
                 taxiList.taxiListItems.map {
-                    TaxiListItemPresentable(
+                    TaxiListItemViewModel(
                             it.taxiId,
                             it.taxiStatus,
                             it.driverPhotoUrl,
@@ -16,6 +16,6 @@ class TaxiListPresentableMapper {
                             it.distance)
                 }
 
-        return TaxiListPresentable(taxiListItemPresentables)
+        return TaxiListViewModel(taxiListItemViewModels)
     }
 }

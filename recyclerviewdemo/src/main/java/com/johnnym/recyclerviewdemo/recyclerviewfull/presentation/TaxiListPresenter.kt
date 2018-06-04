@@ -10,7 +10,7 @@ import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 class TaxiListPresenter(
         private val taxiListView: TaxiListContract.View,
         private val getTaxiList: GetTaxiList,
-        private val taxiListPresentableMapper: TaxiListPresentableMapper,
+        private val taxiListViewModelMapper: TaxiListViewModelMapper,
         private var currentTaxiStatusFilter: TaxiStatusFilter,
         private var currentTaxiSortOption: TaxiSortOption
 ) : AbsPresenter(), TaxiListContract.Presenter {
@@ -57,8 +57,7 @@ class TaxiListPresenter(
 
         override fun onSuccess(taxiList: TaxiList) {
             taxiListView.hideLoading()
-            taxiListView.showTaxiListPresentable(
-                    taxiListPresentableMapper.map(taxiList))
+            taxiListView.showTaxiListViewModel(taxiListViewModelMapper.map(taxiList))
         }
 
         override fun onError(e: Throwable?) {

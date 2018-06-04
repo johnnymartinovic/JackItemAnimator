@@ -17,7 +17,7 @@ import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import butterknife.BindColor
 import butterknife.BindString
-import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemPresentable
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemViewModel
 
 class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -28,14 +28,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
 
     private var viewType = NORMAL_VIEW_TYPE
 
-    private var items = mutableListOf<TaxiListItemPresentable>()
+    private var items = listOf<TaxiListItemViewModel>()
 
-    override fun getItemCount(): Int =
-            items.size
+    override fun getItemCount(): Int = items.size
 
-    override fun getItemViewType(position: Int): Int {
-        return viewType
-    }
+    override fun getItemViewType(position: Int): Int = viewType
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -83,11 +80,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         }
     }
 
-    fun setItems(items: List<TaxiListItemPresentable>) {
-        DiffUtil.calculateDiff(DiffCallback(this.items, items)).dispatchUpdatesTo(this)
-
-        this.items.clear()
-        this.items.addAll(items)
+    fun setItems(newItems: List<TaxiListItemViewModel>) {
+        val oldItems = this.items
+        val result = DiffUtil.calculateDiff(DiffCallback(oldItems, newItems))
+        this.items = newItems
+        result.dispatchUpdatesTo(this)
     }
 
     fun setViewType(viewType: Int) {
@@ -138,7 +135,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             ButterKnife.bind(this, itemView)
         }
 
-        fun bind(item: TaxiListItemPresentable) {
+        fun bind(item: TaxiListItemViewModel) {
             Glide.with(context)
                     .load(item.driverPhotoUrl)
                     .apply(RequestOptions()
@@ -187,7 +184,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             ButterKnife.bind(this, itemView)
         }
 
-        fun bind(item: TaxiListItemPresentable) {
+        fun bind(item: TaxiListItemViewModel) {
             Glide.with(context)
                     .load(item.driverPhotoUrl)
                     .apply(RequestOptions()

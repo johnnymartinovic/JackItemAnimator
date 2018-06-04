@@ -6,7 +6,7 @@ interface TaxiListContract {
 
     interface View {
 
-        fun showTaxiListPresentable(taxiListPresentable: TaxiListPresentable)
+        fun showTaxiListViewModel(taxiListViewModel: TaxiListViewModel)
 
         fun showLoading()
 
