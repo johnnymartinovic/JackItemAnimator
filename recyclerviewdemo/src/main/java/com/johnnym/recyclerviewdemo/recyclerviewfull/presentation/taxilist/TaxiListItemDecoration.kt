@@ -19,6 +19,7 @@ class TaxiListItemDecoration(
 
         val numberOfRows = calculateNumberOfRows(itemCount)
 
+        // TODO do this with GridLayoutManager.LayoutParams
         val isItemInTheFirstRow = itemPosition < columnNumber
         val isItemInTheLastRow = itemPosition > (numberOfRows - 1) * columnNumber - 1
         val isItemOnTheLeft = itemPosition % columnNumber == 0

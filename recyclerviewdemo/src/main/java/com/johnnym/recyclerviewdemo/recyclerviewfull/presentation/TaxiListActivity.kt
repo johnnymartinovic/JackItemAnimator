@@ -8,14 +8,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.*
 import android.view.Menu
 import android.view.MenuItem
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
 import javax.inject.Inject
 import android.widget.Button
 import android.widget.Switch
+import com.johnnym.recyclerviewdemo.common.binding.bindView
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.*
@@ -35,12 +34,12 @@ class TaxiListActivity : AppCompatActivity(),
         private const val MAX_COLUMNS = 3
     }
 
-    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-    @BindView(R.id.availability_visibility_switch) lateinit var availabilityVisibilitySwitch: Switch
-    @BindView(R.id.taxi_list_loading_view) lateinit var taxiListLoadingView: SwipeRefreshLayout
-    @BindView(R.id.taxi_list) lateinit var taxiList: RecyclerView
-    @BindView(R.id.refresh_button) lateinit var refreshButton: Button
-    @BindView(R.id.change_grid_button) lateinit var changeGridButton: Button
+    private val toolbar: Toolbar by bindView(R.id.toolbar)
+    private val availabilityVisibilitySwitch: Switch by bindView(R.id.availability_visibility_switch)
+    private val taxiListLoadingView: SwipeRefreshLayout by bindView(R.id.taxi_list_loading_view)
+    private val taxiList: RecyclerView by bindView(R.id.taxi_list)
+    private val refreshButton: Button by bindView(R.id.refresh_button)
+    private val changeGridButton: Button by bindView(R.id.change_grid_button)
 
     @Inject lateinit var presenter: TaxiListContract.Presenter
 
@@ -57,10 +56,10 @@ class TaxiListActivity : AppCompatActivity(),
         val initialTaxiSortOption = TaxiSortOption.BY_DRIVER_NAME_ASCENDING
 
         setContentView(R.layout.taxi_list_activity)
-        ButterKnife.bind(this)
 
         taxiListAdapter = TaxiListAdapter(this)
         setTaxiListAdapterViewType()
+        taxiList.setHasFixedSize(true)
         taxiList.adapter = taxiListAdapter
         taxiListLayoutManager = GridLayoutManager(this, calculateSpanCount())
         taxiListLayoutManager.spanSizeLookup = taxiListItemSpanSizeLookup
@@ -118,6 +117,7 @@ class TaxiListActivity : AppCompatActivity(),
     }
 
     override fun showTaxiListViewModel(taxiListViewModel: TaxiListViewModel) {
+        taxiList.scrollToPosition(0)
         taxiListAdapter.setItems(taxiListViewModel.taxiListItemViewModels)
     }
 

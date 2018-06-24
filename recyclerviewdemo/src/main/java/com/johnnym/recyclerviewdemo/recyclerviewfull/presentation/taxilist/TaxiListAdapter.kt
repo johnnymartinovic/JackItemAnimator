@@ -1,7 +1,6 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
 import android.content.Context
-import android.support.annotation.ColorInt
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -9,19 +8,20 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.johnnym.recyclerviewdemo.R
+import com.johnnym.recyclerviewdemo.common.binding.bindColor
+import com.johnnym.recyclerviewdemo.common.binding.bindString
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
-import butterknife.BindColor
-import butterknife.BindString
+import com.johnnym.recyclerviewdemo.common.binding.bindView
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemViewModel
 
 class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
+
+        // TODO make this enum
         const val NORMAL_VIEW_TYPE = 0
         const val SQUARE_VIEW_TYPE = 1
     }
@@ -97,43 +97,24 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        @BindView(R.id.background_helper_view) lateinit var backgroundHelperView: View
-        @BindView(R.id.reveal_helper_view) lateinit var revealHelperView: View
-        @BindView(R.id.status_bar) lateinit var statusBar: View
-        @BindView(R.id.driver_photo) lateinit var driverPhoto: ImageView
-        @BindView(R.id.driver_name) lateinit var driverName: TextView
-        @BindView(R.id.star_icon) lateinit var starIcon: ImageView
-        @BindView(R.id.stars) lateinit var stars: TextView
-        @BindView(R.id.distance_icon) lateinit var distanceIcon: ImageView
-        @BindView(R.id.distance) lateinit var distance: TextView
+        val backgroundHelperView: View by bindView(R.id.background_helper_view)
+        val revealHelperView: View by bindView(R.id.reveal_helper_view)
+        val statusBar: View by bindView(R.id.status_bar)
+        val driverPhoto: ImageView by bindView(R.id.driver_photo)
+        val driverName: TextView by bindView(R.id.driver_name)
+        val starIcon: ImageView by bindView(R.id.star_icon)
+        val stars: TextView by bindView(R.id.stars)
+        val distanceIcon: ImageView by bindView(R.id.distance_icon)
+        val distance: TextView by bindView(R.id.distance)
 
-        @BindString(R.string.taxi_list_item_stars_format) lateinit var starsFormattedText: String
-        @BindString(R.string.taxi_list_item_distance_format) lateinit var distanceFormattedText: String
+        val starsFormattedText: String by bindString(R.string.taxi_list_item_stars_format)
+        val distanceFormattedText: String by bindString(R.string.taxi_list_item_distance_format)
 
-        @JvmField
-        @ColorInt
-        @BindColor(R.color.taxi_list_item_status_available)
-        var statusAvailableColor: Int = 0
-        @JvmField
-        @ColorInt
-        @BindColor(R.color.taxi_list_item_status_unavailable)
-        var statusUnavailableColor: Int = 0
-        @JvmField
-        @ColorInt
-        @BindColor(R.color.taxi_list_item_distance_decreased_signal)
-        var distanceDecreasedSignalColor: Int = 0
-        @JvmField
-        @ColorInt
-        @BindColor(R.color.taxi_list_item_distance_increased_signal)
-        var distanceIncreasedSignalColor: Int = 0
-        @JvmField
-        @ColorInt
-        @BindColor(android.R.color.transparent)
-        var transparentColor: Int = 0
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        val statusAvailableColor: Int by bindColor(R.color.taxi_list_item_status_available)
+        val statusUnavailableColor: Int by bindColor(R.color.taxi_list_item_status_unavailable)
+        val distanceDecreasedSignalColor: Int by bindColor(R.color.taxi_list_item_distance_decreased_signal)
+        val distanceIncreasedSignalColor: Int by bindColor(R.color.taxi_list_item_distance_increased_signal)
+        val transparentColor: Int by bindColor(android.R.color.transparent)
 
         fun bind(item: TaxiListItemViewModel) {
             Glide.with(context)
@@ -168,21 +149,11 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        @BindView(R.id.status_bar) lateinit var statusBar: View
-        @BindView(R.id.driver_photo) lateinit var driverPhoto: ImageView
+        val statusBar: View by bindView(R.id.status_bar)
+        val driverPhoto: ImageView by bindView(R.id.driver_photo)
 
-        @JvmField
-        @ColorInt
-        @BindColor(R.color.taxi_list_item_status_available)
-        var statusAvailableColor: Int = 0
-        @JvmField
-        @ColorInt
-        @BindColor(R.color.taxi_list_item_status_unavailable)
-        var statusUnavailableColor: Int = 0
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        val statusAvailableColor: Int by bindColor(R.color.taxi_list_item_status_available)
+        val statusUnavailableColor: Int by bindColor(R.color.taxi_list_item_status_unavailable)
 
         fun bind(item: TaxiListItemViewModel) {
             Glide.with(context)

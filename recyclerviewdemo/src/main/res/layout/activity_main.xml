@@ -12,9 +12,9 @@
         android:layout_width="@dimen/main_demo_button_width"
         android:layout_height="wrap_content"
         android:text="@string/recycler_view_demo_full_label"
-        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
