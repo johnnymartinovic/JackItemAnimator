@@ -3,21 +3,21 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.*
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
-import javax.inject.Inject
-import android.widget.Button
-import android.widget.Switch
-import com.johnnym.recyclerviewdemo.common.binding.bindView
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
-import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.*
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListAdapter
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListItemAnimator
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListItemDecoration
+import kotlinx.android.synthetic.main.taxi_list_activity.*
+import javax.inject.Inject
 
 class TaxiListActivity : AppCompatActivity(),
         TaxiListContract.View,
@@ -33,13 +33,6 @@ class TaxiListActivity : AppCompatActivity(),
 
         private const val MAX_COLUMNS = 3
     }
-
-    private val toolbar: Toolbar by bindView(R.id.toolbar)
-    private val availabilityVisibilitySwitch: Switch by bindView(R.id.availability_visibility_switch)
-    private val taxiListLoadingView: SwipeRefreshLayout by bindView(R.id.taxi_list_loading_view)
-    private val taxiList: RecyclerView by bindView(R.id.taxi_list)
-    private val refreshButton: Button by bindView(R.id.refresh_button)
-    private val changeGridButton: Button by bindView(R.id.change_grid_button)
 
     @Inject lateinit var presenter: TaxiListContract.Presenter
 

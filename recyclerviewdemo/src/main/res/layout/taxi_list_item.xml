@@ -34,16 +34,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@color/taxi_list_item_status_available" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.johnnym.recyclerviewdemo.common.views.RoundImageView
         android:id="@+id/driver_photo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
+        android:elevation="4dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintLeft_toRightOf="@id/status_bar"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_launcher_background" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/driver_name"

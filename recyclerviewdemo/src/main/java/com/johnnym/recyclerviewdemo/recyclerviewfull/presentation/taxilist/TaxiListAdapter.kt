@@ -10,9 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.github.rstanic12.resourceful.bindColor
+import com.github.rstanic12.resourceful.bindString
 import com.johnnym.recyclerviewdemo.R
-import com.johnnym.recyclerviewdemo.common.binding.bindColor
-import com.johnnym.recyclerviewdemo.common.binding.bindString
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import com.johnnym.recyclerviewdemo.common.binding.bindView
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemViewModel
@@ -120,7 +120,6 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             Glide.with(context)
                     .load(item.driverPhotoUrl)
                     .apply(RequestOptions()
-                            .centerCrop()
                             .placeholder(R.drawable.ic_star)
                             .error(R.drawable.ic_distance)
                             .dontAnimate())
@@ -159,7 +158,6 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             Glide.with(context)
                     .load(item.driverPhotoUrl)
                     .apply(RequestOptions()
-                            .centerCrop()
                             .placeholder(R.drawable.ic_star)
                             .error(R.drawable.ic_distance)
                             .dontAnimate())

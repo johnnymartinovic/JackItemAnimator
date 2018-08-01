@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btn_demo_full"
+        android:id="@+id/fullDemoButton"
         android:layout_width="@dimen/main_demo_button_width"
         android:layout_height="wrap_content"
         android:text="@string/recycler_view_demo_full_label"
