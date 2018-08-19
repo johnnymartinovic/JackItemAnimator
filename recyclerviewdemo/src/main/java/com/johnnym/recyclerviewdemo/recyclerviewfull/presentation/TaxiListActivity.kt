@@ -34,7 +34,8 @@ class TaxiListActivity : AppCompatActivity(),
         private const val MAX_COLUMNS = 3
     }
 
-    @Inject lateinit var presenter: TaxiListContract.Presenter
+    @Inject
+    lateinit var presenter: TaxiListContract.Presenter
 
     private lateinit var taxiListAdapter: TaxiListAdapter
     private lateinit var taxiListLayoutManager: GridLayoutManager
@@ -142,9 +143,9 @@ class TaxiListActivity : AppCompatActivity(),
 
     private fun setTaxiListAdapterViewType() {
         val newViewType = if (currentTaxiListItemColumnNumber == 1) {
-            TaxiListAdapter.NORMAL_VIEW_TYPE
+            TaxiListAdapter.ViewType.NORMAL
         } else {
-            TaxiListAdapter.SQUARE_VIEW_TYPE
+            TaxiListAdapter.ViewType.SQUARE
         }
         taxiListAdapter.setViewType(newViewType)
     }
@@ -156,9 +157,7 @@ class TaxiListActivity : AppCompatActivity(),
     }
 
     private fun createTaxiListItemDecoration(): RecyclerView.ItemDecoration {
-        return TaxiListItemDecoration(
-                currentTaxiListItemColumnNumber,
-                resources.getDimension(R.dimen.taxi_list_item_decoration_spacing).toInt())
+        return TaxiListItemDecoration(resources.getDimensionPixelSize(R.dimen.taxi_list_item_decoration_spacing))
     }
 
     private fun calculateSpanCount(): Int {

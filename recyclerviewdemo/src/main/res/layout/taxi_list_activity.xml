@@ -59,7 +59,9 @@
             android:id="@+id/taxiList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/taxi_list_item" />
+            android:clipToPadding="false"
+            android:padding="@dimen/taxi_list_item_decoration_spacing"
+            tools:listitem="@layout/normal_taxi_list_item" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

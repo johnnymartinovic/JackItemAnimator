@@ -23,7 +23,7 @@ class TaxiListMockFactory {
                                 "https://i.pinimg.com/736x/54/a4/fc/54a4fc5e045b6cf0f4c52a4c58b508ed--jack-nicholson-october-.jpg",
                                 "Jack Torrance",
                                 3.545f,
-                                getRandomDistanceValue()),
+                                1f),
                         TaxiListItem(
                                 "id_01",
                                 getRandomTaxiStatusValue(),
@@ -37,7 +37,7 @@ class TaxiListMockFactory {
                                 "https://upload.wikimedia.org/wikipedia/tr/1/19/Scarfaceinthefall.jpg",
                                 "Tony Montana",
                                 4.231f,
-                                getRandomDistanceValue()),
+                                2f),
                         TaxiListItem(
                                 "id_03",
                                 getRandomTaxiStatusValue(),
@@ -51,7 +51,7 @@ class TaxiListMockFactory {
                                 "https://images-na.ssl-images-amazon.com/images/M/MV5BMTU4OTY2MTE3OF5BMl5BanBnXkFtZTcwMzc0Mzg4Mw@@._V1_.jpg",
                                 "Man with No Name",
                                 2.433f,
-                                getRandomDistanceValue()),
+                                3f),
                         TaxiListItem(
                                 "id_05",
                                 getRandomTaxiStatusValue(),
@@ -65,7 +65,7 @@ class TaxiListMockFactory {
                                 "https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Michaelcoreleone.jpg/220px-Michaelcoreleone.jpg",
                                 "Michael Corleone",
                                 3.2534f,
-                                getRandomDistanceValue()),
+                                4f),
                         TaxiListItem(
                                 "id_07",
                                 getRandomTaxiStatusValue(),
@@ -79,7 +79,7 @@ class TaxiListMockFactory {
                                 "https://pbs.twimg.com/profile_images/2403528821/Picture_28_400x400.png",
                                 "Anton Chigurh",
                                 0.6565f,
-                                getRandomDistanceValue()),
+                                5f),
                         TaxiListItem(
                                 "id_09",
                                 getRandomTaxiStatusValue(),
@@ -93,7 +93,7 @@ class TaxiListMockFactory {
                                 "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/HAL9000.svg/1200px-HAL9000.svg.png",
                                 "HAL 9000",
                                 2.43f,
-                                getRandomDistanceValue()),
+                                6f),
                         TaxiListItem(
                                 "id_11",
                                 getRandomTaxiStatusValue(),
@@ -107,7 +107,7 @@ class TaxiListMockFactory {
                                 "https://vignette.wikia.nocookie.net/lotrfanon/images/c/c0/Legolas.jpg",
                                 "Legolas",
                                 4.433f,
-                                getRandomDistanceValue()),
+                                7f),
                         TaxiListItem(
                                 "id_13",
                                 getRandomTaxiStatusValue(),
@@ -121,7 +121,7 @@ class TaxiListMockFactory {
                                 "http://s3.amazonaws.com/digitaltrends-uploads-prod/2015/06/indiana-jones.jpg",
                                 "Indiana Jones",
                                 2.429f,
-                                getRandomDistanceValue()),
+                                8f),
                         TaxiListItem(
                                 "id_15",
                                 getRandomTaxiStatusValue(),
@@ -135,7 +135,7 @@ class TaxiListMockFactory {
                                 "https://vignette.wikia.nocookie.net/thebiglebowski/images/7/7e/The_Dude.jpeg",
                                 "The Dude",
                                 1.000f,
-                                getRandomDistanceValue()),
+                                9f),
                         TaxiListItem(
                                 "id_17",
                                 getRandomTaxiStatusValue(),
