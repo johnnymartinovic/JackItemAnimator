@@ -84,13 +84,19 @@
             android:layout_weight="1"
             android:text="@string/refresh_button_text" />
 
-        <Button
-            android:id="@+id/changeGridButton"
+        <Spinner
+            android:id="@+id/gridSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="@string/change_grid_button_text" />
+            android:layout_weight="1" />
+
+        <Spinner
+            android:id="@+id/itemAnimatorSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

@@ -4,10 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
@@ -72,11 +76,35 @@ class TaxiListActivity : AppCompatActivity(),
         availabilityVisibilitySwitch.isChecked = initialTaxiStatusFilter == TaxiStatusFilter.NO_FILTER
         availabilityVisibilitySwitch.setOnCheckedChangeListener { _, isChecked -> presenter.availabilityVisibilitySwitchChecked(isChecked) }
         refreshButton.setOnClickListener { presenter.onRefreshButtonPressed() }
-        changeGridButton.setOnClickListener {
-            currentTaxiListItemColumnNumber = currentTaxiListItemColumnNumber % MAX_COLUMNS + 1
-            setTaxiListAdapterViewType()
-            refreshTaxiListItemDecoration()
+
+        val gridSpinnerArray = arrayListOf("1", "2", "3")
+        val gridSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, gridSpinnerArray)
+        gridSpinner.adapter = gridSpinnerArrayAdapter
+        gridSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                currentTaxiListItemColumnNumber = position + 1
+                setTaxiListAdapterViewType()
+                refreshTaxiListItemDecoration()
+            }
         }
+        gridSpinner.setSelection(currentTaxiListItemColumnNumber - 1)
+
+        val itemAnimatorSpinnerArray = arrayListOf("Default", "Custom")
+        val itemAnimatorSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, itemAnimatorSpinnerArray)
+        itemAnimatorSpinner.adapter = itemAnimatorSpinnerArrayAdapter
+        itemAnimatorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) taxiList.itemAnimator = DefaultItemAnimator()
+                else if (position == 1) taxiList.itemAnimator = TaxiListItemAnimator()
+            }
+        }
+        itemAnimatorSpinner.setSelection(1)
 
         rvdApplication.rvdApplicationComponent
                 .newTaxiListComponent(TaxiListModule(
