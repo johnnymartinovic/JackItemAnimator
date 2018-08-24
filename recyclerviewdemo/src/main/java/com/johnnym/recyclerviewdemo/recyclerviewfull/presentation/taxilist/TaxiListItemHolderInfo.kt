@@ -1,6 +1,6 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 class TaxiListItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
 

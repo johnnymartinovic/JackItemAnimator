@@ -3,10 +3,10 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -96,7 +96,6 @@ class TaxiListActivity : AppCompatActivity(),
         val itemAnimatorSpinnerArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, itemAnimatorSpinnerArray)
         itemAnimatorSpinner.adapter = itemAnimatorSpinnerArrayAdapter
         itemAnimatorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

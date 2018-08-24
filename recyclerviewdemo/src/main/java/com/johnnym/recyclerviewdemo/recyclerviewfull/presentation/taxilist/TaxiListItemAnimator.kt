@@ -1,31 +1,27 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
 import android.animation.*
-import android.support.v7.widget.RecyclerView
 import android.animation.AnimatorSet
-import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
 
-    companion object {
-        private const val LOG_TAG = "ANIMATOR"
-    }
+    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
 
-    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-
-    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeAdds: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeMoves: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
-    private val activeChanges: MutableMap<RecyclerView.ViewHolder, Animator> = HashMap()
+    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeAdds: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeMoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeChanges: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
 
     private val pendingAnimationsMapList = listOf(
             pendingRemoves,
@@ -65,7 +61,35 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
     }
 
     private fun logData(viewHolder: RecyclerView.ViewHolder): String {
-        return "%d %d %d %d".format(viewHolder.itemView.left, viewHolder.itemView.top, viewHolder.itemView.right, viewHolder.itemView.bottom)
+        return "%d %d %d %d %.2f %.2f Already animating: %s".format(
+                viewHolder.itemView.left,
+                viewHolder.itemView.top,
+                viewHolder.itemView.right,
+                viewHolder.itemView.bottom,
+                viewHolder.itemView.translationX,
+                viewHolder.itemView.translationY,
+                viewHolder.alreadyAnimatingNames())
+    }
+
+    private fun RecyclerView.ViewHolder.alreadyAnimatingNames(): String {
+        var output = ""
+
+        if (pendingRemoves.contains(this)) output += "pendingRemoves "
+        if (pendingDisappearUnknownLastPosition.contains(this)) output += "pendingDisappearUnknownLastPosition "
+        if (pendingDisappearKnownLastPosition.contains(this)) output += "pendingDisappearKnownLastPosition "
+        if (pendingAppearKnownFirstPosition.contains(this)) output += "pendingAppearKnownFirstPosition "
+        if (pendingAdds.contains(this)) output += "pendingAdds "
+        if (pendingMoves.contains(this)) output += "pendingMoves "
+        if (pendingChanges.contains(this)) output += "pendingChanges "
+        if (activeRemoves.contains(this)) output += "activeRemoves "
+        if (activeDisappearUnknownLastPosition.contains(this)) output += "activeDisappearUnknownLastPosition "
+        if (activeDisappearKnownLastPosition.contains(this)) output += "activeDisappearKnownLastPosition "
+        if (activeAppearKnownFirstPosition.contains(this)) output += "activeAppearKnownFirstPosition "
+        if (activeAdds.contains(this)) output += "activeAdds "
+        if (activeMoves.contains(this)) output += "activeMoves "
+        if (activeChanges.contains(this)) output += "activeChanges "
+
+        return output
     }
 
     override fun animateDisappearance(
@@ -73,7 +97,9 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             preLayoutInfo: ItemHolderInfo,
             postLayoutInfo: ItemHolderInfo?
     ): Boolean {
-        Log.d(LOG_TAG, """
+        cancelAnimation(viewHolder)
+
+        Timber.d("""
             ----------------
             Disappearance
             PreLayoutInfo:  ${logData(preLayoutInfo)}
@@ -85,19 +111,26 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             if (postLayoutInfo != null) throw IllegalStateException("Should this be possible?")
 
             processItemAnimation(
+                    viewHolder,
                     ItemTranslateToRightAndFadeOutAnimation(viewHolder),
                     pendingRemoves)
         } else {
             if (postLayoutInfo == null) {
                 processItemAnimation(
+                        viewHolder,
                         ItemFadeOutAndScaleOutAnimation(viewHolder),
                         pendingDisappearUnknownLastPosition)
             } else {
                 processItemAnimation(
+                        viewHolder,
                         ItemMoveAndFadeAnimation(
                                 viewHolder,
-                                preLayoutInfo.left, preLayoutInfo.top, 1f,
-                                postLayoutInfo.left, postLayoutInfo.top, 1f),
+                                preLayoutInfo.left - postLayoutInfo.left,
+                                0,
+                                preLayoutInfo.top - postLayoutInfo.top,
+                                0,
+                                1f,
+                                1f),
                         pendingDisappearKnownLastPosition)
             }
         }
@@ -108,7 +141,9 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             preLayoutInfo: ItemHolderInfo?,
             postLayoutInfo: ItemHolderInfo
     ): Boolean {
-        Log.d(LOG_TAG, """
+        endAnimation(viewHolder)
+
+        Timber.d("""
             ----------------
             Appearance
             PreLayoutInfo:  ${logData(preLayoutInfo)}
@@ -118,14 +153,20 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
 
         return if (preLayoutInfo == null) {
             processItemAnimation(
+                    viewHolder,
                     ItemFadeInFromLeftAnimation(viewHolder),
                     pendingAdds)
         } else {
             processItemAnimation(
+                    viewHolder,
                     ItemMoveAndFadeAnimation(
                             viewHolder,
-                            preLayoutInfo.left, preLayoutInfo.top, 1f,
-                            postLayoutInfo.left, postLayoutInfo.top, 1f),
+                            preLayoutInfo.left - postLayoutInfo.left,
+                            0,
+                            preLayoutInfo.top - postLayoutInfo.top,
+                            0,
+                            1f,
+                            1f),
                     pendingAppearKnownFirstPosition)
         }
     }
@@ -135,7 +176,9 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             preLayoutInfo: ItemHolderInfo,
             postLayoutInfo: ItemHolderInfo
     ): Boolean {
-        Log.d(LOG_TAG, """
+        endAnimation(viewHolder)
+
+        Timber.d("""
             ----------------
             Persistence
             PreLayoutInfo: ${logData(preLayoutInfo)}
@@ -144,10 +187,15 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
         """.trimIndent())
 
         return processItemAnimation(
+                viewHolder,
                 ItemMoveAndFadeAnimation(
                         viewHolder,
-                        preLayoutInfo.left, preLayoutInfo.top, 1f,
-                        postLayoutInfo.left, postLayoutInfo.top, 1f),
+                        preLayoutInfo.left - postLayoutInfo.left,
+                        0,
+                        preLayoutInfo.top - postLayoutInfo.top,
+                        0,
+                        1f,
+                        1f),
                 pendingMoves)
     }
 
@@ -157,7 +205,10 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             preLayoutInfo: ItemHolderInfo,
             postLayoutInfo: ItemHolderInfo
     ): Boolean {
-        Log.d(LOG_TAG, """
+        endAnimation(oldHolder)
+        endAnimation(newHolder)
+
+        Timber.d("""
             ----------------
             Change
             PreLayoutInfo:  ${logData(preLayoutInfo)}
@@ -166,17 +217,17 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             ViewHolder:     ${logData(newHolder)}
         """.trimIndent())
 
-        val fromX = preLayoutInfo.left
-        val fromY = preLayoutInfo.top
-        val toX = postLayoutInfo.left
-        val toY = postLayoutInfo.top
+        val deltaX = postLayoutInfo.left - preLayoutInfo.left
+        val deltaY = postLayoutInfo.top - preLayoutInfo.top
 
         val oldHolderRunPendingAnimationsRequested = processItemAnimation(
-                ItemMoveAndFadeAnimation(oldHolder, fromX, fromY, 1f, toX, toY, 0f),
+                oldHolder,
+                ItemMoveAndFadeAnimation(oldHolder, 0, deltaX, 0, deltaY, 1f, 0f),
                 pendingChanges)
 
         val newHolderRunPendingAnimationsRequested = processItemAnimation(
-                ItemMoveAndFadeAnimation(newHolder, fromX, fromY, 0f, toX, toY, 1f),
+                newHolder,
+                ItemMoveAndFadeAnimation(newHolder, -deltaX, 0, -deltaY, 0, 0f, 1f),
                 pendingChanges)
 
         return oldHolderRunPendingAnimationsRequested || newHolderRunPendingAnimationsRequested
@@ -235,9 +286,18 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             endViewHolderPendingAnimationIfAvailable(it, item)
         }
 
-
         activeAnimationsMapList.forEach {
             endViewHolderActiveAnimationIfAvailable(it, item)
+        }
+    }
+
+    private fun cancelAnimation(item: RecyclerView.ViewHolder) {
+        pendingAnimationsMapList.forEach {
+            cancelViewHolderPendingAnimationIfAvailable(it, item)
+        }
+
+        activeAnimationsMapList.forEach {
+            cancelViewHolderActiveAnimationIfAvailable(it, item)
         }
     }
 
@@ -261,38 +321,40 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
     override fun obtainHolderInfo(): ItemHolderInfo {
         return TaxiListItemHolderInfo()
     }
+
+    private fun resetAnimation() {
+
+    }
 }
 
 private fun RecyclerView.ItemAnimator.dispatchAnimationsFinishedIfNoneIsRunning() {
     if (!isRunning) {
-        dispatchAnimationsFinished()
+        this.dispatchAnimationsFinished()
     }
 }
 
 private fun RecyclerView.ItemAnimator.processItemAnimation(
+        holder: RecyclerView.ViewHolder,
         itemAnimation: ItemAnimation,
-        pendingAnimationsMap: MutableMap<RecyclerView.ViewHolder, Animator>
+        pendingAnimationsMap: MutableMap<RecyclerView.ViewHolder, ItemAnimation>
 ): Boolean {
-    val animator = itemAnimation.setupAndGetAnimator()
-    val holder = itemAnimation.holder
-
-    return if (animator == null) {
-        dispatchAnimationFinished(holder)
-        false
-    } else {
-        pendingAnimationsMap[holder] = animator
+    return if (itemAnimation.setup()) {
+        pendingAnimationsMap[holder] = itemAnimation
         return true
+    } else {
+        this.dispatchAnimationFinished(holder)
+        false
     }
 }
 
 private fun RecyclerView.ItemAnimator.startPendingAnimations(
-        pendingAnimations: MutableMap<RecyclerView.ViewHolder, Animator>,
-        activeAnimations: MutableMap<RecyclerView.ViewHolder, Animator>
+        pendingAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>,
+        activeAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>
 ): List<Animator> {
-    val animators = pendingAnimations.map { (holder, animator) ->
-        activeAnimations[holder] = animator
+    val animators = pendingAnimations.map { (holder, itemAnimation) ->
+        activeAnimations[holder] = itemAnimation
 
-        animator.apply {
+        itemAnimation.animator.apply {
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     dispatchAnimationFinished(holder)
@@ -308,30 +370,48 @@ private fun RecyclerView.ItemAnimator.startPendingAnimations(
 }
 
 private fun RecyclerView.ItemAnimator.endViewHolderPendingAnimationIfAvailable(
-        pendingAnimations: MutableMap<RecyclerView.ViewHolder, Animator>,
+        pendingAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>,
         holder: RecyclerView.ViewHolder) {
-    if (pendingAnimations.remove(holder) != null) {
-        dispatchAnimationFinished(holder)
+    pendingAnimations.remove(holder)?.let {
+        it.resetState()
+        this.dispatchAnimationFinished(holder)
+    }
+}
+
+private fun RecyclerView.ItemAnimator.cancelViewHolderPendingAnimationIfAvailable(
+        pendingAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>,
+        holder: RecyclerView.ViewHolder) {
+    pendingAnimations.remove(holder)?.let {
+        this.dispatchAnimationFinished(holder)
     }
 }
 
 private fun endViewHolderActiveAnimationIfAvailable(
-        activeAnimations: MutableMap<RecyclerView.ViewHolder, Animator>,
+        activeAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>,
         holder: RecyclerView.ViewHolder) {
-    activeAnimations.remove(holder)?.end()
+    activeAnimations.remove(holder)?.let {
+        it.resetState()
+        it.animator.end()
+    }
+}
+
+private fun cancelViewHolderActiveAnimationIfAvailable(
+        activeAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>,
+        holder: RecyclerView.ViewHolder) {
+    activeAnimations.remove(holder)?.animator?.cancel()
 }
 
 private fun RecyclerView.ItemAnimator.endAllPendingAnimations(
-        pendingAnimations: MutableMap<RecyclerView.ViewHolder, Animator>) {
+        pendingAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>) {
     pendingAnimations.keys.toList().forEach {
-        dispatchAnimationFinished(it)
+        this.dispatchAnimationFinished(it)
     }
     pendingAnimations.clear()
 }
 
-private fun endAllActiveAnimations(activeAnimations: MutableMap<RecyclerView.ViewHolder, Animator>) {
+private fun endAllActiveAnimations(activeAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>) {
     activeAnimations.values.toList().forEach {
-        it.end()
+        it.animator.end()
     }
     activeAnimations.clear()
 }

@@ -7,8 +7,8 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.ColorInt
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator

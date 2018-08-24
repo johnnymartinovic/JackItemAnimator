@@ -3,7 +3,7 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.rstanic12.resourceful.bindColor

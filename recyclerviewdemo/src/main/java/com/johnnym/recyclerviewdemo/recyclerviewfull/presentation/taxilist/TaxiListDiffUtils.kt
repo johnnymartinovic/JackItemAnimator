@@ -1,6 +1,6 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.TaxiListItemViewModel
 
