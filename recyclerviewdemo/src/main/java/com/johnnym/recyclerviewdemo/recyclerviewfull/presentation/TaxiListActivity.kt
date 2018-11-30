@@ -50,7 +50,7 @@ class TaxiListActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val initialTaxiStatusFilter = TaxiStatusFilter.ONLY_AVAILABLE
+        val initialTaxiStatusFilter = TaxiStatusFilter.NO_FILTER
         val initialTaxiSortOption = TaxiSortOption.BY_DRIVER_NAME_ASCENDING
 
         setContentView(R.layout.taxi_list_activity)
@@ -138,7 +138,6 @@ class TaxiListActivity : AppCompatActivity(),
     }
 
     override fun showTaxiListViewModel(taxiListViewModel: TaxiListViewModel) {
-        taxiList.scrollToPosition(0)
         taxiListAdapter.setItems(taxiListViewModel.taxiListItemViewModels)
     }
 

@@ -10,7 +10,7 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
 
     private var viewType = ViewType.NORMAL
 
-    private var items = listOf<TaxiListItemViewModel>()
+    private var items = mutableListOf<TaxiListItemViewModel>()
 
     override fun getItemCount(): Int = items.size
 
@@ -57,10 +57,10 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
     }
 
     fun setItems(newItems: List<TaxiListItemViewModel>) {
-        val oldItems = this.items
-        val result = DiffUtil.calculateDiff(DiffCallback(oldItems, newItems))
-        this.items = newItems
+        val result = DiffUtil.calculateDiff(DiffCallback(this.items, newItems))
         result.dispatchUpdatesTo(this)
+        this.items.clear()
+        this.items.addAll(newItems)
     }
 
     fun setViewType(viewType: ViewType) {

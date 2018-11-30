@@ -1,7 +1,6 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import androidx.recyclerview.widget.RecyclerView
@@ -11,29 +10,15 @@ abstract class ItemAnimation {
 
     lateinit var animator: Animator
 
-    fun setup(): Boolean {
-        return createAnimator()
-                ?.let {
-                    animator = it.apply {
-                        addListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationCancel(animation: Animator) {
-                                animation.removeListener(this)
-                            }
-
-                            override fun onAnimationEnd(animation: Animator) {
-                                resetState()
-                            }
-                        })
-                    }
-                    setStartingState()
-                    true
-                }
-                ?: false
+    fun setupAnimator() {
+        animator = createAnimator()
     }
+
+    abstract fun shouldAnimate(): Boolean
 
     abstract fun setStartingState()
 
-    abstract fun createAnimator(): Animator?
+    abstract fun createAnimator(): Animator
 
     abstract fun resetState()
 }
@@ -44,9 +29,11 @@ class ItemTranslateToRightAndFadeOutAnimation(
 
     private val itemView = holder.itemView
 
+    override fun shouldAnimate(): Boolean = true
+
     override fun setStartingState() {}
 
-    override fun createAnimator(): Animator? {
+    override fun createAnimator(): Animator {
         val alphaAnimation = ValueAnimator.ofFloat(1f, 0f)
                 .apply {
                     addUpdateListener {
@@ -80,9 +67,11 @@ class ItemFadeOutAndScaleOutAnimation(
 
     private val itemView = holder.itemView
 
+    override fun shouldAnimate(): Boolean = true
+
     override fun setStartingState() {}
 
-    override fun createAnimator(): Animator? {
+    override fun createAnimator(): Animator {
         val disappearAnimation = ValueAnimator.ofFloat(1f, 0f)
                 .apply {
                     addUpdateListener {
@@ -121,12 +110,14 @@ class ItemFadeInFromLeftAnimation(
     private val startTranslationX = -(itemView.width / 5).toFloat()
     private val startAlpha = 0f
 
+    override fun shouldAnimate(): Boolean = true
+
     override fun setStartingState() {
         itemView.translationX = startTranslationX
         itemView.alpha = startAlpha
     }
 
-    override fun createAnimator(): Animator? {
+    override fun createAnimator(): Animator {
         val translationXAnimator = ValueAnimator.ofFloat(startTranslationX, 0f)
                 .apply {
                     addUpdateListener {
@@ -170,11 +161,10 @@ class ItemMoveAndFadeAnimation(
         itemView.alpha = fromAlpha
     }
 
-    override fun createAnimator(): Animator? {
-        if (startTranslationX == endTranslationX && startTranslationY == endTranslationY && fromAlpha == toAlpha) {
-            return null
-        }
+    override fun shouldAnimate(): Boolean =
+            !(startTranslationX == endTranslationX && startTranslationY == endTranslationY && fromAlpha == toAlpha)
 
+    override fun createAnimator(): Animator {
         val translationXAnimator = ValueAnimator.ofFloat(startTranslationX.toFloat(), endTranslationX.toFloat())
                 .apply {
                     addUpdateListener {

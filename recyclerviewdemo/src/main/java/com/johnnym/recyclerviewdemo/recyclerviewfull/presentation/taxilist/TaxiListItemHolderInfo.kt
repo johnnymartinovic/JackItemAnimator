@@ -5,12 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 class TaxiListItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
 
     var payloads: MutableList<Any> = mutableListOf()
-
-    override fun setFrom(holder: RecyclerView.ViewHolder, flags: Int): RecyclerView.ItemAnimator.ItemHolderInfo {
-        return super.setFrom(holder, flags).apply {
-            this.changeFlags = flags
-        }
-    }
 }
 
 val RecyclerView.ItemAnimator.ItemHolderInfo.isChanged
