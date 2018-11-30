@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
 class TaxiListModule(
         private val taxiListView: TaxiListContract.View,
         private var initialTaxiStatusFilter : TaxiStatusFilter,
-        private var initialTaxiSortOption : TaxiSortOption) {
+        private var initialTaxiSortOption : TaxiSortOption?) {
 
     @Provides
     fun provideTaxiListPresenter(

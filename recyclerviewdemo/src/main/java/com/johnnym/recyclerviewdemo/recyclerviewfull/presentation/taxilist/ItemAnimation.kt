@@ -158,6 +158,8 @@ class ItemMoveAndFadeAnimation(
     private val itemView = holder.itemView
 
     override fun setStartingState() {
+        itemView.translationX = startTranslationX.toFloat()
+        itemView.translationY = startTranslationY.toFloat()
         itemView.alpha = fromAlpha
     }
 

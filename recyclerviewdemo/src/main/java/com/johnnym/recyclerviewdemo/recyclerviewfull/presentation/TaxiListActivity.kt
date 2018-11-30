@@ -51,7 +51,7 @@ class TaxiListActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 
         val initialTaxiStatusFilter = TaxiStatusFilter.NO_FILTER
-        val initialTaxiSortOption = TaxiSortOption.BY_DRIVER_NAME_ASCENDING
+        val initialTaxiSortOption = null
 
         setContentView(R.layout.taxi_list_activity)
 

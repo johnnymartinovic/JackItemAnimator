@@ -12,7 +12,7 @@ class TaxiListPresenter(
         private val getTaxiList: GetTaxiList,
         private val taxiListViewModelMapper: TaxiListViewModelMapper,
         private var currentTaxiStatusFilter: TaxiStatusFilter,
-        private var currentTaxiSortOption: TaxiSortOption
+        private var currentTaxiSortOption: TaxiSortOption?
 ) : AbsPresenter(), TaxiListContract.Presenter {
 
     init {
@@ -28,10 +28,13 @@ class TaxiListPresenter(
     }
 
     override fun onSortButtonPressed() {
+        val sortOptionList = mutableListOf("Best Match")
+        sortOptionList.addAll(TaxiSortOption.values()
+                .map { it.getTaxiSortOptionName() })
+
         taxiListView.showSortOptionsDialog(
-                TaxiSortOption.values()
-                        .map { it.getTaxiSortOptionName() },
-                currentTaxiSortOption.ordinal)
+                sortOptionList,
+                currentTaxiSortOption?.let { it.ordinal + 1 } ?: 0)
     }
 
     override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
