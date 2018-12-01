@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter
 import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
-import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiSortOption
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListAdapter
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListItemAnimator
@@ -68,6 +67,7 @@ class TaxiListActivity : AppCompatActivity(),
 
         taxiListLoadingView.isEnabled = false
 
+        // TODO remove this and use only Toolbar view
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar)

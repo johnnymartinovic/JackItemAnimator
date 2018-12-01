@@ -9,7 +9,7 @@ class TaxiListMockFactory {
 
     companion object {
 
-        private const val INSTANCE_MOD_VALUE = 3
+        private const val INSTANCE_MOD_VALUE = 2
 
         fun createTaxiList(currentInstanceNumber: Int): TaxiList {
             val currentInstanceNumberMod = currentInstanceNumber % INSTANCE_MOD_VALUE
@@ -18,10 +18,30 @@ class TaxiListMockFactory {
             val taxiList = when (currentInstanceNumberMod) {
                 0 -> TaxiList(listOf(
                         TravisBickle.createCopy(TaxiStatus.OCCUPIED),
-                        JackTorrance.createCopy(TaxiStatus.AVAILABLE)
+                        JackTorrance.createCopy(TaxiStatus.AVAILABLE),
+                        AntonChigurh.createCopy(TaxiStatus.AVAILABLE),
+                        TonyMontana.createCopy(TaxiStatus.OCCUPIED),
+                        KeyserSoze.createCopy(TaxiStatus.OCCUPIED),
+                        ManwithNoName.createCopy(TaxiStatus.OCCUPIED),
+                        PatrickBateman.createCopy(TaxiStatus.AVAILABLE),
+                        MichaelCorleone.createCopy(TaxiStatus.AVAILABLE),
+                        JohnMcClane.createCopy(TaxiStatus.OCCUPIED),
+                        BuzzLightyear.createCopy(TaxiStatus.OCCUPIED),
+                        HAL9000.createCopy(TaxiStatus.AVAILABLE)
                 ))
                 1 -> TaxiList(listOf(
                         TravisBickle.createCopy(TaxiStatus.AVAILABLE),
+                        JulesWinnfield.createCopy(TaxiStatus.AVAILABLE),
+                        Legolas.createCopy(TaxiStatus.AVAILABLE),
+                        JohnMcClane.createCopy(TaxiStatus.OCCUPIED),
+                        JudahBenHur.createCopy(TaxiStatus.AVAILABLE),
+                        IndianaJones.createCopy(TaxiStatus.AVAILABLE),
+                        ManwithNoName.createCopy(TaxiStatus.OCCUPIED),
+                        PatrickBateman.createCopy(TaxiStatus.AVAILABLE),
+                        TheTerminator.createCopy(TaxiStatus.AVAILABLE),
+                        TheDude.createCopy(TaxiStatus.AVAILABLE),
+                        KevinMcCallister.createCopy(),
+                        AntonChigurh.createCopy(TaxiStatus.AVAILABLE),
                         JackTorrance.createCopy(TaxiStatus.AVAILABLE)
                 ))
                 2 -> TaxiList(listOf(
@@ -39,9 +59,11 @@ class TaxiListMockFactory {
         }
 
         private fun TaxiListItem.createCopy(
-                taxiStatus: TaxiStatus
+                taxiStatus: TaxiStatus = this.taxiStatus,
+                distance: Float = this.distance
         ) = this.copy(
-                taxiStatus = taxiStatus
+                taxiStatus = taxiStatus,
+                distance = distance
         )
 
         private val JackTorrance = TaxiListItem(

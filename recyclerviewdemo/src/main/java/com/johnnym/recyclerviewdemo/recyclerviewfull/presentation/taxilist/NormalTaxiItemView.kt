@@ -16,7 +16,6 @@ class NormalTaxiItemView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     val backgroundHelperView: View by bindView(R.id.background_helper_view)
-    val revealHelperView: View by bindView(R.id.reveal_helper_view)
     val statusBar: View by bindView(R.id.status_bar)
     val driverPhoto: ImageView by bindView(R.id.driver_photo)
     val driverName: TextView by bindView(R.id.driver_name)

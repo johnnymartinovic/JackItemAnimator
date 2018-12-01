@@ -3,8 +3,10 @@ package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import androidx.recyclerview.widget.RecyclerView
+import android.view.View
 import android.view.animation.AccelerateInterpolator
+import androidx.recyclerview.widget.RecyclerView
+import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatus
 
 abstract class ItemAnimation {
 
@@ -166,36 +168,102 @@ class ItemMoveAndFadeAnimation(
     override fun shouldAnimate(): Boolean =
             !(startTranslationX == endTranslationX && startTranslationY == endTranslationY && fromAlpha == toAlpha)
 
-    override fun createAnimator(): Animator {
-        val translationXAnimator = ValueAnimator.ofFloat(startTranslationX.toFloat(), endTranslationX.toFloat())
-                .apply {
-                    addUpdateListener {
-                        itemView.translationX = it.animatedValue as Float
-                    }
-                }
-        val translationYAnimator = ValueAnimator.ofFloat(startTranslationY.toFloat(), endTranslationY.toFloat())
-                .apply {
-                    addUpdateListener {
-                        itemView.translationY = it.animatedValue as Float
-                    }
-                }
-
-        val alphaAnimation = ValueAnimator.ofFloat(fromAlpha, toAlpha)
-                .apply {
-                    addUpdateListener {
-                        val alpha = it.animatedValue as Float
-                        itemView.alpha = alpha
-                    }
-                }
-
-        return AnimatorSet().apply {
-            playTogether(translationXAnimator, translationYAnimator, alphaAnimation)
-        }
-    }
+    override fun createAnimator(): Animator = createMoveAndFadeAnimator(
+            itemView,
+            startTranslationX,
+            endTranslationX,
+            startTranslationY,
+            endTranslationY,
+            fromAlpha,
+            toAlpha)
 
     override fun resetState() {
         itemView.translationX = 0f
         itemView.translationY = 0f
         itemView.alpha = 1f
+    }
+}
+
+class ItemMoveAndTaxiStatusChangeAnimation(
+        private val holder: NormalItemViewHolder,
+        private val startTranslationX: Int,
+        private val endTranslationX: Int,
+        private val startTranslationY: Int,
+        private val endTranslationY: Int,
+        private val taxiStatusChange: Change<TaxiStatus>?
+) : ItemAnimation() {
+
+    private val itemView = holder.normalItemView
+
+    override fun setStartingState() {
+        itemView.translationX = startTranslationX.toFloat()
+        itemView.translationY = startTranslationY.toFloat()
+        taxiStatusChange?.let { holder.setTaxiStatus(it.old) }
+    }
+
+    override fun shouldAnimate(): Boolean =
+            !(startTranslationX == endTranslationX
+                    && startTranslationY == endTranslationY
+                    && taxiStatusChange == null)
+
+    override fun createAnimator(): Animator {
+        val moveAnimator = createMoveAndFadeAnimator(
+                itemView,
+                startTranslationX,
+                endTranslationX,
+                startTranslationY,
+                endTranslationY,
+                1f,
+                1f)
+
+        val taxiStatusChangeAnimator = taxiStatusChange?.let { holder.createTaxiStatusChangeAnimator(it) }
+
+        return if (taxiStatusChangeAnimator != null)
+            AnimatorSet().apply {
+                playTogether(moveAnimator, taxiStatusChangeAnimator)
+            }
+        else moveAnimator
+    }
+
+    override fun resetState() {
+        itemView.translationX = 0f
+        itemView.translationY = 0f
+        itemView.statusBar.rotationY = 0f
+        taxiStatusChange?.let { holder.setTaxiStatus(it.new) }
+    }
+}
+
+fun createMoveAndFadeAnimator(
+        view: View,
+        startTranslationX: Int,
+        endTranslationX: Int,
+        startTranslationY: Int,
+        endTranslationY: Int,
+        fromAlpha: Float,
+        toAlpha: Float
+): Animator {
+    val translationXAnimator = ValueAnimator.ofFloat(startTranslationX.toFloat(), endTranslationX.toFloat())
+            .apply {
+                addUpdateListener {
+                    view.translationX = it.animatedValue as Float
+                }
+            }
+    val translationYAnimator = ValueAnimator.ofFloat(startTranslationY.toFloat(), endTranslationY.toFloat())
+            .apply {
+                addUpdateListener {
+                    view.translationY = it.animatedValue as Float
+                }
+            }
+
+    val alphaAnimation = ValueAnimator.ofFloat(fromAlpha, toAlpha)
+            .apply {
+                addUpdateListener {
+                    val alpha = it.animatedValue as Float
+                    view.alpha = alpha
+                }
+            }
+
+    return AnimatorSet().apply {
+        playTogether(translationXAnimator, translationYAnimator, alphaAnimation)
     }
 }
