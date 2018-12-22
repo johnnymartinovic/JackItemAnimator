@@ -23,62 +23,28 @@ class DiffCallback(
         val oldItem = oldItems[oldItemPosition]
         val newItem = newItems[newItemPosition]
 
-        val taxiStatusChange =
-                if (oldItem.taxiStatus == newItem.taxiStatus) null
-                else Change(oldItem.taxiStatus, newItem.taxiStatus)
-        val distanceChange =
-                if (oldItem.distance == newItem.distance) null
-                else Change(oldItem.distance, newItem.distance)
-
-        return TaxiListItemPayload(taxiStatusChange, distanceChange)
+        return Change(
+                TaxiListItemState(oldItem.taxiStatus, oldItem.distance),
+                TaxiListItemState(newItem.taxiStatus, newItem.distance)
+        )
     }
 }
 
-fun createCombinedTaxiListItemPayload(payloads: List<Any>): TaxiListItemPayload {
-    if (payloads.isEmpty()) return TaxiListItemPayload(null, null)
-    if (payloads.size == 1) return payloads[0] as TaxiListItemPayload
+data class TaxiListItemState(
+        val taxiStatus: TaxiStatus,
+        val distance: Float
+)
 
-    val firstTaxiStatusChangePayload = payloads.firstOrNull {
-        (it as TaxiListItemPayload).taxiStatusChange != null
-    } as TaxiListItemPayload?
-    val firstTaxiStatusChange = firstTaxiStatusChangePayload?.taxiStatusChange
-
-    val firstDistanceChangePayload = payloads.firstOrNull {
-        (it as TaxiListItemPayload).distanceChange != null
-    } as TaxiListItemPayload?
-    val firstDistanceChange = firstDistanceChangePayload?.distanceChange
-
-    val lastTaxiStatusChangePayload = payloads.lastOrNull {
-        (it as TaxiListItemPayload).taxiStatusChange != null
-    } as TaxiListItemPayload?
-    val lastTaxiStatusChange = lastTaxiStatusChangePayload?.taxiStatusChange
-
-    val lastDistanceChangePayload = payloads.lastOrNull {
-        (it as TaxiListItemPayload).distanceChange != null
-    } as TaxiListItemPayload?
-    val lastDistanceChange = lastDistanceChangePayload?.distanceChange
-
-    val combinedTaxiStatusChange = if (firstTaxiStatusChange != null && lastTaxiStatusChange != null) {
-        Change(firstTaxiStatusChange.old, lastTaxiStatusChange.new)
-    } else {
-        null
-    }
-
-    val combinedDistanceChange = if (firstDistanceChange != null && lastDistanceChange != null) {
-        Change(firstDistanceChange.old, lastDistanceChange.new)
-    } else {
-        null
-    }
-
-    return TaxiListItemPayload(
-            combinedTaxiStatusChange,
-            combinedDistanceChange)
-}
-
-data class TaxiListItemPayload(
-        val taxiStatusChange: Change<TaxiStatus>?,
-        val distanceChange: Change<Float>?)
-
+// TODO maybe put this in library? but be careful if other view types are available in the same list
 data class Change<out T>(
-        val old: T,
-        val new: T)
+        val oldData: T,
+        val newData: T
+)
+
+fun <T> createCombinedPayload(payloads: List<Change<T>>): Change<T> {
+    assert(payloads.isNotEmpty())
+    val firstChange = payloads.first()
+    val lastChange = payloads.last()
+
+    return Change(firstChange.oldData, lastChange.newData)
+}

@@ -1,32 +1,33 @@
-package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
+package com.johnnym.recyclerviewanimator
 
 import android.animation.*
 import androidx.recyclerview.widget.RecyclerView
 
-class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
+// TODO check in which animate methods payloads exists in itemholderinfo
+abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
 
-    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val pendingDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val pendingDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val pendingAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val pendingDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val pendingDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val pendingAdds: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val pendingAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val pendingMoves: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val pendingChanges: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
 
-    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val activeDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val activeDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val activeAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val activeAdds: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val activeMoves: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
-    private val activeChanges: MutableMap<RecyclerView.ViewHolder, ItemAnimation> = HashMap()
+    private val activeRemoves: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val activeDisappearUnknownLastPosition: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val activeDisappearKnownLastPosition: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val activeAdds: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val activeAppearKnownFirstPosition: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val activeMoves: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
+    private val activeChanges: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
 
     private val pendingAnimationsMapList = listOf(
             pendingRemoves,
             pendingDisappearUnknownLastPosition,
             pendingDisappearKnownLastPosition,
-            pendingAppearKnownFirstPosition,
             pendingAdds,
+            pendingAppearKnownFirstPosition,
             pendingMoves,
             pendingChanges)
 
@@ -34,8 +35,8 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             activeRemoves,
             activeDisappearUnknownLastPosition,
             activeDisappearKnownLastPosition,
-            activeAppearKnownFirstPosition,
             activeAdds,
+            activeAppearKnownFirstPosition,
             activeMoves,
             activeChanges)
 
@@ -45,17 +46,29 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             changeFlags: Int,
             payloads: List<Any>
     ): ItemHolderInfo {
-        val taxiListItemHolderInfo = super.recordPreLayoutInformation(state, viewHolder, changeFlags, payloads) as TaxiListItemHolderInfo
+        val jackItemHolderInfo = super.recordPreLayoutInformation(state, viewHolder, changeFlags, payloads) as JackItemHolderInfo
 
-        // TODO this must be here because there is a bug in ItemHolderInfo.setFrom method which sets
-        // flags to 0 and not to real value
-        taxiListItemHolderInfo.changeFlags = changeFlags
-
-        return taxiListItemHolderInfo
-                .apply {
-                    this.payloads.addAll(payloads)
-                }
+        return jackItemHolderInfo.apply {
+            // TODO changeFlags must be updated here because there is a bug in
+            // ItemHolderInfo.setFrom(...) method which sets flags to 0 and not to real value
+            this.changeFlags = changeFlags
+            this.payloads.addAll(payloads)
+        }
     }
+
+    abstract fun createRemoval(
+            viewHolder: RecyclerView.ViewHolder
+    ): JackItemAnimation
+
+    abstract fun createDisappearUnknownLastPosition(
+            viewHolder: RecyclerView.ViewHolder
+    ): JackItemAnimation
+
+    abstract fun createDisappearKnownLastPosition(
+            viewHolder: RecyclerView.ViewHolder,
+            deltaX: Int,
+            deltaY: Int
+    ): JackItemAnimation
 
     override fun animateDisappearance(
             viewHolder: RecyclerView.ViewHolder,
@@ -65,33 +78,39 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
         endAnimation(viewHolder)
 
         return if (preLayoutInfo.isRemoved) {
-            if (postLayoutInfo != null) throw IllegalStateException("Should this be possible?")
+            if (postLayoutInfo != null) throw IllegalStateException("This should be possible?")
 
-            processItemAnimation(
+            processJackItemAnimation(
                     viewHolder,
-                    ItemTranslateToRightAndFadeOutAnimation(viewHolder),
+                    createRemoval(viewHolder),
                     pendingRemoves)
         } else {
             if (postLayoutInfo == null) {
-                processItemAnimation(
+                processJackItemAnimation(
                         viewHolder,
-                        ItemFadeOutAndScaleOutAnimation(viewHolder),
+                        createDisappearUnknownLastPosition(viewHolder),
                         pendingDisappearUnknownLastPosition)
             } else {
-                processItemAnimation(
+                processJackItemAnimation(
                         viewHolder,
-                        ItemMoveAndFadeAnimation(
+                        createDisappearKnownLastPosition(
                                 viewHolder,
                                 preLayoutInfo.left - postLayoutInfo.left,
-                                0,
-                                preLayoutInfo.top - postLayoutInfo.top,
-                                0,
-                                1f,
-                                1f),
+                                preLayoutInfo.top - postLayoutInfo.top),
                         pendingDisappearKnownLastPosition)
             }
         }
     }
+
+    abstract fun createAdd(
+            viewHolder: RecyclerView.ViewHolder
+    ): JackItemAnimation
+
+    abstract fun createAppearKnownFirstPosition(
+            viewHolder: RecyclerView.ViewHolder,
+            deltaX: Int,
+            deltaY: Int
+    ): JackItemAnimation
 
     override fun animateAppearance(
             viewHolder: RecyclerView.ViewHolder,
@@ -101,24 +120,26 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
         endAnimation(viewHolder)
 
         return if (preLayoutInfo == null) {
-            processItemAnimation(
+            processJackItemAnimation(
                     viewHolder,
-                    ItemFadeInFromLeftAnimation(viewHolder),
+                    createAdd(viewHolder),
                     pendingAdds)
         } else {
-            processItemAnimation(
+            processJackItemAnimation(
                     viewHolder,
-                    ItemMoveAndFadeAnimation(
+                    createAppearKnownFirstPosition(
                             viewHolder,
                             preLayoutInfo.left - postLayoutInfo.left,
-                            0,
-                            preLayoutInfo.top - postLayoutInfo.top,
-                            0,
-                            1f,
-                            1f),
+                            preLayoutInfo.top - postLayoutInfo.top),
                     pendingAppearKnownFirstPosition)
         }
     }
+
+    abstract fun createMove(
+            viewHolder: RecyclerView.ViewHolder,
+            deltaX: Int,
+            deltaY: Int
+    ): JackItemAnimation
 
     override fun animatePersistence(
             viewHolder: RecyclerView.ViewHolder,
@@ -127,18 +148,28 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
     ): Boolean {
         endAnimation(viewHolder)
 
-        return processItemAnimation(
+        return processJackItemAnimation(
                 viewHolder,
-                ItemMoveAndFadeAnimation(
+                createMove(
                         viewHolder,
                         preLayoutInfo.left - postLayoutInfo.left,
-                        0,
-                        preLayoutInfo.top - postLayoutInfo.top,
-                        0,
-                        1f,
-                        1f),
+                        preLayoutInfo.top - postLayoutInfo.top),
                 pendingMoves)
     }
+
+    abstract fun createSameHolderItemChange(
+            viewHolder: RecyclerView.ViewHolder,
+            deltaX: Int,
+            deltaY: Int,
+            payloads: List<Any>
+    ): JackItemAnimation
+
+    abstract fun createDifferentHolderItemChange(
+            oldHolder: RecyclerView.ViewHolder,
+            newHolder: RecyclerView.ViewHolder,
+            deltaX: Int,
+            deltaY: Int
+    ): Pair<JackItemAnimation, JackItemAnimation>
 
     override fun animateChange(
             oldHolder: RecyclerView.ViewHolder,
@@ -146,47 +177,43 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             preLayoutInfo: ItemHolderInfo,
             postLayoutInfo: ItemHolderInfo
     ): Boolean {
-        val deltaX = postLayoutInfo.left - preLayoutInfo.left
-        val deltaY = postLayoutInfo.top - preLayoutInfo.top
+        val deltaX = preLayoutInfo.left - postLayoutInfo.left
+        val deltaY = preLayoutInfo.top - postLayoutInfo.top
 
-        if (oldHolder is NormalItemViewHolder
-                && newHolder is NormalItemViewHolder
-                && oldHolder == newHolder) {
+        if (oldHolder == newHolder) {
             endAnimation(newHolder)
 
-            val itemPayload = createCombinedTaxiListItemPayload((preLayoutInfo as TaxiListItemHolderInfo).payloads)
+            val payloads = (preLayoutInfo as JackItemHolderInfo).payloads
 
-            return processItemAnimation(
+            return processJackItemAnimation(
                     newHolder,
-                    ItemMoveAndTaxiStatusChangeAnimation(
+                    createSameHolderItemChange(
                             newHolder,
-                            -deltaX, 0,
-                            -deltaY, 0,
-                            itemPayload.taxiStatusChange),
+                            deltaX,
+                            deltaY,
+                            payloads),
                     pendingChanges)
         } else {
-            if (oldHolder == newHolder) {
-                endAnimation(newHolder)
-                return processItemAnimation(
-                        newHolder,
-                        ItemMoveAndFadeAnimation(newHolder, -deltaX, 0, -deltaY, 0, 0f, 1f),
-                        pendingChanges)
-            } else {
-                endAnimation(oldHolder)
-                endAnimation(newHolder)
+            endAnimation(oldHolder)
+            endAnimation(newHolder)
 
-                val oldHolderRunPendingAnimationsRequested = processItemAnimation(
-                        oldHolder,
-                        ItemMoveAndFadeAnimation(oldHolder, 0, deltaX, 0, deltaY, 1f, 0f),
-                        pendingChanges)
+            val jackItemAnimationPair = createDifferentHolderItemChange(
+                    oldHolder,
+                    newHolder,
+                    deltaX,
+                    deltaY)
 
-                val newHolderRunPendingAnimationsRequested = processItemAnimation(
-                        newHolder,
-                        ItemMoveAndFadeAnimation(newHolder, -deltaX, 0, -deltaY, 0, 0f, 1f),
-                        pendingChanges)
+            val oldHolderRunPendingAnimationsRequested = processJackItemAnimation(
+                    oldHolder,
+                    jackItemAnimationPair.first,
+                    pendingChanges)
 
-                return oldHolderRunPendingAnimationsRequested || newHolderRunPendingAnimationsRequested
-            }
+            val newHolderRunPendingAnimationsRequested = processJackItemAnimation(
+                    newHolder,
+                    jackItemAnimationPair.second,
+                    pendingChanges)
+
+            return oldHolderRunPendingAnimationsRequested || newHolderRunPendingAnimationsRequested
         }
     }
 
@@ -276,7 +303,7 @@ class TaxiListItemAnimator : RecyclerView.ItemAnimator() {
             payloads.isNotEmpty()
 
     override fun obtainHolderInfo(): ItemHolderInfo {
-        return TaxiListItemHolderInfo()
+        return JackItemHolderInfo()
     }
 }
 
@@ -286,15 +313,15 @@ private fun RecyclerView.ItemAnimator.dispatchAnimationsFinishedIfNoneIsRunning(
     }
 }
 
-private fun RecyclerView.ItemAnimator.processItemAnimation(
+private fun RecyclerView.ItemAnimator.processJackItemAnimation(
         holder: RecyclerView.ViewHolder,
-        itemAnimation: ItemAnimation,
-        pendingAnimationsMap: MutableMap<RecyclerView.ViewHolder, ItemAnimation>
+        jackItemAnimation: JackItemAnimation,
+        pendingAnimationsMap: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler>
 ): Boolean {
-    return if (itemAnimation.shouldAnimate()) {
-        itemAnimation.setupAnimator()
-        itemAnimation.setStartingState()
-        pendingAnimationsMap[holder] = itemAnimation
+    val jackItemAnimationHandler = JackItemAnimationHandler(jackItemAnimation)
+    return if (jackItemAnimationHandler.jackItemAnimation.willAnimate()) {
+        jackItemAnimationHandler.jackItemAnimation.setStartingState()
+        pendingAnimationsMap[holder] = jackItemAnimationHandler
         true
     } else {
         this.dispatchAnimationFinished(holder)
@@ -304,8 +331,8 @@ private fun RecyclerView.ItemAnimator.processItemAnimation(
 }
 
 private fun RecyclerView.ItemAnimator.startPendingAnimations(
-        pendingAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>,
-        activeAnimations: MutableMap<RecyclerView.ViewHolder, ItemAnimation>
+        pendingAnimations: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler>,
+        activeAnimations: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler>
 ): List<Animator> {
     val animators = pendingAnimations.map { (holder, itemAnimation) ->
         activeAnimations[holder] = itemAnimation

@@ -1,8 +1,9 @@
-package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
+package com.johnnym.recyclerviewanimator
 
 import androidx.recyclerview.widget.RecyclerView
 
-class TaxiListItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
+// TODO make this unavailable to using projects. Check other classes as well.
+class JackItemHolderInfo : RecyclerView.ItemAnimator.ItemHolderInfo() {
 
     var payloads: MutableList<Any> = mutableListOf()
 }
@@ -22,6 +23,7 @@ val RecyclerView.ItemAnimator.ItemHolderInfo.isMoved
 val RecyclerView.ItemAnimator.ItemHolderInfo.isAppearedInPreLayout
     get() = changeFlags and RecyclerView.ItemAnimator.FLAG_APPEARED_IN_PRE_LAYOUT != 0
 
+// TODO remove this if not necessary
 class FlagsValues(itemHolderInfo: RecyclerView.ItemAnimator.ItemHolderInfo) {
 
     val isChanged = itemHolderInfo.changeFlags and RecyclerView.ItemAnimator.FLAG_CHANGED != 0

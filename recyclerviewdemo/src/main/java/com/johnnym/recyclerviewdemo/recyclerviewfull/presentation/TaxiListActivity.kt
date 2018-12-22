@@ -16,8 +16,8 @@ import com.johnnym.recyclerviewdemo.R
 import com.johnnym.recyclerviewdemo.common.rvdApplication
 import com.johnnym.recyclerviewdemo.recyclerviewfull.TaxiListModule
 import com.johnnym.recyclerviewdemo.recyclerviewfull.domain.TaxiStatusFilter
+import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.CustomJackItemAnimator
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListAdapter
-import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListItemAnimator
 import com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist.TaxiListItemDecoration
 import kotlinx.android.synthetic.main.taxi_list_activity.*
 import javax.inject.Inject
@@ -61,7 +61,7 @@ class TaxiListActivity : AppCompatActivity(),
         taxiListLayoutManager = GridLayoutManager(this, calculateSpanCount())
         taxiListLayoutManager.spanSizeLookup = taxiListItemSpanSizeLookup
         taxiList.layoutManager = taxiListLayoutManager
-        taxiList.itemAnimator = TaxiListItemAnimator()
+        taxiList.itemAnimator = CustomJackItemAnimator()
         taxiListItemDecoration = createTaxiListItemDecoration()
         taxiList.addItemDecoration(taxiListItemDecoration)
 
@@ -100,7 +100,7 @@ class TaxiListActivity : AppCompatActivity(),
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) taxiList.itemAnimator = DefaultItemAnimator()
-                else if (position == 1) taxiList.itemAnimator = TaxiListItemAnimator()
+                else if (position == 1) taxiList.itemAnimator = CustomJackItemAnimator()
             }
         }
         itemAnimatorSpinner.setSelection(1)

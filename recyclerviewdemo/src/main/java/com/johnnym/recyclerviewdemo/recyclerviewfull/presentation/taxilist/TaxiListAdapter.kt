@@ -37,20 +37,22 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
             // It isn't exactly necessary to changes that will be animated with
             // TaxiListItemAnimator, but it is done because we don't want to depend on whether the
             // correct ItemAnimator is selected or not
-            val taxiListItemPayload = payloads.last() as TaxiListItemPayload
+            val taxiListItemPayload = payloads.last() as Change<TaxiListItemState>
 
-            val taxiStatusChange = taxiListItemPayload.taxiStatusChange
-            val distanceChange = taxiListItemPayload.distanceChange
+            val oldTaxiStatus = taxiListItemPayload.oldData.taxiStatus
+            val newTaxiStatus = taxiListItemPayload.newData.taxiStatus
+            val oldDistance = taxiListItemPayload.oldData.distance
+            val newDistance = taxiListItemPayload.newData.distance
 
-            if (taxiStatusChange != null) {
+            if (oldTaxiStatus != newTaxiStatus) {
                 when (holder) {
-                    is NormalItemViewHolder -> holder.setTaxiStatus(taxiStatusChange.new)
-                    is SquareItemViewHolder -> holder.setTaxiStatus(taxiStatusChange.new)
+                    is NormalItemViewHolder -> holder.setTaxiStatus(newTaxiStatus)
+                    is SquareItemViewHolder -> holder.setTaxiStatus(newTaxiStatus)
                 }
             }
-            if (distanceChange != null) {
+            if (oldDistance != newDistance) {
                 when (holder) {
-                    is NormalItemViewHolder -> holder.setDistanceValue(distanceChange.new)
+                    is NormalItemViewHolder -> holder.setDistanceValue(newDistance)
                 }
             }
         }

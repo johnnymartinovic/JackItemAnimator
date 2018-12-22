@@ -55,17 +55,16 @@ class NormalItemViewHolder(
     }
 
     fun createTaxiStatusChangeAnimator(
-            taxiStatusChange: Change<TaxiStatus>
+            oldTaxiStatus: TaxiStatus,
+            newTaxiStatus: TaxiStatus
     ): Animator {
-        @ColorInt val startColor: Int
-        @ColorInt val endColor: Int
-        if (taxiStatusChange.old == TaxiStatus.AVAILABLE) {
-            startColor = statusAvailableColor
-            endColor = statusUnavailableColor
-        } else {
-            startColor = statusUnavailableColor
-            endColor = statusAvailableColor
+        fun getColorForTaxiStatus(taxiStatus: TaxiStatus) = when (taxiStatus) {
+            TaxiStatus.AVAILABLE -> statusAvailableColor
+            TaxiStatus.OCCUPIED -> statusUnavailableColor
         }
+
+        @ColorInt val startColor: Int = getColorForTaxiStatus(oldTaxiStatus)
+        @ColorInt val endColor: Int = getColorForTaxiStatus(newTaxiStatus)
 
         val spinningFirstHalf = ValueAnimator.ofFloat(0f, 810f)
                 .apply {
