@@ -1,9 +1,9 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
 import androidx.recyclerview.widget.RecyclerView
-import com.johnnym.recyclerviewanimator.ItemMoveAndFadeAnimation
 import com.johnnym.recyclerviewanimator.JackItemAnimation
 import com.johnnym.recyclerviewanimator.JackItemAnimator
+import com.johnnym.recyclerviewanimator.defaultanimations.ItemMoveAndFadeAnimation
 
 class CustomJackItemAnimator : JackItemAnimator() {
 

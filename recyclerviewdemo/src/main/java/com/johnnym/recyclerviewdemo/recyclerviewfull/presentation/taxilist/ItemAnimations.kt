@@ -6,7 +6,7 @@ import android.animation.ValueAnimator
 import android.view.animation.AccelerateInterpolator
 import androidx.recyclerview.widget.RecyclerView
 import com.johnnym.recyclerviewanimator.JackItemAnimation
-import com.johnnym.recyclerviewanimator.createMoveAndFadeAnimator
+import com.johnnym.recyclerviewanimator.defaultanimations.createMoveAndFadeAnimator
 
 class ItemTranslateToRightAndFadeOutAnimation(
         holder: RecyclerView.ViewHolder
