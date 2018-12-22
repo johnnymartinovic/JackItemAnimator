@@ -228,28 +228,24 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
         val moveAnimators = moveAnimationsFromPendingToActive(pendingMoves, activeMoves)
         val changeAnimators = moveAnimationsFromPendingToActive(pendingChanges, activeChanges)
 
-        removeAnimators.forEach {
-            it.start()
-        }
-
-        listOf(
+        handleAnimations(
+                removeAnimators,
                 disappearUnknownLastPositionAnimators,
                 disappearKnownLastPositionAnimators,
                 appearKnownFirstPositionAnimators,
+                addAnimators,
                 moveAnimators,
-                changeAnimators
-        ).forEach { animators ->
-            animators.forEach {
-                it.startDelay = 500
-                it.start()
-            }
-        }
-
-        addAnimators.forEach {
-            it.startDelay = 1000
-            it.start()
-        }
+                changeAnimators)
     }
+
+    abstract fun handleAnimations(
+            removeAnimators: List<Animator>,
+            disappearUnknownLastPositionAnimators: List<Animator>,
+            disappearKnownLastPositionAnimators: List<Animator>,
+            appearKnownFirstPositionAnimators: List<Animator>,
+            addAnimators: List<Animator>,
+            moveAnimators: List<Animator>,
+            changeAnimators: List<Animator>)
 
     override fun endAnimation(item: RecyclerView.ViewHolder) {
         pendingAnimationsMapList.forEach { pendingAnimations ->
@@ -259,7 +255,6 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
                 this.dispatchAnimationsFinishedIfNoneIsRunning()
             }
         }
-
         activeAnimationsMapList.forEach { activeAnimations ->
             activeAnimations.remove(item)?.let {
                 if (it.animator.isStarted) {

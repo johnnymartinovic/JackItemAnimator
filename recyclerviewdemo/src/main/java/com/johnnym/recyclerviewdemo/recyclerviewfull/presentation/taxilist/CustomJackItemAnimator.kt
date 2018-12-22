@@ -1,5 +1,6 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
+import android.animation.Animator
 import androidx.recyclerview.widget.RecyclerView
 import com.johnnym.recyclerviewanimator.JackItemAnimation
 import com.johnnym.recyclerviewanimator.JackItemAnimator
@@ -98,5 +99,37 @@ class CustomJackItemAnimator : JackItemAnimator() {
         return Pair(
                 ItemMoveAndFadeAnimation(oldHolder, 0, -deltaX, 0, -deltaY, 1f, 0f),
                 ItemMoveAndFadeAnimation(newHolder, deltaX, 0, deltaY, 0, 0f, 1f))
+    }
+
+    override fun handleAnimations(
+            removeAnimators: List<Animator>,
+            disappearUnknownLastPositionAnimators: List<Animator>,
+            disappearKnownLastPositionAnimators: List<Animator>,
+            appearKnownFirstPositionAnimators: List<Animator>,
+            addAnimators: List<Animator>,
+            moveAnimators: List<Animator>,
+            changeAnimators: List<Animator>) {
+        removeAnimators.forEachIndexed { index, animator ->
+            animator.startDelay = index * 100L
+            animator.start()
+        }
+
+        listOf(
+                disappearUnknownLastPositionAnimators,
+                disappearKnownLastPositionAnimators,
+                appearKnownFirstPositionAnimators,
+                moveAnimators,
+                changeAnimators
+        ).forEach { animators ->
+            animators.forEach {
+                it.startDelay = 500
+                it.start()
+            }
+        }
+
+        addAnimators.forEachIndexed { index, animator ->
+            animator.startDelay = 1000 + index * 100L
+            animator.start()
+        }
     }
 }
