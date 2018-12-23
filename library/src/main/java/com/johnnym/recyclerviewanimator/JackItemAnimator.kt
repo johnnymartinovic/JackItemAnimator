@@ -1,6 +1,5 @@
 package com.johnnym.recyclerviewanimator
 
-import android.animation.*
 import androidx.recyclerview.widget.RecyclerView
 
 // TODO check in which animate methods payloads exists in itemholderinfo
@@ -91,15 +90,15 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
     }
 
     abstract fun createRemoval(
-            viewHolder: RecyclerView.ViewHolder
+            holder: RecyclerView.ViewHolder
     ): JackItemAnimation
 
     abstract fun createDisappearUnknownLastPosition(
-            viewHolder: RecyclerView.ViewHolder
+            holder: RecyclerView.ViewHolder
     ): JackItemAnimation
 
     abstract fun createDisappearKnownLastPosition(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
     ): JackItemAnimation
@@ -128,11 +127,11 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
     }
 
     abstract fun createAdd(
-            viewHolder: RecyclerView.ViewHolder
+            holder: RecyclerView.ViewHolder
     ): JackItemAnimation
 
     abstract fun createAppearKnownFirstPosition(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
     ): JackItemAnimation
@@ -154,7 +153,7 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
     }
 
     abstract fun createMove(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
     ): JackItemAnimation
@@ -185,7 +184,7 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
             endAnimation(oldHolder)
             endAnimation(newHolder)
 
-            val jackItemAnimationPair = createDifferentHolderItemChange(
+            val changeJackItemAnimations = createDifferentHolderItemChange(
                     oldHolder,
                     newHolder,
                     deltaX,
@@ -193,12 +192,12 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
 
             val oldHolderRunPendingAnimationsRequested = processJackItemAnimation(
                     oldHolder,
-                    jackItemAnimationPair.first,
+                    changeJackItemAnimations.oldHolderAnimation,
                     pendingChanges)
 
             val newHolderRunPendingAnimationsRequested = processJackItemAnimation(
                     newHolder,
-                    jackItemAnimationPair.second,
+                    changeJackItemAnimations.newHolderAnimation,
                     pendingChanges)
 
             return oldHolderRunPendingAnimationsRequested || newHolderRunPendingAnimationsRequested
@@ -206,7 +205,7 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
     }
 
     abstract fun createSameHolderItemChange(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int,
             payloads: List<Any>
@@ -217,35 +216,35 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
             newHolder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
-    ): Pair<JackItemAnimation, JackItemAnimation>
+    ): ChangeJackItemAnimations
 
     override fun runPendingAnimations() {
-        val removeAnimators = moveAnimationsFromPendingToActive(pendingRemoves, activeRemoves)
-        val disappearUnknownLastPositionAnimators = moveAnimationsFromPendingToActive(pendingDisappearUnknownLastPosition, activeDisappearUnknownLastPosition)
-        val disappearKnownLastPositionAnimators = moveAnimationsFromPendingToActive(pendingDisappearKnownLastPosition, activeDisappearKnownLastPosition)
-        val appearKnownFirstPositionAnimators = moveAnimationsFromPendingToActive(pendingAppearKnownFirstPosition, activeAppearKnownFirstPosition)
-        val addAnimators = moveAnimationsFromPendingToActive(pendingAdds, activeAdds)
-        val moveAnimators = moveAnimationsFromPendingToActive(pendingMoves, activeMoves)
-        val changeAnimators = moveAnimationsFromPendingToActive(pendingChanges, activeChanges)
+        val removeHolderAnimators = moveAnimationsFromPendingToActive(pendingRemoves, activeRemoves)
+        val disappearUnknownLastPositionHolderAnimators = moveAnimationsFromPendingToActive(pendingDisappearUnknownLastPosition, activeDisappearUnknownLastPosition)
+        val disappearKnownLastPositionHolderAnimators = moveAnimationsFromPendingToActive(pendingDisappearKnownLastPosition, activeDisappearKnownLastPosition)
+        val appearKnownFirstPositionHolderAnimators = moveAnimationsFromPendingToActive(pendingAppearKnownFirstPosition, activeAppearKnownFirstPosition)
+        val addHolderAnimators = moveAnimationsFromPendingToActive(pendingAdds, activeAdds)
+        val moveHolderAnimators = moveAnimationsFromPendingToActive(pendingMoves, activeMoves)
+        val changeHolderAnimators = moveAnimationsFromPendingToActive(pendingChanges, activeChanges)
 
         handleAnimations(
-                removeAnimators,
-                disappearUnknownLastPositionAnimators,
-                disappearKnownLastPositionAnimators,
-                appearKnownFirstPositionAnimators,
-                addAnimators,
-                moveAnimators,
-                changeAnimators)
+                removeHolderAnimators,
+                disappearUnknownLastPositionHolderAnimators,
+                disappearKnownLastPositionHolderAnimators,
+                appearKnownFirstPositionHolderAnimators,
+                addHolderAnimators,
+                moveHolderAnimators,
+                changeHolderAnimators)
     }
 
     abstract fun handleAnimations(
-            removeAnimators: List<Animator>,
-            disappearUnknownLastPositionAnimators: List<Animator>,
-            disappearKnownLastPositionAnimators: List<Animator>,
-            appearKnownFirstPositionAnimators: List<Animator>,
-            addAnimators: List<Animator>,
-            moveAnimators: List<Animator>,
-            changeAnimators: List<Animator>)
+            removeHolderAnimators: List<HolderAnimator>,
+            disappearUnknownLastPositionHolderAnimators: List<HolderAnimator>,
+            disappearKnownLastPositionHolderAnimators: List<HolderAnimator>,
+            appearKnownFirstPositionHolderAnimators: List<HolderAnimator>,
+            addHolderAnimators: List<HolderAnimator>,
+            moveHolderAnimators: List<HolderAnimator>,
+            changeHolderAnimators: List<HolderAnimator>)
 
     override fun endAnimation(item: RecyclerView.ViewHolder) {
         pendingAnimationsMapList.forEach { pendingAnimations ->
@@ -337,8 +336,8 @@ private fun RecyclerView.ItemAnimator.processJackItemAnimation(
 private fun RecyclerView.ItemAnimator.moveAnimationsFromPendingToActive(
         pendingAnimations: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler>,
         activeAnimations: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler>
-): List<Animator> {
-    val animators = pendingAnimations.map { (holder, itemAnimation) ->
+): List<HolderAnimator> {
+    val holderAnimators = pendingAnimations.map { (holder, itemAnimation) ->
         activeAnimations[holder] = itemAnimation
 
         itemAnimation.animationEndCallback = {
@@ -349,9 +348,9 @@ private fun RecyclerView.ItemAnimator.moveAnimationsFromPendingToActive(
             dispatchAnimationsFinishedIfNoneIsRunning()
         }
 
-        itemAnimation.animator
+        HolderAnimator(holder, itemAnimation.animator)
     }
     pendingAnimations.clear()
 
-    return animators
+    return holderAnimators
 }

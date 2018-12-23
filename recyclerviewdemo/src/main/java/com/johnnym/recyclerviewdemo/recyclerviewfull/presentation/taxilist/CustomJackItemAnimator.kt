@@ -1,7 +1,8 @@
 package com.johnnym.recyclerviewdemo.recyclerviewfull.presentation.taxilist
 
-import android.animation.Animator
 import androidx.recyclerview.widget.RecyclerView
+import com.johnnym.recyclerviewanimator.ChangeJackItemAnimations
+import com.johnnym.recyclerviewanimator.HolderAnimator
 import com.johnnym.recyclerviewanimator.JackItemAnimation
 import com.johnnym.recyclerviewanimator.JackItemAnimator
 import com.johnnym.recyclerviewanimator.defaultanimations.ItemMoveAndFadeAnimation
@@ -9,24 +10,24 @@ import com.johnnym.recyclerviewanimator.defaultanimations.ItemMoveAndFadeAnimati
 class CustomJackItemAnimator : JackItemAnimator() {
 
     override fun createRemoval(
-            viewHolder: RecyclerView.ViewHolder
+            holder: RecyclerView.ViewHolder
     ): JackItemAnimation {
-        return ItemTranslateToRightAndFadeOutAnimation(viewHolder)
+        return ItemTranslateToRightAndFadeOutAnimation(holder)
     }
 
     override fun createDisappearUnknownLastPosition(
-            viewHolder: RecyclerView.ViewHolder
+            holder: RecyclerView.ViewHolder
     ): JackItemAnimation {
-        return ItemFadeOutAndScaleOutAnimation(viewHolder)
+        return ItemFadeOutAndScaleOutAnimation(holder)
     }
 
     override fun createDisappearKnownLastPosition(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
     ): JackItemAnimation {
         return ItemMoveAndFadeAnimation(
-                viewHolder,
+                holder,
                 deltaX,
                 0,
                 deltaY,
@@ -36,18 +37,18 @@ class CustomJackItemAnimator : JackItemAnimator() {
     }
 
     override fun createAdd(
-            viewHolder: RecyclerView.ViewHolder
+            holder: RecyclerView.ViewHolder
     ): JackItemAnimation {
-        return ItemFadeInFromLeftAnimation(viewHolder)
+        return ItemFadeInFromLeftAnimation(holder)
     }
 
     override fun createAppearKnownFirstPosition(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
     ): JackItemAnimation {
         return ItemMoveAndFadeAnimation(
-                viewHolder,
+                holder,
                 deltaX,
                 0,
                 deltaY,
@@ -57,12 +58,12 @@ class CustomJackItemAnimator : JackItemAnimator() {
     }
 
     override fun createMove(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int
     ): JackItemAnimation {
         return ItemMoveAndFadeAnimation(
-                viewHolder,
+                holder,
                 deltaX,
                 0,
                 deltaY,
@@ -72,21 +73,21 @@ class CustomJackItemAnimator : JackItemAnimator() {
     }
 
     override fun createSameHolderItemChange(
-            viewHolder: RecyclerView.ViewHolder,
+            holder: RecyclerView.ViewHolder,
             deltaX: Int,
             deltaY: Int,
             payloads: List<Any>
     ): JackItemAnimation {
-        if (viewHolder is NormalItemViewHolder)
+        if (holder is NormalItemViewHolder)
             return ItemMoveAndTaxiStatusChangeAnimation(
-                    viewHolder,
+                    holder,
                     deltaX,
                     0,
                     deltaY,
                     0,
                     payloads)
         else return ItemMoveAndFadeAnimation(
-                viewHolder,
+                holder,
                 deltaX,
                 0,
                 deltaY,
@@ -95,40 +96,76 @@ class CustomJackItemAnimator : JackItemAnimator() {
                 1f)
     }
 
-    override fun createDifferentHolderItemChange(oldHolder: RecyclerView.ViewHolder, newHolder: RecyclerView.ViewHolder, deltaX: Int, deltaY: Int): Pair<JackItemAnimation, JackItemAnimation> {
-        return Pair(
+    override fun createDifferentHolderItemChange(
+            oldHolder: RecyclerView.ViewHolder,
+            newHolder: RecyclerView.ViewHolder,
+            deltaX: Int,
+            deltaY: Int
+    ): ChangeJackItemAnimations {
+        return ChangeJackItemAnimations(
                 ItemMoveAndFadeAnimation(oldHolder, 0, -deltaX, 0, -deltaY, 1f, 0f),
                 ItemMoveAndFadeAnimation(newHolder, deltaX, 0, deltaY, 0, 0f, 1f))
     }
 
     override fun handleAnimations(
-            removeAnimators: List<Animator>,
-            disappearUnknownLastPositionAnimators: List<Animator>,
-            disappearKnownLastPositionAnimators: List<Animator>,
-            appearKnownFirstPositionAnimators: List<Animator>,
-            addAnimators: List<Animator>,
-            moveAnimators: List<Animator>,
-            changeAnimators: List<Animator>) {
-        removeAnimators.forEachIndexed { index, animator ->
-            animator.startDelay = index * 100L
+            removeHolderAnimators: List<HolderAnimator>,
+            disappearUnknownLastPositionHolderAnimators: List<HolderAnimator>,
+            disappearKnownLastPositionHolderAnimators: List<HolderAnimator>,
+            appearKnownFirstPositionHolderAnimators: List<HolderAnimator>,
+            addHolderAnimators: List<HolderAnimator>,
+            moveHolderAnimators: List<HolderAnimator>,
+            changeHolderAnimators: List<HolderAnimator>) {
+        val sortedRemoveHolderAnimators = removeHolderAnimators
+                .sortedWith(Comparator { o1, o2 ->
+                    o1.holder.itemView.y.compareTo(o2.holder.itemView.y)
+                })
+
+        sortedRemoveHolderAnimators.forEachIndexed { index, holderAnimator ->
+            val animator = holderAnimator.animator
+
+            animator.startDelay = index * 50L
             animator.start()
         }
 
-        listOf(
-                disappearUnknownLastPositionAnimators,
-                disappearKnownLastPositionAnimators,
-                appearKnownFirstPositionAnimators,
-                moveAnimators,
-                changeAnimators
-        ).forEach { animators ->
-            animators.forEach {
-                it.startDelay = 500
-                it.start()
-            }
-        }
+        val firstStageAnimationsExist = sortedRemoveHolderAnimators.isNotEmpty()
 
-        addAnimators.forEachIndexed { index, animator ->
-            animator.startDelay = 1000 + index * 100L
+        val secondStageDelay =
+                if (firstStageAnimationsExist) 150L
+                else 0L
+
+        var secondStageAnimationsExist = false
+        listOf(
+                disappearUnknownLastPositionHolderAnimators,
+                disappearKnownLastPositionHolderAnimators,
+                appearKnownFirstPositionHolderAnimators,
+                moveHolderAnimators,
+                changeHolderAnimators)
+                .forEach { holderAnimators ->
+                    if (holderAnimators.isNotEmpty()) secondStageAnimationsExist = true
+
+                    holderAnimators.forEach { holderAnimator ->
+                        val animator = holderAnimator.animator
+
+                        animator.startDelay = secondStageDelay
+                        animator.start()
+                    }
+                }
+
+        val thirdStageDelay =
+                if (firstStageAnimationsExist && secondStageAnimationsExist) 300L
+                else if (firstStageAnimationsExist) 150L
+                else if (secondStageAnimationsExist) 150L
+                else 0L
+
+        val sortedAddHolderAnimators = addHolderAnimators
+                .sortedWith(Comparator { o1, o2 ->
+                    o1.holder.itemView.y.compareTo(o2.holder.itemView.y)
+                })
+
+        sortedAddHolderAnimators.forEachIndexed { index, holderAnimator ->
+            val animator = holderAnimator.animator
+
+            animator.startDelay = thirdStageDelay + index * 50L
             animator.start()
         }
     }
