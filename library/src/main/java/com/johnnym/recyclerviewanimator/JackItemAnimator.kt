@@ -280,12 +280,13 @@ abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
         activeAnimationsMapList.forEach { activeAnimations ->
             activeAnimations.entries.forEach {
                 if (it.value.animator.isStarted) {
+                    it.value.animationEndCallback = null
                     it.value.animator.end()
-                } else {
-                    it.value.jackItemAnimation.resetState()
-                    this.dispatchAnimationFinished(it.key)
-                    this.dispatchAnimationsFinishedIfNoneIsRunning()
                 }
+
+                it.value.jackItemAnimation.resetState()
+                this.dispatchAnimationFinished(it.key)
+                this.dispatchAnimationsFinishedIfNoneIsRunning()
             }
             activeAnimations.clear()
         }
@@ -340,17 +341,15 @@ private fun RecyclerView.ItemAnimator.moveAnimationsFromPendingToActive(
     val animators = pendingAnimations.map { (holder, itemAnimation) ->
         activeAnimations[holder] = itemAnimation
 
-        itemAnimation.animator.apply {
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    activeAnimations.remove(holder)
+        itemAnimation.animationEndCallback = {
+            activeAnimations.remove(holder)
 
-                    itemAnimation.jackItemAnimation.resetState()
-                    dispatchAnimationFinished(holder)
-                    dispatchAnimationsFinishedIfNoneIsRunning()
-                }
-            })
+            itemAnimation.jackItemAnimation.resetState()
+            dispatchAnimationFinished(holder)
+            dispatchAnimationsFinishedIfNoneIsRunning()
         }
+
+        itemAnimation.animator
     }
     pendingAnimations.clear()
 
