@@ -32,8 +32,8 @@ class NormalItemViewHolder(
         Glide.with(context)
                 .load(itemViewModel.driverPhotoUrl)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.ic_star)
-                        .error(R.drawable.ic_distance)
+                        .placeholder(android.R.color.white)
+                        .error(android.R.color.black)
                         .dontAnimate())
                 .into(normalItemView.driverPhoto)
 

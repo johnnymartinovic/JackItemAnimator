@@ -40,7 +40,7 @@ class TaxiListMockFactory {
                         PatrickBateman.createCopy(TaxiStatus.AVAILABLE),
                         TheTerminator.createCopy(TaxiStatus.AVAILABLE),
                         TheDude.createCopy(TaxiStatus.AVAILABLE),
-                        KevinMcCallister.createCopy(),
+                        KevinMcCallister.createCopy(TaxiStatus.AVAILABLE),
                         AntonChigurh.createCopy(TaxiStatus.AVAILABLE),
                         JackTorrance.createCopy(TaxiStatus.AVAILABLE)
                 ))
@@ -141,7 +141,7 @@ class TaxiListMockFactory {
         private val BuzzLightyear = TaxiListItem(
                 "id_09",
                 TaxiStatus.AVAILABLE,
-                "http://www.behindthevoiceactors.com/_img/chars/buzz-lightyear-toy-story-1.37.jpg",
+                "https://i.pinimg.com/236x/23/74/46/237446d28471c0d15d6ec315715297ba--buzz-lightyear-toy-story.jpg",
                 "Buzz Lightyear",
                 1.43f,
                 10.234f)
@@ -157,7 +157,7 @@ class TaxiListMockFactory {
         private val JulesWinnfield = TaxiListItem(
                 "id_11",
                 TaxiStatus.AVAILABLE,
-                "http://www.monologuedb.com/wp-content/uploads/2011/06/Samuel-L.-Jackson-Jules-Winnfield-Pulp-Fiction.png",
+                "https://vignette.wikia.nocookie.net/pulpfiction/images/b/b6/Jules.jpg",
                 "Jules Winnfield",
                 3.587f,
                 12.234f)
@@ -181,7 +181,7 @@ class TaxiListMockFactory {
         private val IndianaJones = TaxiListItem(
                 "id_14",
                 TaxiStatus.AVAILABLE,
-                "http://s3.amazonaws.com/digitaltrends-uploads-prod/2015/06/indiana-jones.jpg",
+                "https://theimaginativeconservative.org/wp-content/uploads/2015/03/0290017107175276-c2-photo-oYToyOntzOjE6InciO2k6NjU2O3M6NToiY29sb3IiO3M6NToid2hpdGUiO30-indiana-jones.jpg",
                 "Indiana Jones",
                 2.429f,
                 15.234f)
@@ -189,7 +189,7 @@ class TaxiListMockFactory {
         private val TheTerminator = TaxiListItem(
                 "id_15",
                 TaxiStatus.AVAILABLE,
-                "http://cdn1us.denofgeek.com/sites/denofgeekus/files/styles/main_wide/public/2015/12/terminator-2-arnold-schwarzenegger.jpg",
+                "https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Terminator-2-judgement-day.jpg/250px-Terminator-2-judgement-day.jpg",
                 "The Terminator",
                 3.587f,
                 16.234f)

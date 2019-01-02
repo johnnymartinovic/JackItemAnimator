@@ -2,7 +2,6 @@ package com.johnnym.recyclerviewanimator
 
 import androidx.recyclerview.widget.RecyclerView
 
-// TODO check in which animate methods payloads exists in itemholderinfo
 abstract class JackItemAnimator : RecyclerView.ItemAnimator() {
 
     private val pendingRemoves: MutableMap<RecyclerView.ViewHolder, JackItemAnimationHandler> = HashMap()
