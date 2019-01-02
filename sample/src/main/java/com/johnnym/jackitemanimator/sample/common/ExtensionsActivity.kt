@@ -1,7 +1,7 @@
 package com.johnnym.jackitemanimator.sample.common
 
 import android.app.Activity
-import com.johnnym.jackitemanimator.sample.RvdApplication
+import com.johnnym.jackitemanimator.sample.SampleApplication
 
-val Activity.rvdApplication: RvdApplication
-    get() = application as RvdApplication
+val Activity.sampleApplication: SampleApplication
+    get() = application as SampleApplication

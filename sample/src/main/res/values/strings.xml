@@ -1,8 +1,7 @@
 <resources>
 
-    <!-- Main demo screen -->
-    <string name="app_name">RecyclerView Demo</string>
-    <string name="recycler_view_demo_full_label">RecyclerView Full Demo</string>
+    <string name="app_name">JackItemAnimator</string>
+    <string name="taxi_list_label">Taxi List</string>
 
     <!-- Taxi list screen -->
     <string name="sort_menu_item">Sort</string>

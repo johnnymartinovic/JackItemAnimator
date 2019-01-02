@@ -4,9 +4,9 @@ import android.app.Application
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 
-class RvdApplication : Application() {
+class SampleApplication : Application() {
 
-    lateinit var rvdApplicationComponent: RvdApplicationComponent
+    lateinit var sampleApplicationComponent: SampleApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -20,8 +20,8 @@ class RvdApplication : Application() {
         }
         LeakCanary.install(this)
 
-        rvdApplicationComponent = DaggerRvdApplicationComponent.builder()
+        sampleApplicationComponent = DaggerSampleApplicationComponent.builder()
                 .build()
-        rvdApplicationComponent.inject(this)
+        sampleApplicationComponent.inject(this)
     }
 }

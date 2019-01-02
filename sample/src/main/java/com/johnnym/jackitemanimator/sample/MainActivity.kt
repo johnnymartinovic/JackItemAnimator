@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fullDemoButton.setOnClickListener {
+        taxiListButton.setOnClickListener {
             startActivity(TaxiListActivity.createIntent(this))
         }
     }

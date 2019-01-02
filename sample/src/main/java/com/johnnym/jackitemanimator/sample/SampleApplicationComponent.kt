@@ -7,11 +7,11 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-        modules = [(RvdApplicationModule::class)]
+        modules = [(SampleApplicationModule::class)]
 )
-interface RvdApplicationComponent {
+interface SampleApplicationComponent {
 
-    fun inject(rvdApplication: RvdApplication)
+    fun inject(sampleApplication: SampleApplication)
 
     fun newTaxiListComponent(taxiListModule: TaxiListModule): TaxiListComponent
 }

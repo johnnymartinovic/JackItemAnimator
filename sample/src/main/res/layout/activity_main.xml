@@ -8,10 +8,11 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/fullDemoButton"
-        android:layout_width="@dimen/main_demo_button_width"
+        android:id="@+id/taxiListButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/recycler_view_demo_full_label"
+        android:layout_margin="16dp"
+        android:text="@string/taxi_list_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

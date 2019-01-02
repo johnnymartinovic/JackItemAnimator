@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.johnnym.jackitemanimator.sample.R
-import com.johnnym.jackitemanimator.sample.common.rvdApplication
+import com.johnnym.jackitemanimator.sample.common.sampleApplication
 import com.johnnym.jackitemanimator.sample.taxilist.TaxiListModule
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiStatusFilter
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.CustomJackItemAnimator
@@ -101,7 +101,7 @@ class TaxiListActivity : AppCompatActivity(),
         }
         itemAnimatorSpinner.setSelection(1)
 
-        rvdApplication.rvdApplicationComponent
+        sampleApplication.sampleApplicationComponent
                 .newTaxiListComponent(TaxiListModule(
                         this,
                         initialTaxiStatusFilter,

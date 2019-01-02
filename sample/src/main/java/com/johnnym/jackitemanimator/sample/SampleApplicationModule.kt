@@ -6,17 +6,19 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class RvdApplicationModule(private val rvdApplication: RvdApplication) {
+class SampleApplicationModule(
+        private val sampleApplication: SampleApplication
+) {
 
     @Provides
     @Singleton
-    fun rvdApplication(): RvdApplication {
-        return rvdApplication
+    fun sampleApplication(): SampleApplication {
+        return sampleApplication
     }
 
     @Provides
     @Singleton
     fun context(): Context {
-        return rvdApplication
+        return sampleApplication
     }
 }
