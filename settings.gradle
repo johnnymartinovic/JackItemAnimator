@@ -1,1 +1,1 @@
-include ':recyclerviewdemo', ':library'
+include ':sample', ':library'
