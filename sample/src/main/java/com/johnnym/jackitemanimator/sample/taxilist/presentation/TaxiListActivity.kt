@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -67,7 +65,19 @@ class TaxiListActivity : AppCompatActivity(),
 
         taxiListLoadingView.isEnabled = false
 
-        toolbar.setNavigationOnClickListener { finish() }
+        with(toolbar) {
+            setNavigationOnClickListener { finish() }
+            inflateMenu(R.menu.taxi_list_menu)
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.sort_menu_item -> {
+                        presenter.onSortButtonPressed()
+                        true
+                    }
+                    else -> super.onOptionsItemSelected(item)
+                }
+            }
+        }
 
         availabilityVisibilitySwitch.isChecked = initialTaxiStatusFilter == TaxiStatusFilter.NO_FILTER
         availabilityVisibilitySwitch.setOnCheckedChangeListener { _, isChecked -> presenter.availabilityVisibilitySwitchChecked(isChecked) }
@@ -108,24 +118,6 @@ class TaxiListActivity : AppCompatActivity(),
                         initialTaxiSortOption))
                 .inject(this)
     }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.taxi_list_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> {
-                    onBackPressed()
-                    true
-                }
-                R.id.sort_menu_item -> {
-                    presenter.onSortButtonPressed()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
-            }
 
     override fun onDestroy() {
         super.onDestroy()
