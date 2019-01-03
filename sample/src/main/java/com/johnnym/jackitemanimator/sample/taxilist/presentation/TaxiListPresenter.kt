@@ -38,7 +38,9 @@ class TaxiListPresenter(
     }
 
     override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
-        currentTaxiSortOption = TaxiSortOption.values()[selectedSortOptionPosition]
+        currentTaxiSortOption =
+                if (selectedSortOptionPosition == 0) null
+                else TaxiSortOption.values()[selectedSortOptionPosition - 1]
 
         getAndShowTaxiList()
     }
