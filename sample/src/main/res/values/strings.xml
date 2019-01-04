@@ -2,6 +2,7 @@
 
     <string name="app_name">JackItemAnimator</string>
     <string name="taxi_list_label">Taxi List</string>
+    <string name="green_tuesday_label">Green Tuesday</string>
 
     <!-- Taxi list screen -->
     <string name="sort_menu_item">Sort</string>
