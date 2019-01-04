@@ -1,15 +1,17 @@
 <resources>
 
     <string name="app_name">JackItemAnimator</string>
-    <string name="taxi_list_label">Taxi List</string>
-    <string name="green_tuesday_label">Green Tuesday</string>
 
-    <!-- Taxi list screen -->
-    <string name="sort_menu_item">Sort</string>
-    <string name="sort_options_dialog_title">Select sort option:</string>
-    <string name="availability_visibility_switch">Show unavailable taxicabs</string>
-    <string name="refresh_button_text">Refresh data</string>
+    <string name="taxi_list_label">Taxi List</string>
+    <string name="taxi_list_sort_menu_item">Sort</string>
+    <string name="taxi_list_sort_options_dialog_title">Select sort option:</string>
+    <string name="taxi_list_availability_visibility_switch">Show unavailable taxicabs</string>
+    <string name="taxi_list_refresh_button_text">Refresh data</string>
     <string name="taxi_list_item_stars_format" translatable="false">%1$.1f</string>
     <string name="taxi_list_item_distance_format" translatable="false">%1$.2f km</string>
+
+    <string name="green_tuesday_label">Green Tuesday</string>
+    <string name="green_tuesday_grid_menu_item">Grid</string>
+    <string name="green_tuesday_sort_menu_item">Sort</string>
 
 </resources>

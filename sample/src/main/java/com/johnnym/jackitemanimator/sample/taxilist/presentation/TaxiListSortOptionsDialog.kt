@@ -10,16 +10,16 @@ class TaxiListSortOptionsDialog : DialogFragment() {
 
     companion object {
 
-        private val SORT_OPTIONS = "sort_options"
-        private val INITIALLY_SELECTED_SORT_OPTION_POSITION = "initially_selected_sort_option_position"
+        private const val SORT_OPTIONS = "sort_options"
+        private const val INITIALLY_SELECTED_SORT_OPTION_POSITION = "initially_selected_sort_option_position"
 
         fun createInstance(
                 sortOptionList: List<String>,
                 initiallySelectedSortOptionPosition: Int
         ): TaxiListSortOptionsDialog {
-            val sortOptions: Array<CharSequence> = Array(
-                    sortOptionList.size,
-                    { sortOptionList[it] })
+            val sortOptions: Array<CharSequence> = Array(sortOptionList.size) {
+                sortOptionList[it]
+            }
 
             val args = Bundle()
             args.putCharSequenceArray(SORT_OPTIONS, sortOptions)
@@ -35,18 +35,17 @@ class TaxiListSortOptionsDialog : DialogFragment() {
         val sortOptions = arguments!!.getCharSequenceArray(SORT_OPTIONS)
         val checkedItemPosition = arguments!!.getInt(INITIALLY_SELECTED_SORT_OPTION_POSITION)
 
-        return AlertDialog.Builder(context!!)
-                .setTitle(R.string.sort_options_dialog_title)
+        return AlertDialog.Builder(requireContext())
+                .setTitle(R.string.taxi_list_sort_options_dialog_title)
                 .setSingleChoiceItems(
                         sortOptions,
-                        checkedItemPosition,
-                        { dialog, which ->
-                            dialog.dismiss()
-                            val parentActivity = activity
-                            if (parentActivity is SortOptionSelectedListener) {
-                                parentActivity.onSortOptionSelected(which)
-                            }
-                        })
+                        checkedItemPosition) { dialog, which ->
+                    dialog.dismiss()
+                    val parentActivity = activity
+                    if (parentActivity is SortOptionSelectedListener) {
+                        parentActivity.onSortOptionSelected(which)
+                    }
+                }
                 .create()
     }
 

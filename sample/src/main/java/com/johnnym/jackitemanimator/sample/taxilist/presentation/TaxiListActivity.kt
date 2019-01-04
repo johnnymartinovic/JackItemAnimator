@@ -70,7 +70,7 @@ class TaxiListActivity : AppCompatActivity(),
             inflateMenu(R.menu.taxi_list_menu)
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.sort_menu_item -> {
+                    R.id.taxi_list_sort_menu_item -> {
                         presenter.onSortButtonPressed()
                         true
                     }

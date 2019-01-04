@@ -8,11 +8,16 @@
     <color name="general_background_color">@android:color/white</color>
     <color name="general_status_bar">#00000000</color>
     <color name="general_navigation_bar">#33000000</color>
+    <color name="general_light">#ffffff</color>
 
     <color name="taxi_list_item_star_tint">#FED406</color>
     <color name="taxi_list_item_route_tint">#ACABAA</color>
     <color name="taxi_list_item_status_available">#66AF4A</color>
     <color name="taxi_list_item_status_unavailable">#EC4A3D</color>
     <color name="taxi_list_item_background">#FAFAFA</color>
+
+    <color name="green_tuesday_background">#6cbf10</color>
+    <color name="green_tuesday_text_light_normal">@color/general_light</color>
+    <color name="green_tuesday_text_light_inactive">#B3FFFFFF</color>
 
 </resources>

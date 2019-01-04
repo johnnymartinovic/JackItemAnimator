@@ -11,7 +11,7 @@
         android:id="@+id/statusBarBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/green_tuesday_background"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,11 +21,13 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/colorPrimary"
+        android:background="@color/green_tuesday_background"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarBackground"
-        app:navigationIcon="@drawable/back_arrow_icon" />
+        app:navigationIcon="@drawable/back_arrow_icon"
+        app:title="@string/green_tuesday_label"
+        app:titleTextAppearance="@style/SampleTheme.GreenTuesday.Toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

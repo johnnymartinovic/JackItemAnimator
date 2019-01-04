@@ -40,7 +40,23 @@ class GreenTuesdayActivity : AppCompatActivity(),
             insets.consumeSystemWindowInsets()
         }
 
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        with(toolbar) {
+            setNavigationOnClickListener { onBackPressed() }
+            inflateMenu(R.menu.green_tuesday_menu)
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.green_tuesday_grid_menu_item -> {
+                        // TODO
+                        true
+                    }
+                    R.id.green_tuesday_sort_menu_item -> {
+                        // TODO
+                        true
+                    }
+                    else -> super.onOptionsItemSelected(item)
+                }
+            }
+        }
 
         sampleApplication.sampleApplicationComponent
                 .newGreenTuesdayComponent(GreenTuesdayModule(

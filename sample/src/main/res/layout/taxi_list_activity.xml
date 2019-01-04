@@ -40,7 +40,7 @@
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="@string/availability_visibility_switch"
+            android:text="@string/taxi_list_availability_visibility_switch"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/refresh_button_text" />
+            android:text="@string/taxi_list_refresh_button_text" />
 
         <Spinner
             android:id="@+id/gridSpinner"
