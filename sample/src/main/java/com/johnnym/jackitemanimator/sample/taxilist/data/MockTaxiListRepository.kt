@@ -1,6 +1,5 @@
 package com.johnnym.jackitemanimator.sample.taxilist.data
 
-import com.johnnym.jackitemanimator.sample.taxilist.TaxiListMockFactory
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiList
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit

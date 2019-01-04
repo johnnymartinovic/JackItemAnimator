@@ -1,4 +1,4 @@
-package com.johnnym.jackitemanimator.sample.taxilist
+package com.johnnym.jackitemanimator.sample.taxilist.data
 
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiList
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiListItem
@@ -15,8 +15,8 @@ class TaxiListMockFactory {
             val currentInstanceNumberMod = currentInstanceNumber % INSTANCE_MOD_VALUE
 
             @Suppress("UnnecessaryVariable")
-            val taxiList = when (currentInstanceNumberMod) {
-                0 -> TaxiList(listOf(
+            val taxiList = TaxiList(when (currentInstanceNumberMod) {
+                0 -> listOf(
                         TravisBickle.createCopy(TaxiStatus.OCCUPIED),
                         JackTorrance.createCopy(TaxiStatus.AVAILABLE),
                         AntonChigurh.createCopy(TaxiStatus.AVAILABLE),
@@ -27,9 +27,8 @@ class TaxiListMockFactory {
                         MichaelCorleone.createCopy(TaxiStatus.AVAILABLE),
                         JohnMcClane.createCopy(TaxiStatus.OCCUPIED),
                         BuzzLightyear.createCopy(TaxiStatus.OCCUPIED),
-                        HAL9000.createCopy(TaxiStatus.AVAILABLE)
-                ))
-                1 -> TaxiList(listOf(
+                        HAL9000.createCopy(TaxiStatus.AVAILABLE))
+                1 -> listOf(
                         TravisBickle.createCopy(TaxiStatus.AVAILABLE),
                         JulesWinnfield.createCopy(TaxiStatus.AVAILABLE),
                         Legolas.createCopy(TaxiStatus.AVAILABLE),
@@ -42,18 +41,9 @@ class TaxiListMockFactory {
                         TheDude.createCopy(TaxiStatus.AVAILABLE),
                         KevinMcCallister.createCopy(TaxiStatus.AVAILABLE),
                         AntonChigurh.createCopy(TaxiStatus.AVAILABLE),
-                        JackTorrance.createCopy(TaxiStatus.AVAILABLE)
-                ))
-                2 -> TaxiList(listOf(
-                        JackTorrance.createCopy(TaxiStatus.AVAILABLE),
-                        TravisBickle.createCopy(TaxiStatus.OCCUPIED)
-                ))
-                3 -> TaxiList(listOf(
-                ))
-                4 -> TaxiList(listOf(
-                ))
+                        JackTorrance.createCopy(TaxiStatus.AVAILABLE))
                 else -> throw IllegalStateException("$currentInstanceNumberMod should be between 0 (included) and $INSTANCE_MOD_VALUE")
-            }
+            })
 
             return taxiList
         }
