@@ -6,6 +6,8 @@
     <color name="colorAccent">#62c3fe</color>
 
     <color name="general_background_color">@android:color/white</color>
+    <color name="general_status_bar">#00000000</color>
+    <color name="general_navigation_bar">#33000000</color>
 
     <color name="taxi_list_item_star_tint">#FED406</color>
     <color name="taxi_list_item_route_tint">#ACABAA</color>

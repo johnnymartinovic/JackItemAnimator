@@ -3,10 +3,12 @@ package com.johnnym.jackitemanimator.sample.greentuesday.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
 import com.johnnym.jackitemanimator.sample.greentuesday.GreenTuesdayModule
+import kotlinx.android.synthetic.main.green_tuesday_activity.*
 import javax.inject.Inject
 
 class GreenTuesdayActivity : AppCompatActivity(),
@@ -22,10 +24,23 @@ class GreenTuesdayActivity : AppCompatActivity(),
     @Inject
     lateinit var presenter: GreenTuesdayContract.Presenter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.green_tuesday_activity)
+
+        window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+        root.setOnApplyWindowInsetsListener { _, insets ->
+            statusBarBackground.layoutParams.height = insets.systemWindowInsetTop
+            statusBarBackground.requestLayout()
+
+            insets.consumeSystemWindowInsets()
+        }
+
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         sampleApplication.sampleApplicationComponent
                 .newGreenTuesdayComponent(GreenTuesdayModule(
