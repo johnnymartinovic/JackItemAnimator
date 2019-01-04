@@ -6,4 +6,6 @@
 
     <dimen name="taxi_list_item_decoration_spacing">6dp</dimen>
 
+    <dimen name="green_tuesday_item_radius">2dp</dimen>
+
 </resources>
