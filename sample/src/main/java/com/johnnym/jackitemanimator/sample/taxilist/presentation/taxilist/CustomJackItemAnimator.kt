@@ -78,7 +78,7 @@ class CustomJackItemAnimator : JackItemAnimator() {
             deltaY: Int,
             payloads: List<Any>
     ): JackItemAnimation {
-        if (holder is NormalItemViewHolder)
+        if (holder is NormalTaxiItemViewHolder)
             return ItemMoveAndTaxiStatusChangeAnimation(
                     holder,
                     deltaX,

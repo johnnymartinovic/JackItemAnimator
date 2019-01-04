@@ -9,7 +9,7 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiStatus
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.TaxiListItemViewModel
 
-class SquareItemViewHolder(
+class SquareTaxiItemViewHolder(
         private val context: Context,
         val squareItemView: SquareTaxiItemView
 ) : RecyclerView.ViewHolder(squareItemView) {

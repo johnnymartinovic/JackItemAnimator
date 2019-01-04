@@ -17,7 +17,7 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiStatus
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.TaxiListItemViewModel
 
-class NormalItemViewHolder(
+class NormalTaxiItemViewHolder(
         private val context: Context,
         val normalItemView: NormalTaxiItemView
 ) : RecyclerView.ViewHolder(normalItemView) {

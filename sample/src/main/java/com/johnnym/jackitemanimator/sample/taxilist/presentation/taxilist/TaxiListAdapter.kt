@@ -1,12 +1,11 @@
 package com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist
 
-import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.TaxiListItemViewModel
 
-class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TaxiListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var viewType = ViewType.NORMAL
 
@@ -17,16 +16,17 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
     override fun getItemViewType(position: Int): Int = viewType.ordinal
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val context = parent.context
         return when (ViewType.from(viewType)) {
-            ViewType.NORMAL -> NormalItemViewHolder(context, NormalTaxiItemView(context))
-            ViewType.SQUARE -> SquareItemViewHolder(context, SquareTaxiItemView(context))
+            ViewType.NORMAL -> NormalTaxiItemViewHolder(context, NormalTaxiItemView(context))
+            ViewType.SQUARE -> SquareTaxiItemViewHolder(context, SquareTaxiItemView(context))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is NormalItemViewHolder -> holder.bind(items[position])
-            is SquareItemViewHolder -> holder.bind(items[position])
+            is NormalTaxiItemViewHolder -> holder.bind(items[position])
+            is SquareTaxiItemViewHolder -> holder.bind(items[position])
         }
     }
 
@@ -46,13 +46,13 @@ class TaxiListAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
 
             if (oldTaxiStatus != newTaxiStatus) {
                 when (holder) {
-                    is NormalItemViewHolder -> holder.setTaxiStatus(newTaxiStatus)
-                    is SquareItemViewHolder -> holder.setTaxiStatus(newTaxiStatus)
+                    is NormalTaxiItemViewHolder -> holder.setTaxiStatus(newTaxiStatus)
+                    is SquareTaxiItemViewHolder -> holder.setTaxiStatus(newTaxiStatus)
                 }
             }
             if (oldDistance != newDistance) {
                 when (holder) {
-                    is NormalItemViewHolder -> holder.setDistanceValue(newDistance)
+                    is NormalTaxiItemViewHolder -> holder.setDistanceValue(newDistance)
                 }
             }
         }

@@ -52,7 +52,7 @@ class TaxiListActivity : AppCompatActivity(),
 
         setContentView(R.layout.taxi_list_activity)
 
-        taxiListAdapter = TaxiListAdapter(this)
+        taxiListAdapter = TaxiListAdapter()
         setTaxiListAdapterViewType()
         taxiList.setHasFixedSize(true)
         taxiList.adapter = taxiListAdapter

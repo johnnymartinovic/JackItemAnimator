@@ -131,7 +131,7 @@ class ItemFadeInFromLeftAnimation(
 }
 
 class ItemMoveAndTaxiStatusChangeAnimation(
-        private val holder: NormalItemViewHolder,
+        private val holder: NormalTaxiItemViewHolder,
         private val startTranslationX: Int,
         private val endTranslationX: Int,
         private val startTranslationY: Int,
