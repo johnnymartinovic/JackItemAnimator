@@ -71,4 +71,20 @@ class GreenTuesdayActivity : AppCompatActivity(),
 
         presenter.viewDestroyed()
     }
+
+    override fun showGreenTuesdayListViewModel(viewModel: GreenTuesdayListViewModel) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showLoading() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideLoading() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showSortOptionsDialog(sortOptionList: List<String>, initiallySelectedSortOptionPosition: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

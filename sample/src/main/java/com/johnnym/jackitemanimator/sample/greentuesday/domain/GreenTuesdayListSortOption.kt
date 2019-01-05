@@ -7,7 +7,7 @@ enum class GreenTuesdayListSortOption {
         override fun createComparator(): Comparator<GreenTuesdayListItem> =
                 PriceAscendingComparator()
 
-        override fun getTaxiSortOptionName(): String {
+        override fun getSortOptionName(): String {
             return "Lowest price first"
         }
     },
@@ -16,7 +16,7 @@ enum class GreenTuesdayListSortOption {
         override fun createComparator(): Comparator<GreenTuesdayListItem> =
                 PriceDescendingComparator()
 
-        override fun getTaxiSortOptionName(): String {
+        override fun getSortOptionName(): String {
             return "Highest price first"
         }
     },
@@ -25,14 +25,14 @@ enum class GreenTuesdayListSortOption {
         override fun createComparator(): Comparator<GreenTuesdayListItem> =
                 DiscountPercentageDescendingComparator()
 
-        override fun getTaxiSortOptionName(): String {
+        override fun getSortOptionName(): String {
             return "Best deals"
         }
     };
 
     abstract fun createComparator(): Comparator<GreenTuesdayListItem>
 
-    abstract fun getTaxiSortOptionName(): String
+    abstract fun getSortOptionName(): String
 }
 
 class PriceAscendingComparator : Comparator<GreenTuesdayListItem> {
