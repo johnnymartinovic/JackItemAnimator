@@ -59,8 +59,10 @@ class GreenTuesdayActivity : AppCompatActivity(),
         }
 
         sampleApplication.sampleApplicationComponent
-                .newGreenTuesdayComponent(GreenTuesdayModule(
-                        this))
+                .newGreenTuesdayComponent(
+                        GreenTuesdayModule(
+                                this,
+                                null))
                 .inject(this)
     }
 
