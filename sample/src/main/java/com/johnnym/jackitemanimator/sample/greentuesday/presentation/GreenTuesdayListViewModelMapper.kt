@@ -16,7 +16,7 @@ class GreenTuesdayListViewModelMapper {
                     it.name,
                     "$PRICE_PREFIX%.2f".format(it.price),
                     "$PRICE_PREFIX%.2f".format(it.originalPrice),
-                    "-${it.discountPercentage.roundToInt()}%",
+                    "${it.discountPercentage.roundToInt()}%",
                     it.imageUrl,
                     it.infoMessage)
         }

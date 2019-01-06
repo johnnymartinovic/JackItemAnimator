@@ -10,7 +10,7 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.views.CardViewOutlineProvider
 
-class GreenTuesdayNormalItemView @JvmOverloads constructor(
+class GreenTuesdaySquareItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -26,7 +26,7 @@ class GreenTuesdayNormalItemView @JvmOverloads constructor(
     val alarmMessage: TextView by bindView(R.id.alarmMessage)
 
     init {
-        inflate(context, R.layout.green_tuesday_normal_item, this)
+        inflate(context, R.layout.green_tuesday_square_item, this)
 
         outlineProvider = CardViewOutlineProvider()
         clipToOutline = true

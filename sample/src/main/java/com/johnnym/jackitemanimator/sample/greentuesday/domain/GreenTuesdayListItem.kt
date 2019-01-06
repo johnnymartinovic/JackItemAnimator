@@ -8,5 +8,5 @@ data class GreenTuesdayListItem(
         val imageUrl: String,
         val infoMessage: String?) {
 
-    val discountPercentage: Float = 1f - (price / originalPrice)
+    val discountPercentage: Float = ((price / originalPrice) - 1) * 100
 }

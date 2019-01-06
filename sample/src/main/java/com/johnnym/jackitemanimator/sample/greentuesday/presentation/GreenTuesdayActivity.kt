@@ -5,9 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.johnnym.jackitemanimator.sample.R
+import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
 import com.johnnym.jackitemanimator.sample.greentuesday.GreenTuesdayModule
+import com.johnnym.jackitemanimator.sample.greentuesday.presentation.list.GreenTuesdayListAdapter
+import com.johnnym.jackitemanimator.sample.greentuesday.presentation.list.GreenTuesdayListItemDecoration
 import kotlinx.android.synthetic.main.green_tuesday_activity.*
 import javax.inject.Inject
 
@@ -23,6 +29,12 @@ class GreenTuesdayActivity : AppCompatActivity(),
 
     @Inject
     lateinit var presenter: GreenTuesdayContract.Presenter
+
+    private val greenTuesdayItemsLoadingView: SwipeRefreshLayout by bindView(R.id.greenTuesdayItemsLoadingView)
+    private val greenTuesdayItems: RecyclerView by bindView(R.id.greenTuesdayItems)
+
+    private lateinit var greenTuesdayListAdapter: GreenTuesdayListAdapter
+    private lateinit var greenTuesdayListLayoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +70,21 @@ class GreenTuesdayActivity : AppCompatActivity(),
             }
         }
 
+        greenTuesdayListAdapter = GreenTuesdayListAdapter()
+        greenTuesdayItems.setHasFixedSize(true)
+        greenTuesdayItems.adapter = greenTuesdayListAdapter
+        greenTuesdayListLayoutManager = GridLayoutManager(this, 2)
+        greenTuesdayListLayoutManager.spanSizeLookup = greenTuesdayListSpanSizeLookup
+        greenTuesdayItems.layoutManager = greenTuesdayListLayoutManager
+        greenTuesdayItems.addItemDecoration(GreenTuesdayListItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_spacing_between_elements),
+                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_top_margin),
+                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_bottom_margin),
+                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_left_margin),
+                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_right_margin)))
+
+        greenTuesdayItemsLoadingView.isEnabled = false
+
         sampleApplication.sampleApplicationComponent
                 .newGreenTuesdayComponent(
                         GreenTuesdayModule(
@@ -73,18 +100,24 @@ class GreenTuesdayActivity : AppCompatActivity(),
     }
 
     override fun showGreenTuesdayListViewModel(viewModel: GreenTuesdayListViewModel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        greenTuesdayListAdapter.setItems(viewModel.itemList)
     }
 
     override fun showLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        greenTuesdayItemsLoadingView.isRefreshing = true
     }
 
     override fun hideLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        greenTuesdayItemsLoadingView.isRefreshing = false
     }
 
     override fun showSortOptionsDialog(sortOptionList: List<String>, initiallySelectedSortOptionPosition: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO
+    }
+
+    private val greenTuesdayListSpanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        override fun getSpanSize(position: Int): Int {
+            return 2
+        }
     }
 }
