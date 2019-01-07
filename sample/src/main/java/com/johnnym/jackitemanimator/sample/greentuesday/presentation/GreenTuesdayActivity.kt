@@ -61,6 +61,10 @@ class GreenTuesdayActivity : AppCompatActivity(),
             inflateMenu(R.menu.green_tuesday_menu)
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
+                    R.id.green_tuesday_refresh_menu_item -> {
+                        presenter.onRefreshButtonPressed()
+                        true
+                    }
                     R.id.green_tuesday_grid_menu_item -> {
                         // TODO
                         true

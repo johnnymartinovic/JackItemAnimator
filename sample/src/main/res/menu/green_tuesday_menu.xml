@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/green_tuesday_refresh_menu_item"
+        android:icon="@drawable/refresh_icon"
+        android:title="@string/green_tuesday_refresh_menu_item"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/green_tuesday_grid_menu_item"
         android:icon="@drawable/grid_icon"
         android:title="@string/green_tuesday_grid_menu_item"

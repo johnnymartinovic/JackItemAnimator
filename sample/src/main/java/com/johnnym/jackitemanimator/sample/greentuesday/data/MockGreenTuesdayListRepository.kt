@@ -11,7 +11,7 @@ class MockGreenTuesdayListRepository : GreenTuesdayListRepository {
     override fun getGreenTuesdayListSingle(): Single<GreenTuesdayList> {
         return Single
                 .create<GreenTuesdayList> {
-                    it.onSuccess(GreenTuesdayMockFactory.createGreenTuesdayList(getGreenTuesdayListRequestNumber))
+                    it.onSuccess(GreenTuesdayMockFactory.createGreenTuesdayList(getGreenTuesdayListRequestNumber++))
                 }
                 .delay(1, TimeUnit.SECONDS)
     }

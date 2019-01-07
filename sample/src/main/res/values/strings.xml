@@ -11,6 +11,7 @@
     <string name="taxi_list_item_distance_format" translatable="false">%1$.2f km</string>
 
     <string name="green_tuesday_label">Green Tuesday</string>
+    <string name="green_tuesday_refresh_menu_item">Refresh</string>
     <string name="green_tuesday_grid_menu_item">Grid</string>
     <string name="green_tuesday_sort_menu_item">Sort</string>
 
