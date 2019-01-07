@@ -1,6 +1,7 @@
 package com.johnnym.jackitemanimator.sample.greentuesday.presentation.list
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayListItemViewModel
 
@@ -44,9 +45,10 @@ class GreenTuesdayListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     fun setItems(newItems: List<GreenTuesdayListItemViewModel>) {
+        val result = DiffUtil.calculateDiff(GreenTuesdayListDiffUtilCallback(this.items, newItems))
+        result.dispatchUpdatesTo(this)
         this.items.clear()
         this.items.addAll(newItems)
-        notifyDataSetChanged()
     }
 
     fun getItem(position: Int) = items[position]
