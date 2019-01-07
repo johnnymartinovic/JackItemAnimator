@@ -12,11 +12,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
+import com.johnnym.jackitemanimator.sample.common.views.MarginItemDecoration
 import com.johnnym.jackitemanimator.sample.taxilist.TaxiListModule
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiStatusFilter
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.CustomJackItemAnimator
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.TaxiListAdapter
-import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.TaxiListItemDecoration
 import kotlinx.android.synthetic.main.taxi_list_activity.*
 import javax.inject.Inject
 
@@ -171,7 +171,7 @@ class TaxiListActivity : AppCompatActivity(),
     }
 
     private fun createTaxiListItemDecoration(): RecyclerView.ItemDecoration {
-        return TaxiListItemDecoration(resources.getDimensionPixelSize(R.dimen.taxi_list_item_decoration_spacing))
+        return MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin))
     }
 
     private fun calculateSpanCount(): Int {

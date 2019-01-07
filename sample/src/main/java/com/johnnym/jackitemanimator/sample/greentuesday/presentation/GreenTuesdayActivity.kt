@@ -11,9 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
+import com.johnnym.jackitemanimator.sample.common.views.MarginItemDecoration
 import com.johnnym.jackitemanimator.sample.greentuesday.GreenTuesdayModule
 import com.johnnym.jackitemanimator.sample.greentuesday.presentation.list.GreenTuesdayListAdapter
-import com.johnnym.jackitemanimator.sample.greentuesday.presentation.list.GreenTuesdayListItemDecoration
 import kotlinx.android.synthetic.main.green_tuesday_activity.*
 import javax.inject.Inject
 
@@ -76,12 +76,8 @@ class GreenTuesdayActivity : AppCompatActivity(),
         greenTuesdayListLayoutManager = GridLayoutManager(this, 2)
         greenTuesdayListLayoutManager.spanSizeLookup = greenTuesdayListSpanSizeLookup
         greenTuesdayItems.layoutManager = greenTuesdayListLayoutManager
-        greenTuesdayItems.addItemDecoration(GreenTuesdayListItemDecoration(
-                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_spacing_between_elements),
-                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_top_margin),
-                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_bottom_margin),
-                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_left_margin),
-                resources.getDimensionPixelSize(R.dimen.green_tuesday_list_right_margin)))
+        greenTuesdayItems.addItemDecoration(MarginItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin)))
 
         greenTuesdayItemsLoadingView.isEnabled = false
 

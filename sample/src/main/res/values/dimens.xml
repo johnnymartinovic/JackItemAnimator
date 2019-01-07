@@ -3,15 +3,9 @@
 
     <dimen name="toolbar_height">48dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
-
-    <dimen name="taxi_list_item_decoration_spacing">6dp</dimen>
+    <dimen name="margin_item_decoration_margin">4dp</dimen>
 
     <dimen name="green_tuesday_item_radius">2dp</dimen>
     <dimen name="green_tuesday_item_elevation">4dp</dimen>
-    <dimen name="green_tuesday_list_spacing_between_elements">8dp</dimen>
-    <dimen name="green_tuesday_list_left_margin">8dp</dimen>
-    <dimen name="green_tuesday_list_top_margin">8dp</dimen>
-    <dimen name="green_tuesday_list_bottom_margin">8dp</dimen>
-    <dimen name="green_tuesday_list_right_margin">8dp</dimen>
 
 </resources>
