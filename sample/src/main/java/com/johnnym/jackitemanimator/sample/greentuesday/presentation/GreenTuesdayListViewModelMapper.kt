@@ -10,15 +10,19 @@ class GreenTuesdayListViewModelMapper {
     }
 
     fun map(greenTuesdayList: GreenTuesdayList): GreenTuesdayListViewModel {
-        val listItemViewModels = greenTuesdayList.listItems.map {
+        val listItemViewModels = greenTuesdayList.listItems.mapIndexed { index, item ->
+            val style = if ((index + 1).rem(3) == 0) GreenTuesdayListItemViewModel.Style.FULL_WIDTH
+            else GreenTuesdayListItemViewModel.Style.HALF_WIDTH
+
             GreenTuesdayListItemViewModel(
-                    it.id,
-                    it.name,
-                    "$PRICE_PREFIX%.2f".format(it.price),
-                    "$PRICE_PREFIX%.2f".format(it.originalPrice),
-                    "${it.discountPercentage.roundToInt()}%",
-                    it.imageUrl,
-                    it.infoMessage)
+                    item.id,
+                    item.name,
+                    "$PRICE_PREFIX%.2f".format(item.price),
+                    "$PRICE_PREFIX%.2f".format(item.originalPrice),
+                    "${item.discountPercentage.roundToInt()}%",
+                    item.imageUrl,
+                    item.infoMessage,
+                    style)
         }
 
         return GreenTuesdayListViewModel(listItemViewModels)

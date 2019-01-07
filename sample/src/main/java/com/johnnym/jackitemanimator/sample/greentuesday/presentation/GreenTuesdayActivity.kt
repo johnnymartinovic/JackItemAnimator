@@ -113,7 +113,12 @@ class GreenTuesdayActivity : AppCompatActivity(),
 
     private val greenTuesdayListSpanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int): Int {
-            return 2
+            val style = greenTuesdayListAdapter.getItem(position).style
+
+            return when (style) {
+                GreenTuesdayListItemViewModel.Style.FULL_WIDTH -> 2
+                GreenTuesdayListItemViewModel.Style.HALF_WIDTH -> 1
+            }
         }
     }
 }
