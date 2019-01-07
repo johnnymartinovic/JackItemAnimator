@@ -50,5 +50,5 @@ class PriceDescendingComparator : Comparator<GreenTuesdayListItem> {
 class DiscountPercentageDescendingComparator : Comparator<GreenTuesdayListItem> {
 
     override fun compare(o1: GreenTuesdayListItem, o2: GreenTuesdayListItem): Int =
-            o1.originalPrice.compareTo(o2.originalPrice).unaryMinus()
+            o1.discountPercentage.compareTo(o2.discountPercentage)
 }

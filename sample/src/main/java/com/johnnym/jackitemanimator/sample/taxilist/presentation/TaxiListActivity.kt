@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
 import com.johnnym.jackitemanimator.sample.common.views.MarginItemDecoration
+import com.johnnym.jackitemanimator.sample.common.views.SingleOptionDialog
 import com.johnnym.jackitemanimator.sample.taxilist.TaxiListModule
 import com.johnnym.jackitemanimator.sample.taxilist.domain.TaxiStatusFilter
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.CustomJackItemAnimator
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 class TaxiListActivity : AppCompatActivity(),
         TaxiListContract.View,
-        TaxiListSortOptionsDialog.SortOptionSelectedListener {
+        SingleOptionDialog.OptionSelectedListener {
 
     companion object {
 
@@ -30,7 +31,7 @@ class TaxiListActivity : AppCompatActivity(),
             return Intent(context, TaxiListActivity::class.java)
         }
 
-        private const val SORT_OPTIONS_DIALOG_TAG = "sort_options_dialog_tag"
+        private const val TAXI_LIST_SORT_OPTIONS_DIALOG_TAG = "taxi_list_sort_options_dialog_tag"
 
         private const val MAX_COLUMNS = 3
     }
@@ -140,9 +141,12 @@ class TaxiListActivity : AppCompatActivity(),
     override fun showSortOptionsDialog(
             sortOptionList: List<String>,
             initiallySelectedSortOptionPosition: Int) {
-        TaxiListSortOptionsDialog
-                .createInstance(sortOptionList, initiallySelectedSortOptionPosition)
-                .show(supportFragmentManager, SORT_OPTIONS_DIALOG_TAG)
+        SingleOptionDialog
+                .createInstance(
+                        getString(R.string.taxi_list_sort_options_dialog_title),
+                        sortOptionList,
+                        initiallySelectedSortOptionPosition)
+                .show(supportFragmentManager, TAXI_LIST_SORT_OPTIONS_DIALOG_TAG)
     }
 
     override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
