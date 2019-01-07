@@ -8,16 +8,4 @@
         android:title="@string/green_tuesday_refresh_menu_item"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/green_tuesday_grid_menu_item"
-        android:icon="@drawable/grid_icon"
-        android:title="@string/green_tuesday_grid_menu_item"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/green_tuesday_sort_menu_item"
-        android:icon="@drawable/sort_icon"
-        android:title="@string/green_tuesday_sort_menu_item"
-        app:showAsAction="always" />
-
 </menu>

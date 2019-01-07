@@ -3,7 +3,6 @@ package com.johnnym.jackitemanimator.sample.greentuesday
 import com.johnnym.jackitemanimator.sample.greentuesday.data.GreenTuesdayListRepository
 import com.johnnym.jackitemanimator.sample.greentuesday.data.MockGreenTuesdayListRepository
 import com.johnnym.jackitemanimator.sample.greentuesday.domain.GetGreenTuesdayList
-import com.johnnym.jackitemanimator.sample.greentuesday.domain.GreenTuesdayListSortOption
 import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayContract
 import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayListViewModelMapper
 import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayPresenter
@@ -14,8 +13,7 @@ import io.reactivex.schedulers.Schedulers
 
 @Module
 class GreenTuesdayModule(
-        private val greenTuesdayView: GreenTuesdayContract.View,
-        private var initialGreenTuesdayListSortOption: GreenTuesdayListSortOption?
+        private val greenTuesdayView: GreenTuesdayContract.View
 ) {
 
     @Provides
@@ -26,8 +24,7 @@ class GreenTuesdayModule(
             GreenTuesdayPresenter(
                     greenTuesdayView,
                     getGreenTuesdayList,
-                    greenTuesdayListViewModelMapper,
-                    initialGreenTuesdayListSortOption)
+                    greenTuesdayListViewModelMapper)
 
     @Provides
     fun provideGetGreenTuesdayList(

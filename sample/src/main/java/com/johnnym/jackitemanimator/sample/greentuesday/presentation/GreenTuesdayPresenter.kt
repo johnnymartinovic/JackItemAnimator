@@ -4,34 +4,14 @@ import com.johnnym.jackitemanimator.sample.common.mvp.AbsPresenter
 import com.johnnym.jackitemanimator.sample.common.presentation.GeneralSingleObserver
 import com.johnnym.jackitemanimator.sample.greentuesday.domain.GetGreenTuesdayList
 import com.johnnym.jackitemanimator.sample.greentuesday.domain.GreenTuesdayList
-import com.johnnym.jackitemanimator.sample.greentuesday.domain.GreenTuesdayListSortOption
 
 class GreenTuesdayPresenter(
         private val greenTuesdayView: GreenTuesdayContract.View,
         private val getGreenTuesdayList: GetGreenTuesdayList,
-        private val greenTuesdayListViewModelMapper: GreenTuesdayListViewModelMapper,
-        private var currentGreenTuesdayListSortOption: GreenTuesdayListSortOption?
+        private val greenTuesdayListViewModelMapper: GreenTuesdayListViewModelMapper
 ) : AbsPresenter(), GreenTuesdayContract.Presenter {
 
     init {
-        getAndShowGreenTuesdayList()
-    }
-
-    override fun onSortButtonPressed() {
-        val sortOptionList = mutableListOf("Best Match")
-        sortOptionList.addAll(GreenTuesdayListSortOption.values()
-                .map { it.getSortOptionName() })
-
-        greenTuesdayView.showSortOptionsDialog(
-                sortOptionList,
-                currentGreenTuesdayListSortOption?.let { it.ordinal + 1 } ?: 0)
-    }
-
-    override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
-        currentGreenTuesdayListSortOption =
-                if (selectedSortOptionPosition == 0) null
-                else GreenTuesdayListSortOption.values()[selectedSortOptionPosition - 1]
-
         getAndShowGreenTuesdayList()
     }
 
@@ -45,7 +25,7 @@ class GreenTuesdayPresenter(
         getGreenTuesdayList.disposePendingExecutions()
         getGreenTuesdayList.execute(
                 GetGreenTuesdayListObserver(),
-                GetGreenTuesdayList.Params(currentGreenTuesdayListSortOption))
+                GetGreenTuesdayList.Params())
     }
 
     inner class GetGreenTuesdayListObserver : GeneralSingleObserver<GreenTuesdayList>(this) {

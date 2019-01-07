@@ -11,16 +11,8 @@ class GetGreenTuesdayList(
         observeOnScheduler: Scheduler
 ) : UseCase<GreenTuesdayList, GetGreenTuesdayList.Params>(subscribeOnScheduler, observeOnScheduler) {
 
-    override fun buildUseCase(params: Params): Single<GreenTuesdayList> {
-        val greenTuesdayListSingle = greenTuesdayListRepository.getGreenTuesdayListSingle()
+    override fun buildUseCase(params: Params): Single<GreenTuesdayList> =
+            greenTuesdayListRepository.getGreenTuesdayListSingle()
 
-        return if (params.sortOption == null) greenTuesdayListSingle
-        else greenTuesdayListSingle.map {
-            GreenTuesdayList(it.listItems
-                    .sortedWith(params.sortOption.createComparator()))
-        }
-    }
-
-    class Params(
-            val sortOption: GreenTuesdayListSortOption? = null)
+    class Params
 }

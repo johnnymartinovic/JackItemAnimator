@@ -12,23 +12,19 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
 import com.johnnym.jackitemanimator.sample.common.views.MarginItemDecoration
-import com.johnnym.jackitemanimator.sample.common.views.SingleOptionDialog
 import com.johnnym.jackitemanimator.sample.greentuesday.GreenTuesdayModule
 import com.johnnym.jackitemanimator.sample.greentuesday.presentation.list.GreenTuesdayListAdapter
 import kotlinx.android.synthetic.main.green_tuesday_activity.*
 import javax.inject.Inject
 
 class GreenTuesdayActivity : AppCompatActivity(),
-        GreenTuesdayContract.View,
-        SingleOptionDialog.OptionSelectedListener {
+        GreenTuesdayContract.View {
 
     companion object {
 
         fun createIntent(context: Context): Intent {
             return Intent(context, GreenTuesdayActivity::class.java)
         }
-
-        private const val GREEN_TUESDAY_LIST_SORT_OPTIONS_DIALOG_TAG = "green_tuesday_list_sort_options_dialog_tag"
     }
 
     @Inject
@@ -65,14 +61,6 @@ class GreenTuesdayActivity : AppCompatActivity(),
                         presenter.onRefreshButtonPressed()
                         true
                     }
-                    R.id.green_tuesday_grid_menu_item -> {
-                        // TODO
-                        true
-                    }
-                    R.id.green_tuesday_sort_menu_item -> {
-                        presenter.onSortButtonPressed()
-                        true
-                    }
                     else -> super.onOptionsItemSelected(item)
                 }
             }
@@ -92,8 +80,7 @@ class GreenTuesdayActivity : AppCompatActivity(),
         sampleApplication.sampleApplicationComponent
                 .newGreenTuesdayComponent(
                         GreenTuesdayModule(
-                                this,
-                                null))
+                                this))
                 .inject(this)
     }
 
@@ -113,19 +100,6 @@ class GreenTuesdayActivity : AppCompatActivity(),
 
     override fun hideLoading() {
         greenTuesdayItemsLoadingView.isRefreshing = false
-    }
-
-    override fun showSortOptionsDialog(sortOptionList: List<String>, initiallySelectedSortOptionPosition: Int) {
-        SingleOptionDialog
-                .createInstance(
-                        getString(R.string.taxi_list_sort_options_dialog_title),
-                        sortOptionList,
-                        initiallySelectedSortOptionPosition)
-                .show(supportFragmentManager, GREEN_TUESDAY_LIST_SORT_OPTIONS_DIALOG_TAG)
-    }
-
-    override fun onSortOptionSelected(selectedSortOptionPosition: Int) {
-        presenter.onSortOptionSelected(selectedSortOptionPosition)
     }
 
     private val greenTuesdayListSpanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {

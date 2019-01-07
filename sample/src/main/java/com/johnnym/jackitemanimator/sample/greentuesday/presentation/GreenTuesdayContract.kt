@@ -11,17 +11,9 @@ interface GreenTuesdayContract {
         fun showLoading()
 
         fun hideLoading()
-
-        fun showSortOptionsDialog(
-                sortOptionList: List<String>,
-                initiallySelectedSortOptionPosition: Int)
     }
 
     interface Presenter : BasePresenter {
-
-        fun onSortButtonPressed()
-
-        fun onSortOptionSelected(selectedSortOptionPosition: Int)
 
         fun onRefreshButtonPressed()
     }
