@@ -8,16 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SampleTheme.GreenTuesday">
+    <style name="SampleTheme.Travelino">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/general_status_bar</item>
         <item name="android:navigationBarColor">@color/general_navigation_bar</item>
     </style>
 
-    <style name="SampleTheme.GreenTuesday.Toolbar">
+    <style name="SampleTheme.Travelino.Toolbar">
         <item name="android:fontFamily">@font/rubik_medium</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/green_tuesday_text_light_normal</item>
+        <item name="android:textColor">@color/travelino_text_light_normal</item>
     </style>
 
 </resources>

@@ -5,7 +5,7 @@
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="margin_item_decoration_margin">4dp</dimen>
 
-    <dimen name="green_tuesday_item_radius">2dp</dimen>
-    <dimen name="green_tuesday_item_elevation">4dp</dimen>
+    <dimen name="travelino_item_radius">2dp</dimen>
+    <dimen name="travelino_item_elevation">4dp</dimen>
 
 </resources>

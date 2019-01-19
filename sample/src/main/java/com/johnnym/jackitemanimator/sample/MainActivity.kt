@@ -2,7 +2,7 @@ package com.johnnym.jackitemanimator.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayActivity
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoActivity
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.TaxiListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(TaxiListActivity.createIntent(this))
         }
 
-        greenTuesdayButton.setOnClickListener {
-            startActivity(GreenTuesdayActivity.createIntent(this))
+        travelinoButton.setOnClickListener {
+            startActivity(TravelinoActivity.createIntent(this))
         }
     }
 }

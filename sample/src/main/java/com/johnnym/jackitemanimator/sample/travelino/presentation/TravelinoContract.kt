@@ -1,12 +1,12 @@
-package com.johnnym.jackitemanimator.sample.greentuesday.presentation
+package com.johnnym.jackitemanimator.sample.travelino.presentation
 
 import com.johnnym.jackitemanimator.sample.common.mvp.BasePresenter
 
-interface GreenTuesdayContract {
+interface TravelinoContract {
 
     interface View {
 
-        fun showGreenTuesdayListViewModel(viewModel: GreenTuesdayListViewModel)
+        fun showTravelinoListViewModel(viewModel: TravelinoListViewModel)
 
         fun showLoading()
 

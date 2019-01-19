@@ -1,4 +1,4 @@
-package com.johnnym.jackitemanimator.sample.greentuesday.presentation.list
+package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,13 +10,13 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.views.CardViewOutlineProvider
 
-class GreenTuesdaySquareItemView @JvmOverloads constructor(
+class TravelinoSquareItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val itemElevation by bindDimen(R.dimen.green_tuesday_item_elevation)
+    private val itemElevation by bindDimen(R.dimen.travelino_item_elevation)
 
     val image: ImageView by bindView(R.id.image)
     val title: TextView by bindView(R.id.title)
@@ -26,7 +26,7 @@ class GreenTuesdaySquareItemView @JvmOverloads constructor(
     val alarmMessage: TextView by bindView(R.id.alarmMessage)
 
     init {
-        inflate(context, R.layout.green_tuesday_square_item, this)
+        inflate(context, R.layout.travelino_square_item, this)
 
         outlineProvider = CardViewOutlineProvider()
         clipToOutline = true

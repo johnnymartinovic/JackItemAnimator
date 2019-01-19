@@ -5,13 +5,13 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".greentuesday.presentation.GreenTuesdayActivity">
+    tools:context=".travelino.presentation.TravelinoActivity">
 
     <View
         android:id="@+id/statusBarBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/green_tuesday_background"
+        android:background="@color/travelino_background"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,17 +21,17 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/green_tuesday_background"
+        android:background="@color/travelino_background"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarBackground"
         app:navigationIcon="@drawable/back_arrow_icon"
-        app:title="@string/green_tuesday_label"
-        app:titleTextAppearance="@style/SampleTheme.GreenTuesday.Toolbar" />
+        app:title="@string/travelino_label"
+        app:titleTextAppearance="@style/SampleTheme.Travelino.Toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/greenTuesdayItemsLoadingView"
+        android:id="@+id/travelinoItemsLoadingView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/greenTuesdayItems"
+            android:id="@+id/travelinoItems"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -7,7 +7,7 @@ import com.johnnym.jackitemanimator.sample.R
 
 class CardViewOutlineProvider : ViewOutlineProvider() {
     override fun getOutline(view: View, outline: Outline) {
-        val radius = view.resources.getDimension(R.dimen.green_tuesday_item_radius)
+        val radius = view.resources.getDimension(R.dimen.travelino_item_radius)
         outline.setRoundRect(0, 0, view.width, view.height, radius)
     }
 }

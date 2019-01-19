@@ -1,20 +1,20 @@
-package com.johnnym.jackitemanimator.sample.greentuesday.presentation.list
+package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayListItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
 
-class GreenTuesdayListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items = mutableListOf<GreenTuesdayListItemViewModel>()
+    private var items = mutableListOf<TravelinoListItemViewModel>()
 
     override fun getItemCount(): Int = items.size
 
     override fun getItemViewType(position: Int): Int {
         val viewType = when (items[position].style) {
-            GreenTuesdayListItemViewModel.Style.FULL_WIDTH -> ViewType.NORMAL
-            GreenTuesdayListItemViewModel.Style.HALF_WIDTH -> ViewType.SQUARE
+            TravelinoListItemViewModel.Style.FULL_WIDTH -> ViewType.NORMAL
+            TravelinoListItemViewModel.Style.HALF_WIDTH -> ViewType.SQUARE
         }
 
         return viewType.ordinal
@@ -24,15 +24,15 @@ class GreenTuesdayListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         val context = parent.context
 
         return when (ViewType.from(viewType)) {
-            ViewType.NORMAL -> GreenTuesdayNormalItemViewHolder(context, GreenTuesdayNormalItemView(context))
-            ViewType.SQUARE -> GreenTuesdaySquareItemViewHolder(context, GreenTuesdaySquareItemView(context))
+            ViewType.NORMAL -> TravelinoNormalItemViewHolder(context, TravelinoNormalItemView(context))
+            ViewType.SQUARE -> TravelinoSquareItemViewHolder(context, TravelinoSquareItemView(context))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is GreenTuesdayNormalItemViewHolder -> holder.bind(items[position])
-            is GreenTuesdaySquareItemViewHolder -> holder.bind(items[position])
+            is TravelinoNormalItemViewHolder -> holder.bind(items[position])
+            is TravelinoSquareItemViewHolder -> holder.bind(items[position])
         }
     }
 
@@ -44,8 +44,8 @@ class GreenTuesdayListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         }
     }
 
-    fun setItems(newItems: List<GreenTuesdayListItemViewModel>) {
-        val result = DiffUtil.calculateDiff(GreenTuesdayListDiffUtilCallback(this.items, newItems))
+    fun setItems(newItems: List<TravelinoListItemViewModel>) {
+        val result = DiffUtil.calculateDiff(TravelinoListDiffUtilCallback(this.items, newItems))
         result.dispatchUpdatesTo(this)
         this.items.clear()
         this.items.addAll(newItems)

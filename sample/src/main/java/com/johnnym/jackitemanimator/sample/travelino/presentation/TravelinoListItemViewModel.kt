@@ -1,6 +1,6 @@
-package com.johnnym.jackitemanimator.sample.greentuesday.presentation
+package com.johnnym.jackitemanimator.sample.travelino.presentation
 
-data class GreenTuesdayListItemViewModel(
+data class TravelinoListItemViewModel(
         val id: String,
         val name: String,
         val price: String,

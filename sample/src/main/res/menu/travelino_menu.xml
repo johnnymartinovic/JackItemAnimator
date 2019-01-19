@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/green_tuesday_refresh_menu_item"
+        android:id="@+id/travelino_refresh_menu_item"
         android:icon="@drawable/refresh_icon"
-        android:title="@string/green_tuesday_refresh_menu_item"
+        android:title="@string/travelino_refresh_menu_item"
         app:showAsAction="always" />
 
 </menu>

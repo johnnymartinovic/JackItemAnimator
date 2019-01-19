@@ -10,7 +10,7 @@
     <string name="taxi_list_item_stars_format" translatable="false">%1$.1f</string>
     <string name="taxi_list_item_distance_format" translatable="false">%1$.2f km</string>
 
-    <string name="green_tuesday_label">Green Tuesday</string>
-    <string name="green_tuesday_refresh_menu_item">Refresh</string>
+    <string name="travelino_label">Travelino</string>
+    <string name="travelino_refresh_menu_item">Refresh</string>
 
 </resources>

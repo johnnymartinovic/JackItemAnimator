@@ -1,11 +1,11 @@
-package com.johnnym.jackitemanimator.sample.greentuesday.presentation.list
+package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayListItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
 
-class GreenTuesdayListDiffUtilCallback(
-        private var oldItems: List<GreenTuesdayListItemViewModel>,
-        private var newItems: List<GreenTuesdayListItemViewModel>
+class TravelinoListDiffUtilCallback(
+        private var oldItems: List<TravelinoListItemViewModel>,
+        private var newItems: List<TravelinoListItemViewModel>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldItems.size

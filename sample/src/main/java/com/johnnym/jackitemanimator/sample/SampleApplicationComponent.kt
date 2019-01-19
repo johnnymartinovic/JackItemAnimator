@@ -1,7 +1,7 @@
 package com.johnnym.jackitemanimator.sample
 
-import com.johnnym.jackitemanimator.sample.greentuesday.GreenTuesdayComponent
-import com.johnnym.jackitemanimator.sample.greentuesday.GreenTuesdayModule
+import com.johnnym.jackitemanimator.sample.travelino.TravelinoComponent
+import com.johnnym.jackitemanimator.sample.travelino.TravelinoModule
 import com.johnnym.jackitemanimator.sample.taxilist.TaxiListComponent
 import com.johnnym.jackitemanimator.sample.taxilist.TaxiListModule
 import dagger.Component
@@ -16,5 +16,5 @@ interface SampleApplicationComponent {
     fun inject(sampleApplication: SampleApplication)
 
     fun newTaxiListComponent(taxiListModule: TaxiListModule): TaxiListComponent
-    fun newGreenTuesdayComponent(greenTuesdayModule: GreenTuesdayModule): GreenTuesdayComponent
+    fun newTravelinoComponent(travelinoModule: TravelinoModule): TravelinoComponent
 }

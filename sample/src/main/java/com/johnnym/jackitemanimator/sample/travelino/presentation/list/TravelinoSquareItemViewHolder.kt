@@ -1,18 +1,18 @@
-package com.johnnym.jackitemanimator.sample.greentuesday.presentation.list
+package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import android.content.Context
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.johnnym.jackitemanimator.sample.greentuesday.presentation.GreenTuesdayListItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
 
-class GreenTuesdayNormalItemViewHolder(
+class TravelinoSquareItemViewHolder(
         private val context: Context,
-        val view: GreenTuesdayNormalItemView
+        val view: TravelinoSquareItemView
 ) : RecyclerView.ViewHolder(view) {
 
-    fun bind(viewModel: GreenTuesdayListItemViewModel) {
+    fun bind(viewModel: TravelinoListItemViewModel) {
         view.title.text = viewModel.name
         view.price.text = viewModel.price
         view.originalPrice.text = viewModel.originalPrice
