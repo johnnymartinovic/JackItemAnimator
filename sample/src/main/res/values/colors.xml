@@ -16,13 +16,12 @@
     <color name="taxi_list_item_status_unavailable">#EC4A3D</color>
     <color name="taxi_list_item_background">#FAFAFA</color>
 
-    <color name="travelino_background">#6cbf10</color>
+    <color name="travelino_background">#fe7263</color>
     <color name="travelino_item_background">#ffffff</color>
     <color name="travelino_text_light_normal">@color/general_light</color>
-    <color name="travelino_text_light_inactive">#B3FFFFFF</color>
-    <color name="travelino_text_dark_normal">#3d3d3d</color>
+    <color name="travelino_text_dark_normal">#444a59</color>
     <color name="travelino_text_dark_inactive">#999999</color>
-    <color name="travelino_text_info">#6cbf10</color>
+    <color name="travelino_text_info">#ff5252</color>
     <color name="travelino_text_alarm">#ff5252</color>
 
 </resources>
