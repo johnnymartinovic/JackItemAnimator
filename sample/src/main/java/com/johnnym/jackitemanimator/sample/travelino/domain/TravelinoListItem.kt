@@ -6,7 +6,13 @@ data class TravelinoListItem(
         val price: Int,
         val originalPrice: Int,
         val imageUrl: String,
-        val infoMessage: String?) {
+        val infoMessage: String?,
+        val style: Style = Style.FULL_WIDTH) {
 
     val discountPercentage: Float = ((price.toFloat() / originalPrice) - 1) * 100
+
+    enum class Style {
+        FULL_WIDTH,
+        HALF_WIDTH
+    }
 }

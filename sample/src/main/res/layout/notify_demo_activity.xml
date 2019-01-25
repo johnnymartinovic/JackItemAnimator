@@ -5,13 +5,13 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".travelino.presentation.TravelinoActivity">
+    tools:context=".notifydemo.NotifyDemoActivity">
 
     <View
         android:id="@+id/statusBarBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/travelino_background"
+        android:background="@color/general_toolbar"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,29 +21,35 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/travelino_background"
+        android:background="@color/general_toolbar"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statusBarBackground"
         app:navigationIcon="@drawable/back_arrow_icon"
-        app:title="@string/travelino_label"
+        app:title="@string/notify_demo_label"
         app:titleTextAppearance="@style/SampleTheme.Toolbar" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/travelinoItemsLoadingView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/travelinoItems"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.johnnym.jackitemanimator.sample.common.views.RoundImageView
+        android:id="@+id/playButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/general_button"
+        android:elevation="4dp"
+        android:src="@drawable/play_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

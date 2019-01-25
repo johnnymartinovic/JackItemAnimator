@@ -44,7 +44,7 @@ class TravelinoMockFactory {
             return travelinoList
         }
 
-        private fun createImageUrl(photoId: String) = UNSPLASH_BASE_URL + photoId
+        fun createImageUrl(photoId: String) = UNSPLASH_BASE_URL + photoId
 
         private fun TravelinoListItem.createCopy(
                 price: Int = this.price,
