@@ -6,7 +6,7 @@ import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListI
 import com.johnnym.jackitemanimator.sample.travelino.presentation.list.TravelinoNormalItemView
 import com.johnnym.jackitemanimator.sample.travelino.presentation.list.TravelinoNormalItemViewHolder
 
-class NotifyDemoListAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder>() {
+class NotifyDemoAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder>() {
 
     private var items = mutableListOf<TravelinoListItemViewModel>()
 
@@ -23,6 +23,15 @@ class NotifyDemoListAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder
 
     override fun onBindViewHolder(holder: TravelinoNormalItemViewHolder, position: Int) {
         holder.bind(items[position])
+    }
+
+    override fun onBindViewHolder(holder: TravelinoNormalItemViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty())
+            super.onBindViewHolder(holder, position, payloads)
+        else {
+            if (payloads.any { it is InfoMessageChanged })
+                holder.view.alarmMessage.text = this.items[position].infoMessage
+        }
     }
 
     fun setItems(newItems: List<TravelinoListItemViewModel>) {
@@ -64,4 +73,15 @@ class NotifyDemoListAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder
         this.items[position] = newItem
         notifyItemChanged(position)
     }
+
+    fun changeItemWithPayload(position: Int, newInfoMessage: String) {
+        val oldItem = this.items[position]
+        val newItem = oldItem.copy(
+                infoMessage = newInfoMessage
+        )
+        this.items[position] = newItem
+        notifyItemChanged(position, InfoMessageChanged())
+    }
+
+    class InfoMessageChanged
 }

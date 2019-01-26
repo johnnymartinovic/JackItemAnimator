@@ -18,5 +18,6 @@
     <string name="notify_demo_move_item_label">Notify move demo</string>
     <string name="notify_demo_remove_item_range_label">Notify remove item range demo</string>
     <string name="notify_demo_change_item_label">Notify change item demo</string>
+    <string name="notify_demo_change_item_with_payload_label">Notify change item with payload demo</string>
 
 </resources>

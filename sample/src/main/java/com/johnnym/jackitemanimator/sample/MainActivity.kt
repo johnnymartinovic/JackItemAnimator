@@ -48,5 +48,12 @@ class MainActivity : AppCompatActivity() {
                     NotifyDemoActivity.NotifyDemoInitData(
                             NotifyDemoActivity.NotifyDemoInitData.DemoType.CHANGE_ITEM)))
         }
+
+        changeItemWithPayloadDemoButton.setOnClickListener {
+            startActivity(NotifyDemoActivity.createIntent(
+                    this,
+                    NotifyDemoActivity.NotifyDemoInitData(
+                            NotifyDemoActivity.NotifyDemoInitData.DemoType.CHANGE_ITEM_WITH_PAYLOAD)))
+        }
     }
 }

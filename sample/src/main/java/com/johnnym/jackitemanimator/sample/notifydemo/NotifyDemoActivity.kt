@@ -40,13 +40,17 @@ class NotifyDemoActivity : AppCompatActivity() {
     private val itemsView: RecyclerView by bindView(R.id.itemsRecyclerView)
     private val playButton: View by bindView(R.id.playButton)
 
+    private val notifyDemoAdapter = NotifyDemoAdapter()
     private val mapper = TravelinoListViewModelMapper()
 
-    private lateinit var listAdapter: NotifyDemoListAdapter
+    private lateinit var demoType: NotifyDemoInitData.DemoType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.notify_demo_activity)
+
+        val initData: NotifyDemoInitData = intent.getParcelableExtra(EXTRA_NOTIFY_DEMO_INIT_DATA)
+        demoType = initData.demoType
 
         window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -66,13 +70,13 @@ class NotifyDemoActivity : AppCompatActivity() {
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        listAdapter = NotifyDemoListAdapter()
         itemsView.setHasFixedSize(true)
-        itemsView.adapter = listAdapter
+        itemsView.adapter = notifyDemoAdapter
         itemsView.layoutManager = LinearLayoutManager(this)
         itemsView.addItemDecoration(MarginItemDecoration(
                 resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin)))
-        listAdapter.setItems(items.map { mapper.map(it) })
+
+        notifyDemoAdapter.setItems(items.map { mapper.map(it) })
 
         playButton.setOnClickListener {
             playButton.setOnClickListener(null)
@@ -86,28 +90,33 @@ class NotifyDemoActivity : AppCompatActivity() {
                         }
                     })
 
-            val initData: NotifyDemoInitData = intent.getParcelableExtra(EXTRA_NOTIFY_DEMO_INIT_DATA)
+            runAnimations()
+        }
+    }
 
-            when (initData.demoType) {
-                NotifyDemoInitData.DemoType.INSERT_ITEM -> {
-                    val newItem = TravelinoListItem(
-                            "id_08",
-                            "Hawaii",
-                            120,
-                            150,
-                            TravelinoMockFactory.createImageUrl("prSogOoFmkw"),
-                            null)
-                    listAdapter.insertItem(mapper.map(newItem), 2)
-                }
-                NotifyDemoInitData.DemoType.MOVE_ITEM -> {
-                    listAdapter.moveItem(3, 1)
-                }
-                NotifyDemoInitData.DemoType.REMOVE_ITEM_RANGE -> {
-                    listAdapter.removeItemRange(2, 2)
-                }
-                NotifyDemoInitData.DemoType.CHANGE_ITEM -> {
-                    listAdapter.changeItem(1, "Eiffel tower is here!")
-                }
+    private fun runAnimations() {
+        when (demoType) {
+            NotifyDemoInitData.DemoType.INSERT_ITEM -> {
+                val newItem = TravelinoListItem(
+                        "id_08",
+                        "Hawaii",
+                        120,
+                        150,
+                        TravelinoMockFactory.createImageUrl("prSogOoFmkw"),
+                        null)
+                notifyDemoAdapter.insertItem(mapper.map(newItem), 2)
+            }
+            NotifyDemoInitData.DemoType.MOVE_ITEM -> {
+                notifyDemoAdapter.moveItem(3, 1)
+            }
+            NotifyDemoInitData.DemoType.REMOVE_ITEM_RANGE -> {
+                notifyDemoAdapter.removeItemRange(2, 2)
+            }
+            NotifyDemoInitData.DemoType.CHANGE_ITEM -> {
+                notifyDemoAdapter.changeItem(1, "Eiffel tower is here!")
+            }
+            NotifyDemoInitData.DemoType.CHANGE_ITEM_WITH_PAYLOAD -> {
+                notifyDemoAdapter.changeItemWithPayload(1, "Eiffel tower is here!")
             }
         }
     }
@@ -179,7 +188,8 @@ class NotifyDemoActivity : AppCompatActivity() {
             INSERT_ITEM,
             MOVE_ITEM,
             REMOVE_ITEM_RANGE,
-            CHANGE_ITEM
+            CHANGE_ITEM,
+            CHANGE_ITEM_WITH_PAYLOAD
         }
     }
 }
