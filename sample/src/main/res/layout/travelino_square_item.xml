@@ -85,7 +85,7 @@
         tools:text="-30%" />
 
     <TextView
-        android:id="@+id/alarmMessage"
+        android:id="@+id/infoMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -94,7 +94,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/rubik_regular"
         android:maxLines="1"
-        android:textColor="@color/travelino_text_alarm"
+        android:textColor="@color/travelino_text_info"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

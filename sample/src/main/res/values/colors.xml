@@ -24,6 +24,5 @@
     <color name="travelino_text_dark_normal">#444a59</color>
     <color name="travelino_text_dark_inactive">#999999</color>
     <color name="travelino_text_info">#ff5252</color>
-    <color name="travelino_text_alarm">#ff5252</color>
 
 </resources>

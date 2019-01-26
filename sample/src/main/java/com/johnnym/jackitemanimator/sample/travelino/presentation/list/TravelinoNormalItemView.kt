@@ -23,7 +23,7 @@ class TravelinoNormalItemView @JvmOverloads constructor(
     val price: TextView by bindView(R.id.price)
     val originalPrice: TextView by bindView(R.id.originalPrice)
     val discountPercentage: TextView by bindView(R.id.discountPercentage)
-    val alarmMessage: TextView by bindView(R.id.alarmMessage)
+    val infoMessage: TextView by bindView(R.id.infoMessage)
 
     init {
         inflate(context, R.layout.travelino_normal_item, this)

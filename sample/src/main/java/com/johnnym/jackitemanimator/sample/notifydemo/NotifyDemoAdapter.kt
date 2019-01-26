@@ -30,7 +30,7 @@ class NotifyDemoAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder>() 
             super.onBindViewHolder(holder, position, payloads)
         else {
             if (payloads.any { it is InfoMessageChanged })
-                holder.view.alarmMessage.text = this.items[position].infoMessage
+                holder.view.infoMessage.text = this.items[position].infoMessage
         }
     }
 

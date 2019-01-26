@@ -27,7 +27,7 @@ class TravelinoSquareItemViewHolder(
                 .into(view.image)
 
         viewModel.infoMessage
-                ?.let { view.alarmMessage.text = it }
-                ?: let { view.alarmMessage.isGone = true }
+                ?.let { view.infoMessage.text = it }
+                ?: let { view.infoMessage.isGone = true }
     }
 }
