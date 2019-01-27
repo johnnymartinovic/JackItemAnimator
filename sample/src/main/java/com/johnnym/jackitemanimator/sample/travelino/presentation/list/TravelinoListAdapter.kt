@@ -3,6 +3,8 @@ package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.Change
+import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.createCombinedPayload
 import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
 
 class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,7 +42,30 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
         } else {
-            // TODO
+            val combinedChange = createCombinedPayload(payloads as List<Change<TravelinoListItemViewModel>>)
+            val oldData = combinedChange.oldData
+            val newData = combinedChange.newData
+
+            if (newData.price != oldData.price) {
+                when (holder) {
+                    is TravelinoNormalItemViewHolder -> holder.view.price.text = newData.price
+                    is TravelinoSquareItemViewHolder -> holder.view.price.text = newData.price
+                }
+            }
+
+            if (newData.discountPercentage != oldData.discountPercentage) {
+                when (holder) {
+                    is TravelinoNormalItemViewHolder -> holder.view.discountPercentage.text = newData.discountPercentage
+                    is TravelinoSquareItemViewHolder -> holder.view.discountPercentage.text = newData.discountPercentage
+                }
+            }
+
+            if (newData.infoMessage != oldData.infoMessage) {
+                when (holder) {
+                    is TravelinoNormalItemViewHolder -> holder.view.infoMessage.text = newData.infoMessage
+                    is TravelinoSquareItemViewHolder -> holder.view.infoMessage.text = newData.infoMessage
+                }
+            }
         }
     }
 
@@ -59,6 +84,31 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         companion object {
             fun from(viewType: Int) = ViewType.values()[viewType]
+        }
+    }
+
+    class TravelinoListDiffUtilCallback(
+            private var oldItems: List<TravelinoListItemViewModel>,
+            private var newItems: List<TravelinoListItemViewModel>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldItems.size
+
+        override fun getNewListSize(): Int = newItems.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                oldItems[oldItemPosition].id == newItems[newItemPosition].id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                oldItems[oldItemPosition] == newItems[newItemPosition]
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+
+            return Change(
+                    oldItem,
+                    newItem)
         }
     }
 }
