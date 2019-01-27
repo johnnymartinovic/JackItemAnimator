@@ -2,6 +2,7 @@ package com.johnnym.jackitemanimator.sample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.johnnym.jackitemanimator.sample.diffutildemo.DiffUtilDemoActivity
 import com.johnnym.jackitemanimator.sample.notifydemo.NotifyDemoActivity
 import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoActivity
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.TaxiListActivity
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity() {
                     this,
                     NotifyDemoActivity.NotifyDemoInitData(
                             NotifyDemoActivity.NotifyDemoInitData.DemoType.CHANGE_ITEM_WITH_PAYLOAD)))
+        }
+
+        diffUtilDemoButton.setOnClickListener {
+            startActivity(DiffUtilDemoActivity.createIntent(this))
         }
     }
 }

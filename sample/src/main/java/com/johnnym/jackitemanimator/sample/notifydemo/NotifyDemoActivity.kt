@@ -17,7 +17,7 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.views.MarginItemDecoration
 import com.johnnym.jackitemanimator.sample.travelino.data.TravelinoMockFactory
-import com.johnnym.jackitemanimator.sample.travelino.domain.TravelinoListItem
+import com.johnnym.jackitemanimator.sample.travelino.domain.TravelinoItem
 import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListViewModelMapper
 import kotlinx.android.parcel.Parcelize
 
@@ -97,13 +97,13 @@ class NotifyDemoActivity : AppCompatActivity() {
     private fun runAnimations() {
         when (demoType) {
             NotifyDemoInitData.DemoType.INSERT_ITEM -> {
-                val newItem = TravelinoListItem(
+                val newItem = TravelinoItem(
                         "id_08",
                         "Hawaii",
                         120,
                         150,
                         TravelinoMockFactory.createImageUrl("prSogOoFmkw"),
-                        null)
+                        "")
                 notifyDemoAdapter.insertItem(mapper.map(newItem), 2)
             }
             NotifyDemoInitData.DemoType.MOVE_ITEM -> {
@@ -122,62 +122,14 @@ class NotifyDemoActivity : AppCompatActivity() {
     }
 
     private val items = listOf(
-            TravelinoListItem(
-                    "id_00",
-                    "Zagreb",
-                    70,
-                    92,
-                    TravelinoMockFactory.createImageUrl("ZINC3joF-JQ"),
-                    null),
-            TravelinoListItem(
-                    "id_01",
-                    "Paris",
-                    52,
-                    74,
-                    TravelinoMockFactory.createImageUrl("Q0-fOL2nqZc"),
-                    "Paris is in France."),
-            TravelinoListItem(
-                    "id_02",
-                    "New York",
-                    60,
-                    95,
-                    TravelinoMockFactory.createImageUrl("UExx0KnnkjY"),
-                    null),
-            TravelinoListItem(
-                    "id_03",
-                    "London",
-                    30,
-                    35,
-                    TravelinoMockFactory.createImageUrl("tZDtyUrYrFU"),
-                    null),
-            TravelinoListItem(
-                    "id_04",
-                    "Sidney",
-                    102,
-                    134,
-                    TravelinoMockFactory.createImageUrl("DLbCETd599Y"),
-                    "Sidney is in Australia."),
-            TravelinoListItem(
-                    "id_05",
-                    "Berlin",
-                    48,
-                    64,
-                    TravelinoMockFactory.createImageUrl("fv0yV5-Pbjc"),
-                    null),
-            TravelinoListItem(
-                    "id_06",
-                    "Rome",
-                    42,
-                    48,
-                    TravelinoMockFactory.createImageUrl("0Bs3et8FYyg"),
-                    "Rome is in Italy."),
-            TravelinoListItem(
-                    "id_07",
-                    "Cuba",
-                    99,
-                    113,
-                    TravelinoMockFactory.createImageUrl("RqMIFcDLeos"),
-                    null))
+            TravelinoMockFactory.Zagreb.copy(),
+            TravelinoMockFactory.Paris.copy(infoMessage = "Paris is in France."),
+            TravelinoMockFactory.NewYork.copy(),
+            TravelinoMockFactory.London.copy(),
+            TravelinoMockFactory.Sidney.copy(infoMessage = "Sidney is in Australia."),
+            TravelinoMockFactory.Berlin.copy(),
+            TravelinoMockFactory.Rome.copy(infoMessage = "Rome is in Italy."),
+            TravelinoMockFactory.Cuba.copy())
 
     @Parcelize
     data class NotifyDemoInitData(

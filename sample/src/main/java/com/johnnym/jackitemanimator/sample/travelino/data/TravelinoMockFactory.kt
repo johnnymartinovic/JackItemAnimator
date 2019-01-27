@@ -1,22 +1,17 @@
 package com.johnnym.jackitemanimator.sample.travelino.data
 
-import com.johnnym.jackitemanimator.sample.travelino.domain.TravelinoList
-import com.johnnym.jackitemanimator.sample.travelino.domain.TravelinoListItem
+import com.johnnym.jackitemanimator.sample.travelino.domain.TravelinoItem
 import java.lang.IllegalStateException
 
 class TravelinoMockFactory {
 
     companion object {
 
-        private const val INSTANCE_MOD_VALUE = 2
-
         private const val UNSPLASH_BASE_URL = "https://source.unsplash.com/"
 
-        fun createTravelinoList(currentInstanceNumber: Int): TravelinoList {
-            val currentInstanceNumberMod = currentInstanceNumber % INSTANCE_MOD_VALUE
-
+        fun createTravelinoItemList(instanceNumber: Int): List<TravelinoItem> {
             @Suppress("UnnecessaryVariable")
-            val travelinoList = TravelinoList(when (currentInstanceNumberMod) {
+            val list = when (instanceNumber) {
                 0 -> listOf(
                         Zagreb.createCopy(infoMessage = "Hurry up, Zagreb is great!"),
                         Paris.createCopy(),
@@ -38,100 +33,100 @@ class TravelinoMockFactory {
                         Rome.createCopy(),
                         Cuba.createCopy(),
                         Maldives.createCopy())
-                else -> throw IllegalStateException("$currentInstanceNumberMod should be between 0 (included) and $INSTANCE_MOD_VALUE")
-            })
+                else -> throw IllegalStateException("$instanceNumber should be between 0 (included) and 1 (included)")
+            }
 
-            return travelinoList
+            return list
         }
 
         fun createImageUrl(photoId: String) = UNSPLASH_BASE_URL + photoId
 
-        private fun TravelinoListItem.createCopy(
+        private fun TravelinoItem.createCopy(
                 price: Int = this.price,
-                infoMessage: String? = null
+                infoMessage: String = ""
         ) = this.copy(
                 price = price,
                 infoMessage = infoMessage
         )
 
-        private val Zagreb = TravelinoListItem(
+        val Zagreb = TravelinoItem(
                 "id_00",
                 "Zagreb",
                 70,
                 92,
                 createImageUrl("ZINC3joF-JQ"),
-                null)
+                "")
 
-        private val Paris = TravelinoListItem(
+        val Paris = TravelinoItem(
                 "id_01",
                 "Paris",
                 52,
                 74,
                 createImageUrl("Q0-fOL2nqZc"),
-                null)
+                "")
 
-        private val NewYork = TravelinoListItem(
+        val NewYork = TravelinoItem(
                 "id_02",
                 "New York",
                 60,
                 95,
                 createImageUrl("UExx0KnnkjY"),
-                null)
+                "")
 
-        private val London = TravelinoListItem(
+        val London = TravelinoItem(
                 "id_03",
                 "London",
                 30,
                 35,
                 createImageUrl("tZDtyUrYrFU"),
-                null)
+                "")
 
-        private val Sidney = TravelinoListItem(
+        val Sidney = TravelinoItem(
                 "id_04",
                 "Sidney",
                 102,
                 134,
                 createImageUrl("DLbCETd599Y"),
-                null)
+                "")
 
-        private val Berlin = TravelinoListItem(
+        val Berlin = TravelinoItem(
                 "id_05",
                 "Berlin",
                 48,
                 64,
                 createImageUrl("fv0yV5-Pbjc"),
-                null)
+                "")
 
-        private val Rome = TravelinoListItem(
+        val Rome = TravelinoItem(
                 "id_06",
                 "Rome",
                 42,
                 48,
                 createImageUrl("0Bs3et8FYyg"),
-                null)
+                "")
 
-        private val Cuba = TravelinoListItem(
+        val Cuba = TravelinoItem(
                 "id_07",
                 "Cuba",
                 99,
                 113,
                 createImageUrl("RqMIFcDLeos"),
-                null)
+                "")
 
-        private val Hawaii = TravelinoListItem(
+        val Hawaii = TravelinoItem(
                 "id_08",
                 "Hawaii",
                 120,
                 150,
                 createImageUrl("prSogOoFmkw"),
-                null)
+                "")
 
-        private val Maldives = TravelinoListItem(
+        val Maldives = TravelinoItem(
                 "id_09",
                 "Maldives",
                 114,
                 145,
                 createImageUrl("qtbV_8P_Ksk"),
-                null)
+                "")
     }
 }

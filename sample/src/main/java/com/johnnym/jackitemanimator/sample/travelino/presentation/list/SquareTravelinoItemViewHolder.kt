@@ -5,14 +5,14 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoItemViewModel
 
-class TravelinoNormalItemViewHolder(
+class SquareTravelinoItemViewHolder(
         private val context: Context,
-        val view: TravelinoNormalItemView
+        val view: SquareTravelinoItemView
 ) : RecyclerView.ViewHolder(view) {
 
-    fun bind(viewModel: TravelinoListItemViewModel) {
+    fun bind(viewModel: TravelinoItemViewModel) {
         view.title.text = viewModel.name
         view.price.text = viewModel.price
         view.originalPrice.text = viewModel.originalPrice

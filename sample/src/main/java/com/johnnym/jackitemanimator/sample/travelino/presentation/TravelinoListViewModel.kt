@@ -1,4 +1,4 @@
 package com.johnnym.jackitemanimator.sample.travelino.presentation
 
 data class TravelinoListViewModel (
-        val itemList: List<TravelinoListItemViewModel>)
+        val itemList: List<TravelinoItemViewModel>)

@@ -1,4 +1,4 @@
-package com.johnnym.jackitemanimator.sample.travelino.presentation.list
+package com.johnnym.jackitemanimator.sample.diffutildemo
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -6,65 +6,46 @@ import androidx.recyclerview.widget.RecyclerView
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.Change
 import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.createCombinedPayload
 import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.list.NormalTravelinoItemView
+import com.johnnym.jackitemanimator.sample.travelino.presentation.list.NormalTravelinoItemViewHolder
 
-class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DiffUtilDemoAdapter : RecyclerView.Adapter<NormalTravelinoItemViewHolder>() {
 
     private var items = mutableListOf<TravelinoItemViewModel>()
 
     override fun getItemCount(): Int = items.size
 
-    override fun getItemViewType(position: Int): Int {
-        val viewType = when (items[position].style) {
-            TravelinoItemViewModel.Style.FULL_WIDTH -> ViewType.NORMAL
-            TravelinoItemViewModel.Style.HALF_WIDTH -> ViewType.SQUARE
-        }
-
-        return viewType.ordinal
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NormalTravelinoItemViewHolder {
         val context = parent.context
-
-        return when (ViewType.from(viewType)) {
-            ViewType.NORMAL -> NormalTravelinoItemViewHolder(context, NormalTravelinoItemView(context))
-            ViewType.SQUARE -> SquareTravelinoItemViewHolder(context, SquareTravelinoItemView(context))
-        }
+        return NormalTravelinoItemViewHolder(context, NormalTravelinoItemView(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
+        })
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is NormalTravelinoItemViewHolder -> holder.bind(items[position])
-            is SquareTravelinoItemViewHolder -> holder.bind(items[position])
-        }
+    override fun onBindViewHolder(holder: NormalTravelinoItemViewHolder, position: Int) {
+        holder.bind(items[position])
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
+    override fun onBindViewHolder(holder: NormalTravelinoItemViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position)
+            super.onBindViewHolder(holder, position, payloads)
         } else {
             val combinedChange = createCombinedPayload(payloads as List<Change<TravelinoItemViewModel>>)
             val oldData = combinedChange.oldData
             val newData = combinedChange.newData
 
             if (newData.price != oldData.price) {
-                when (holder) {
-                    is NormalTravelinoItemViewHolder -> holder.view.price.text = newData.price
-                    is SquareTravelinoItemViewHolder -> holder.view.price.text = newData.price
-                }
+                holder.view.price.text = newData.price
             }
 
             if (newData.discountPercentage != oldData.discountPercentage) {
-                when (holder) {
-                    is NormalTravelinoItemViewHolder -> holder.view.discountPercentage.text = newData.discountPercentage
-                    is SquareTravelinoItemViewHolder -> holder.view.discountPercentage.text = newData.discountPercentage
-                }
+                holder.view.discountPercentage.text = newData.discountPercentage
             }
 
             if (newData.infoMessage != oldData.infoMessage) {
-                when (holder) {
-                    is NormalTravelinoItemViewHolder -> holder.view.infoMessage.text = newData.infoMessage
-                    is SquareTravelinoItemViewHolder -> holder.view.infoMessage.text = newData.infoMessage
-                }
+                holder.view.infoMessage.text = newData.infoMessage
             }
         }
     }
@@ -74,17 +55,6 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         result.dispatchUpdatesTo(this)
         this.items.clear()
         this.items.addAll(newItems)
-    }
-
-    fun getItem(position: Int) = items[position]
-
-    enum class ViewType {
-        NORMAL,
-        SQUARE;
-
-        companion object {
-            fun from(viewType: Int) = ViewType.values()[viewType]
-        }
     }
 
     class TravelinoListDiffUtilCallback(

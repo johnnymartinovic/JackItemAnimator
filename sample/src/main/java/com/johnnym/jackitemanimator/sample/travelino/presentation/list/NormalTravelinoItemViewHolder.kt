@@ -1,22 +1,22 @@
 package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import android.content.Context
-import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoItemViewModel
 
-class TravelinoSquareItemViewHolder(
+class NormalTravelinoItemViewHolder(
         private val context: Context,
-        val view: TravelinoSquareItemView
+        val view: NormalTravelinoItemView
 ) : RecyclerView.ViewHolder(view) {
 
-    fun bind(viewModel: TravelinoListItemViewModel) {
+    fun bind(viewModel: TravelinoItemViewModel) {
         view.title.text = viewModel.name
         view.price.text = viewModel.price
         view.originalPrice.text = viewModel.originalPrice
         view.discountPercentage.text = viewModel.discountPercentage
+        view.infoMessage.text = viewModel.infoMessage
 
         Glide.with(context)
                 .load(viewModel.imageUrl)
@@ -25,9 +25,5 @@ class TravelinoSquareItemViewHolder(
                         .error(android.R.color.black)
                         .dontAnimate())
                 .into(view.image)
-
-        viewModel.infoMessage
-                ?.let { view.infoMessage.text = it }
-                ?: let { view.infoMessage.isGone = true }
     }
 }

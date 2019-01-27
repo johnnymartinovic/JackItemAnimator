@@ -20,4 +20,6 @@
     <string name="notify_demo_change_item_label">Notify change item demo</string>
     <string name="notify_demo_change_item_with_payload_label">Notify change item with payload demo</string>
 
+    <string name="diff_util_demo_label">DiffUtil demo</string>
+
 </resources>

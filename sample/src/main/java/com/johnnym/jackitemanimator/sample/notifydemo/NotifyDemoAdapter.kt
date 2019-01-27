@@ -2,30 +2,30 @@ package com.johnnym.jackitemanimator.sample.notifydemo
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoListItemViewModel
-import com.johnnym.jackitemanimator.sample.travelino.presentation.list.TravelinoNormalItemView
-import com.johnnym.jackitemanimator.sample.travelino.presentation.list.TravelinoNormalItemViewHolder
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoItemViewModel
+import com.johnnym.jackitemanimator.sample.travelino.presentation.list.NormalTravelinoItemView
+import com.johnnym.jackitemanimator.sample.travelino.presentation.list.NormalTravelinoItemViewHolder
 
-class NotifyDemoAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder>() {
+class NotifyDemoAdapter : RecyclerView.Adapter<NormalTravelinoItemViewHolder>() {
 
-    private var items = mutableListOf<TravelinoListItemViewModel>()
+    private var items = mutableListOf<TravelinoItemViewModel>()
 
     override fun getItemCount(): Int = items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TravelinoNormalItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NormalTravelinoItemViewHolder {
         val context = parent.context
-        return TravelinoNormalItemViewHolder(context, TravelinoNormalItemView(context).apply {
+        return NormalTravelinoItemViewHolder(context, NormalTravelinoItemView(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT)
         })
     }
 
-    override fun onBindViewHolder(holder: TravelinoNormalItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NormalTravelinoItemViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    override fun onBindViewHolder(holder: TravelinoNormalItemViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: NormalTravelinoItemViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty())
             super.onBindViewHolder(holder, position, payloads)
         else {
@@ -34,13 +34,13 @@ class NotifyDemoAdapter : RecyclerView.Adapter<TravelinoNormalItemViewHolder>() 
         }
     }
 
-    fun setItems(newItems: List<TravelinoListItemViewModel>) {
+    fun setItems(newItems: List<TravelinoItemViewModel>) {
         this.items.clear()
         this.items.addAll(newItems)
         notifyDataSetChanged()
     }
 
-    fun insertItem(viewModel: TravelinoListItemViewModel, position: Int) {
+    fun insertItem(viewModel: TravelinoItemViewModel, position: Int) {
         this.items.add(position, viewModel)
         notifyItemInserted(position)
     }

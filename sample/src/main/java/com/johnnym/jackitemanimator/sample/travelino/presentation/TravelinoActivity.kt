@@ -107,8 +107,8 @@ class TravelinoActivity : AppCompatActivity(),
             val style = travelinoListAdapter.getItem(position).style
 
             return when (style) {
-                TravelinoListItemViewModel.Style.FULL_WIDTH -> 2
-                TravelinoListItemViewModel.Style.HALF_WIDTH -> 1
+                TravelinoItemViewModel.Style.FULL_WIDTH -> 2
+                TravelinoItemViewModel.Style.HALF_WIDTH -> 1
             }
         }
     }

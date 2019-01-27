@@ -63,4 +63,12 @@
         android:layout_marginRight="16dp"
         android:text="@string/notify_demo_change_item_with_payload_label" />
 
+    <Button
+        android:id="@+id/diffUtilDemoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/diff_util_demo_label" />
+
 </LinearLayout>

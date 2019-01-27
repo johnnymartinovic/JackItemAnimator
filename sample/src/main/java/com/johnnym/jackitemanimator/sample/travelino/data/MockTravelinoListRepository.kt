@@ -6,12 +6,16 @@ import java.util.concurrent.TimeUnit
 
 class MockTravelinoListRepository : TravelinoListRepository {
 
-    private var getTravelinoListRequestNumber = 0
+    private var nextInstanceNumber = 0
 
     override fun getTravelinoListSingle(): Single<TravelinoList> {
         return Single
                 .create<TravelinoList> {
-                    it.onSuccess(TravelinoMockFactory.createTravelinoList(getTravelinoListRequestNumber++))
+                    val list = TravelinoMockFactory.createTravelinoItemList(nextInstanceNumber)
+
+                    nextInstanceNumber = (nextInstanceNumber + 1) % 2
+
+                    it.onSuccess(TravelinoList(list))
                 }
                 .delay(1, TimeUnit.SECONDS)
     }

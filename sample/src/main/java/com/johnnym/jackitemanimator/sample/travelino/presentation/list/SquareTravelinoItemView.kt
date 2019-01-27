@@ -10,7 +10,7 @@ import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.views.CardViewOutlineProvider
 
-class TravelinoSquareItemView @JvmOverloads constructor(
+class SquareTravelinoItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
