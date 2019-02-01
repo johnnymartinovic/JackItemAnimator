@@ -23,12 +23,6 @@
         <activity
             android:name=".travelino.presentation.TravelinoActivity"
             android:theme="@style/SampleTheme.General" />
-        <activity
-            android:name=".notifydemo.NotifyDemoActivity"
-            android:theme="@style/SampleTheme.General" />
-        <activity
-            android:name=".diffutildemo.DiffUtilDemoActivity"
-            android:theme="@style/SampleTheme.General" />
     </application>
 
 </manifest>
