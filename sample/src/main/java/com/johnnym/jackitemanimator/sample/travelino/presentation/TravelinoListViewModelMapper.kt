@@ -8,6 +8,7 @@ class TravelinoListViewModelMapper {
 
     companion object {
         private const val PRICE_PREFIX = "$"
+        private const val ORIGINAL_PRICE_PREFIX = "Was $"
     }
 
     fun map(travelinoList: TravelinoList): TravelinoListViewModel {
@@ -16,7 +17,7 @@ class TravelinoListViewModelMapper {
         return TravelinoListViewModel(listItemViewModels)
     }
 
-    fun map(item: TravelinoItem): TravelinoItemViewModel {
+    private fun map(item: TravelinoItem): TravelinoItemViewModel {
         val style = when (item.style) {
             TravelinoItem.Style.FULL_WIDTH -> TravelinoItemViewModel.Style.FULL_WIDTH
             TravelinoItem.Style.HALF_WIDTH -> TravelinoItemViewModel.Style.HALF_WIDTH
@@ -26,7 +27,7 @@ class TravelinoListViewModelMapper {
                 item.id,
                 item.name,
                 "$PRICE_PREFIX%d".format(item.price),
-                "$PRICE_PREFIX%d".format(item.originalPrice),
+                "$ORIGINAL_PRICE_PREFIX%d".format(item.originalPrice),
                 "${item.discountPercentage.roundToInt()}%",
                 item.imageUrl,
                 item.infoMessage,

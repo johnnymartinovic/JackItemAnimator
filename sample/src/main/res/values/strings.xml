@@ -4,4 +4,6 @@
 
     <string name="travelino_label">Travelino</string>
 
+    <string name="travelino_item_price_suffix">/day</string>
+
 </resources>

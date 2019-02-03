@@ -32,7 +32,8 @@ class TravelinoActivity : AppCompatActivity(),
     private val travelinoItemsLoadingView: SwipeRefreshLayout by bindView(R.id.travelinoItemsLoadingView)
     private val travelinoItems: RecyclerView by bindView(R.id.travelinoItems)
 
-    private lateinit var travelinoListAdapter: TravelinoListAdapter
+    private val travelinoListAdapter = TravelinoListAdapter()
+
     private lateinit var travelinoListLayoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +42,17 @@ class TravelinoActivity : AppCompatActivity(),
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        travelinoListAdapter = TravelinoListAdapter()
-        travelinoItems.setHasFixedSize(true)
-        travelinoItems.adapter = travelinoListAdapter
-        travelinoListLayoutManager = GridLayoutManager(this, 2)
-        travelinoListLayoutManager.spanSizeLookup = travelinoListSpanSizeLookup
-        travelinoItems.layoutManager = travelinoListLayoutManager
-        travelinoItems.addItemDecoration(MarginItemDecoration(
-                resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin)))
+        travelinoListLayoutManager = GridLayoutManager(this, 2).apply {
+            spanSizeLookup = travelinoListSpanSizeLookup
+        }
+
+        with(travelinoItems) {
+            setHasFixedSize(true)
+            adapter = travelinoListAdapter
+            addItemDecoration(MarginItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin)))
+            layoutManager = travelinoListLayoutManager
+        }
 
         travelinoItemsLoadingView.isEnabled = false
 
@@ -71,6 +75,7 @@ class TravelinoActivity : AppCompatActivity(),
 
     override fun showTravelinoListViewModel(viewModel: TravelinoListViewModel) {
         travelinoListAdapter.setItems(viewModel.itemList)
+        travelinoListLayoutManager.scrollToPosition(0)
     }
 
     override fun showLoading() {
