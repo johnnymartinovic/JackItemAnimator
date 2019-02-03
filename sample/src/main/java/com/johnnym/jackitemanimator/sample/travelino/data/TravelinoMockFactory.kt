@@ -13,120 +13,89 @@ class TravelinoMockFactory {
             @Suppress("UnnecessaryVariable")
             val list = when (instanceNumber) {
                 0 -> listOf(
-                        Zagreb.createCopy(infoMessage = "Hurry up, Zagreb is great!"),
-                        Paris.createCopy(),
-                        NewYork.createCopy(),
-                        London.createCopy(),
-                        Sidney.createCopy(),
-                        Berlin.createCopy(),
-                        Rome.createCopy(),
-                        Cuba.createCopy(),
-                        Hawaii.createCopy(),
-                        Maldives.createCopy())
+                        Paris.copy(),
+                        NewYork.copy(),
+                        Zagreb.copy(infoMessage = "Hurry up, Zagreb is great!"),
+                        London.copy(),
+                        Sidney.copy(),
+                        Berlin.copy())
                 1 -> listOf(
-                        Paris.createCopy(price = 37),
-                        Hawaii.createCopy(),
-                        Zagreb.createCopy(price = 83),
-                        London.createCopy(),
-                        Sidney.createCopy(),
-                        Berlin.createCopy(),
-                        Rome.createCopy(),
-                        Cuba.createCopy(),
-                        Maldives.createCopy())
+                        Zagreb.copy(infoMessage = "Now Zagreb is even cheaper!", price = 42),
+                        Paris.copy(),
+                        Havana.copy(),
+                        NewYork.copy(infoMessage = "New York is pretty good!"),
+                        Sidney.copy(price = 120),
+                        Berlin.copy())
                 else -> throw IllegalStateException("$instanceNumber should be between 0 (included) and 1 (included)")
             }
 
             return list
         }
 
-        fun createImageUrl(photoId: String) = UNSPLASH_BASE_URL + photoId
+        private fun createUnsplashImageUrl(photoId: String) = UNSPLASH_BASE_URL + photoId
 
-        private fun TravelinoItem.createCopy(
-                price: Int = this.price,
-                infoMessage: String = ""
-        ) = this.copy(
-                price = price,
-                infoMessage = infoMessage
-        )
-
-        val Zagreb = TravelinoItem(
+        private val Paris = TravelinoItem(
                 "id_00",
-                "Zagreb",
-                70,
-                92,
-                createImageUrl("ZINC3joF-JQ"),
-                "")
-
-        val Paris = TravelinoItem(
-                "id_01",
-                "Paris",
+                "Paris's Best Kept Secrets",
                 52,
                 74,
-                createImageUrl("Q0-fOL2nqZc"),
+                createUnsplashImageUrl("Q0-fOL2nqZc"),
                 "")
 
-        val NewYork = TravelinoItem(
-                "id_02",
-                "New York",
+        private val NewYork = TravelinoItem(
+                "id_01",
+                "Best New York Panoramas",
                 60,
                 95,
-                createImageUrl("UExx0KnnkjY"),
+                createUnsplashImageUrl("UExx0KnnkjY"),
                 "")
 
-        val London = TravelinoItem(
+        private val Zagreb = TravelinoItem(
+                "id_02",
+                "Explore Zagreb with a Local",
+                70,
+                92,
+                createUnsplashImageUrl("ZINC3joF-JQ"),
+                "")
+
+        private val London = TravelinoItem(
                 "id_03",
-                "London",
+                "Unseen London by Bicycle",
                 30,
                 35,
-                createImageUrl("tZDtyUrYrFU"),
+                createUnsplashImageUrl("tZDtyUrYrFU"),
                 "")
 
-        val Sidney = TravelinoItem(
+        private val Sidney = TravelinoItem(
                 "id_04",
-                "Sidney",
+                "Visit Sidney Opera House",
                 102,
                 134,
-                createImageUrl("DLbCETd599Y"),
+                createUnsplashImageUrl("DLbCETd599Y"),
                 "")
 
-        val Berlin = TravelinoItem(
+        private val Berlin = TravelinoItem(
                 "id_05",
-                "Berlin",
+                "World War II Tour in Berlin",
                 48,
                 64,
-                createImageUrl("fv0yV5-Pbjc"),
+                createUnsplashImageUrl("fv0yV5-Pbjc"),
                 "")
 
-        val Rome = TravelinoItem(
+        private val Rome = TravelinoItem(
                 "id_06",
-                "Rome",
+                "Tour around Rome in Fiat 500",
                 42,
                 48,
-                createImageUrl("0Bs3et8FYyg"),
+                createUnsplashImageUrl("0Bs3et8FYyg"),
                 "")
 
-        val Cuba = TravelinoItem(
+        private val Havana = TravelinoItem(
                 "id_07",
-                "Cuba",
+                "Learn Salsa in a Havana!",
                 99,
                 113,
-                createImageUrl("RqMIFcDLeos"),
-                "")
-
-        val Hawaii = TravelinoItem(
-                "id_08",
-                "Hawaii",
-                120,
-                150,
-                createImageUrl("prSogOoFmkw"),
-                "")
-
-        val Maldives = TravelinoItem(
-                "id_09",
-                "Maldives",
-                114,
-                145,
-                createImageUrl("qtbV_8P_Ksk"),
+                createUnsplashImageUrl("RqMIFcDLeos"),
                 "")
     }
 }
