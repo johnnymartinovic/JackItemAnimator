@@ -19,7 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".taxilist.presentation.TaxiListActivity" />
         <activity
             android:name=".travelino.presentation.TravelinoActivity"
             android:theme="@style/SampleTheme.General" />

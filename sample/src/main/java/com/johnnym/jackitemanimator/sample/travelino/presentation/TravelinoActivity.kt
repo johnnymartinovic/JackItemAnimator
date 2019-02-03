@@ -3,7 +3,6 @@ package com.johnnym.jackitemanimator.sample.travelino.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,31 +39,7 @@ class TravelinoActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.travelino_activity)
 
-        window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-
-        root.setOnApplyWindowInsetsListener { _, insets ->
-            statusBarBackground.layoutParams.height = insets.systemWindowInsetTop
-            statusBarBackground.requestLayout()
-
-            insets.consumeSystemWindowInsets()
-        }
-
-        with(toolbar) {
-            setNavigationOnClickListener { onBackPressed() }
-            inflateMenu(R.menu.travelino_menu)
-            setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.travelino_refresh_menu_item -> {
-                        presenter.onRefreshButtonPressed()
-                        true
-                    }
-                    else -> super.onOptionsItemSelected(item)
-                }
-            }
-        }
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         travelinoListAdapter = TravelinoListAdapter()
         travelinoItems.setHasFixedSize(true)
@@ -76,6 +51,10 @@ class TravelinoActivity : AppCompatActivity(),
                 resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin)))
 
         travelinoItemsLoadingView.isEnabled = false
+
+        refreshButton.setOnClickListener {
+            presenter.onRefreshButtonPressed()
+        }
 
         sampleApplication.sampleApplicationComponent
                 .newTravelinoComponent(

@@ -7,20 +7,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/taxiListButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:text="@string/taxi_list_label" />
-
-    <Button
+    <TextView
         android:id="@+id/travelinoButton"
+        style="@style/MainActivityButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
         android:text="@string/travelino_label" />
 
 </LinearLayout>

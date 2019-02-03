@@ -1,4 +1,4 @@
-package com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist
+package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import androidx.recyclerview.widget.RecyclerView
 import com.johnnym.jackitemanimator.ChangeJackItemAnimations
@@ -78,15 +78,7 @@ class CustomJackItemAnimator : JackItemAnimator() {
             deltaY: Int,
             payloads: List<Any>
     ): JackItemAnimation {
-        if (holder is NormalTaxiItemViewHolder)
-            return ItemMoveAndTaxiStatusChangeAnimation(
-                    holder,
-                    deltaX,
-                    0,
-                    deltaY,
-                    0,
-                    payloads)
-        else return ItemMoveAndFadeAnimation(
+        return ItemMoveAndFadeAnimation(
                 holder,
                 deltaX,
                 0,

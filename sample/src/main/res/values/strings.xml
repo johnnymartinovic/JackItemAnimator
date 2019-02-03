@@ -2,24 +2,6 @@
 
     <string name="app_name">JackItemAnimator</string>
 
-    <string name="taxi_list_label">Taxi List</string>
-    <string name="taxi_list_sort_menu_item">Sort</string>
-    <string name="taxi_list_sort_options_dialog_title">Select sort option:</string>
-    <string name="taxi_list_availability_visibility_switch">Show unavailable taxicabs</string>
-    <string name="taxi_list_refresh_button_text">Refresh data</string>
-    <string name="taxi_list_item_stars_format" translatable="false">%1$.1f</string>
-    <string name="taxi_list_item_distance_format" translatable="false">%1$.2f km</string>
-
     <string name="travelino_label">Travelino</string>
-    <string name="travelino_refresh_menu_item">Refresh</string>
-
-    <string name="notify_demo_label">Notify demo</string>
-    <string name="notify_demo_insert_item_label">Notify insert demo</string>
-    <string name="notify_demo_move_item_label">Notify move demo</string>
-    <string name="notify_demo_remove_item_range_label">Notify remove item range demo</string>
-    <string name="notify_demo_change_item_label">Notify change item demo</string>
-    <string name="notify_demo_change_item_with_payload_label">Notify change item with payload demo</string>
-
-    <string name="diff_util_demo_label">DiffUtil demo</string>
 
 </resources>

@@ -2,19 +2,19 @@ package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
+import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.rstanic12.resourceful.bindDimen
 import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.common.binding.bindView
-import com.johnnym.jackitemanimator.sample.common.views.CardViewOutlineProvider
 
 class SquareTravelinoItemView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private val itemElevation by bindDimen(R.dimen.travelino_item_elevation)
 
@@ -26,9 +26,9 @@ class SquareTravelinoItemView @JvmOverloads constructor(
     val infoMessage: TextView by bindView(R.id.infoMessage)
 
     init {
-        inflate(context, R.layout.travelino_square_item, this)
+        LayoutInflater.from(context).inflate(R.layout.travelino_square_item, this, true)
 
-        outlineProvider = CardViewOutlineProvider()
+        setBackgroundResource(R.drawable.travelino_item_background)
         clipToOutline = true
 
         elevation = itemElevation

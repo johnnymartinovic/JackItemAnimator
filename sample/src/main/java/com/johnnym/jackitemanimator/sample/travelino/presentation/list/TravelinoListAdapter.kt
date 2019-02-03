@@ -3,8 +3,7 @@ package com.johnnym.jackitemanimator.sample.travelino.presentation.list
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.Change
-import com.johnnym.jackitemanimator.sample.taxilist.presentation.taxilist.createCombinedPayload
+import com.johnnym.jackitemanimator.sample.R
 import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoItemViewModel
 
 class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,8 +25,16 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val context = parent.context
 
         return when (ViewType.from(viewType)) {
-            ViewType.NORMAL -> NormalTravelinoItemViewHolder(context, NormalTravelinoItemView(context))
-            ViewType.SQUARE -> SquareTravelinoItemViewHolder(context, SquareTravelinoItemView(context))
+            ViewType.NORMAL -> NormalTravelinoItemViewHolder(context, NormalTravelinoItemView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        context.resources.getDimensionPixelSize(R.dimen.travelino_item_height_normal))
+            })
+            ViewType.SQUARE -> SquareTravelinoItemViewHolder(context, SquareTravelinoItemView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        context.resources.getDimensionPixelSize(R.dimen.travelino_item_height_square))
+            })
         }
     }
 
@@ -111,4 +118,17 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     newItem)
         }
     }
+}
+
+// TODO maybe put this in library? but be careful if other view types are available in the same list
+data class Change<out T>(
+        val oldData: T,
+        val newData: T)
+
+fun <T> createCombinedPayload(payloads: List<Change<T>>): Change<T> {
+    assert(payloads.isNotEmpty())
+    val firstChange = payloads.first()
+    val lastChange = payloads.last()
+
+    return Change(firstChange.oldData, lastChange.newData)
 }
