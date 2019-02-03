@@ -8,7 +8,7 @@
     <dimen name="main_activity_button_corner_radius">4dp</dimen>
 
     <dimen name="travelino_item_height_normal">128dp</dimen>
-    <dimen name="travelino_item_height_square">252dp</dimen>
+    <dimen name="travelino_item_height_square">200dp</dimen>
     <dimen name="travelino_item_corner_radius">2dp</dimen>
     <dimen name="travelino_item_elevation">4dp</dimen>
 

@@ -6,14 +6,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SampleTheme.General">
-        <item name="android:statusBarColor">@color/general_status_bar</item>
+    <style name="SampleTheme.Travelino">
+        <item name="android:statusBarColor">@color/travelino_status_bar</item>
     </style>
 
-    <style name="SampleTheme.Toolbar">
+    <style name="TravelinoToolbarText">
         <item name="android:fontFamily">@font/rubik_medium</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/travelino_text_light_normal</item>
+        <item name="android:textColor">@color/travelino_toolbar_title</item>
     </style>
 
     <style name="MainActivityButton">

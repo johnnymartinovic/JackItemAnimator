@@ -5,20 +5,21 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/general_background_color"
     tools:context=".travelino.presentation.TravelinoActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/general_toolbar"
+        android:background="@color/travelino_toolbar"
         android:elevation="@dimen/toolbar_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/back_arrow_icon"
         app:title="@string/travelino_label"
-        app:titleTextAppearance="@style/SampleTheme.Toolbar" />
+        app:titleTextAppearance="@style/TravelinoToolbarText" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/travelinoItemsLoadingView"

@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name=".travelino.presentation.TravelinoActivity"
-            android:theme="@style/SampleTheme.General" />
+            android:theme="@style/SampleTheme.Travelino" />
     </application>
 
 </manifest>

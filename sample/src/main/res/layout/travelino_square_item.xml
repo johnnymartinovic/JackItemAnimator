@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
-        android:layout_height="128dp"
+        android:layout_height="112dp"
         android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -22,17 +22,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="12dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/rubik_medium"
-        android:maxLines="1"
-        android:textColor="@color/travelino_text_dark_normal"
+        android:maxLines="2"
+        android:shadowColor="#000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1.5"
+        android:textColor="@color/travelino_text_light_normal"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image"
-        tools:text="Zagreb, Croatia" />
+        tools:text="Explore Zagreb with a Local" />
 
     <TextView
         android:id="@+id/price"
@@ -46,8 +50,8 @@
         android:textColor="@color/travelino_text_dark_normal"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="$5.69" />
+        app:layout_constraintTop_toBottomOf="@id/image"
+        tools:text="$70" />
 
     <TextView
         android:id="@+id/priceSuffix"
@@ -81,7 +85,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/discountPercentage"
         app:layout_constraintTop_toBottomOf="@id/price"
-        tools:text="Was 8.20" />
+        tools:text="Was $92" />
 
     <TextView
         android:id="@+id/discountPercentage"
@@ -97,7 +101,7 @@
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@id/originalPrice"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="-30%" />
+        tools:text="-24%" />
 
     <TextView
         android:id="@+id/infoMessage"
@@ -114,6 +118,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="Last 3 pieces at this price!" />
+        tools:text="Hurry up, Zagreb is great!" />
 
 </merge>
