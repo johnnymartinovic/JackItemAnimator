@@ -120,7 +120,6 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-// TODO maybe put this in library? but be careful if other view types are available in the same list
 data class Change<out T>(
         val oldData: T,
         val newData: T)

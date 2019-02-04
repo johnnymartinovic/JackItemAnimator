@@ -12,13 +12,13 @@ class CustomJackItemAnimator : JackItemAnimator() {
     override fun createRemoval(
             holder: RecyclerView.ViewHolder
     ): JackItemAnimation {
-        return ItemTranslateToRightAndFadeOutAnimation(holder)
+        return FadeOutToLeftAnimation(holder)
     }
 
     override fun createDisappearUnknownLastPosition(
             holder: RecyclerView.ViewHolder
     ): JackItemAnimation {
-        return ItemFadeOutAndScaleOutAnimation(holder)
+        return FadeOutAndScaleOutAnimation(holder)
     }
 
     override fun createDisappearKnownLastPosition(
@@ -39,7 +39,7 @@ class CustomJackItemAnimator : JackItemAnimator() {
     override fun createAdd(
             holder: RecyclerView.ViewHolder
     ): JackItemAnimation {
-        return ItemFadeInFromLeftAnimation(holder)
+        return FadeInFromLeftAnimation(holder)
     }
 
     override fun createAppearKnownFirstPosition(
@@ -77,8 +77,28 @@ class CustomJackItemAnimator : JackItemAnimator() {
             deltaX: Int,
             deltaY: Int,
             payloads: List<Any>
-    ): JackItemAnimation {
-        return ItemMoveAndFadeAnimation(
+    ): JackItemAnimation = when (holder) {
+        is NormalTravelinoItemViewHolder -> TravelinoItemMoveAndChangeAnimation(
+                holder,
+                holder.view.price,
+                holder.view.discountPercentage,
+                holder.view.infoMessage,
+                deltaX,
+                0,
+                deltaY,
+                0,
+                payloads)
+        is SquareTravelinoItemViewHolder -> TravelinoItemMoveAndChangeAnimation(
+                holder,
+                holder.view.price,
+                holder.view.discountPercentage,
+                holder.view.infoMessage,
+                deltaX,
+                0,
+                deltaY,
+                0,
+                payloads)
+        else -> ItemMoveAndFadeAnimation(
                 holder,
                 deltaX,
                 0,
@@ -116,6 +136,7 @@ class CustomJackItemAnimator : JackItemAnimator() {
             val animator = holderAnimator.animator
 
             animator.startDelay = index * 50L
+            animator.duration = 1000
             animator.start()
         }
 
@@ -139,6 +160,7 @@ class CustomJackItemAnimator : JackItemAnimator() {
                         val animator = holderAnimator.animator
 
                         animator.startDelay = secondStageDelay
+                        animator.duration = 1000
                         animator.start()
                     }
                 }
@@ -158,6 +180,7 @@ class CustomJackItemAnimator : JackItemAnimator() {
             val animator = holderAnimator.animator
 
             animator.startDelay = thirdStageDelay + index * 50L
+            animator.duration = 1000
             animator.start()
         }
     }

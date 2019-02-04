@@ -12,6 +12,7 @@ import com.johnnym.jackitemanimator.sample.common.binding.bindView
 import com.johnnym.jackitemanimator.sample.common.sampleApplication
 import com.johnnym.jackitemanimator.sample.common.views.MarginItemDecoration
 import com.johnnym.jackitemanimator.sample.travelino.TravelinoModule
+import com.johnnym.jackitemanimator.sample.travelino.presentation.list.CustomJackItemAnimator
 import com.johnnym.jackitemanimator.sample.travelino.presentation.list.TravelinoListAdapter
 import kotlinx.android.synthetic.main.travelino_activity.*
 import javax.inject.Inject
@@ -49,6 +50,7 @@ class TravelinoActivity : AppCompatActivity(),
         with(travelinoItems) {
             setHasFixedSize(true)
             adapter = travelinoListAdapter
+            itemAnimator = CustomJackItemAnimator()
             addItemDecoration(MarginItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.margin_item_decoration_margin)))
             layoutManager = travelinoListLayoutManager
