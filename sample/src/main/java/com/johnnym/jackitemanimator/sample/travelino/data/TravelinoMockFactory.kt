@@ -22,10 +22,10 @@ class TravelinoMockFactory {
                 1 -> listOf(
                         Zagreb.copy(infoMessage = "Now Zagreb is even cheaper!", price = 42),
                         Paris.copy(),
-                        Havana.copy(),
+                        Havana.copy(style = TravelinoItem.Style.FULL_WIDTH),
                         NewYork.copy(infoMessage = "New York is pretty good!"),
                         Sidney.copy(price = 120),
-                        Berlin.copy())
+                        Berlin.copy(style = TravelinoItem.Style.FULL_WIDTH))
                 else -> throw IllegalStateException("$instanceNumber should be between 0 (included) and 1 (included)")
             }
 

@@ -113,9 +113,10 @@ class TravelinoListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val oldItem = oldItems[oldItemPosition]
             val newItem = newItems[newItemPosition]
 
-            return Change(
-                    oldItem,
-                    newItem)
+            // if styles are different, payload must be null, because then these are completely
+            // different viewHolders
+            return if (oldItem.style != newItem.style) null
+            else Change(oldItem, newItem)
         }
     }
 }
