@@ -6,6 +6,7 @@ import com.johnnym.jackitemanimator.HolderAnimator
 import com.johnnym.jackitemanimator.JackItemAnimation
 import com.johnnym.jackitemanimator.JackItemAnimator
 import com.johnnym.jackitemanimator.defaultanimations.ItemMoveAndFadeAnimation
+import com.johnnym.jackitemanimator.sample.travelino.presentation.TravelinoItemViewModel
 
 class CustomJackItemAnimator : JackItemAnimator() {
 
@@ -77,36 +78,37 @@ class CustomJackItemAnimator : JackItemAnimator() {
             deltaX: Int,
             deltaY: Int,
             payloads: List<Any>
-    ): JackItemAnimation = when (holder) {
-        is NormalTravelinoItemViewHolder -> TravelinoItemMoveAndChangeAnimation(
-                holder,
-                holder.view.price,
-                holder.view.discountPercentage,
-                holder.view.infoMessage,
-                deltaX,
-                0,
-                deltaY,
-                0,
-                payloads)
-        is SquareTravelinoItemViewHolder -> TravelinoItemMoveAndChangeAnimation(
-                holder,
-                holder.view.price,
-                holder.view.discountPercentage,
-                holder.view.infoMessage,
-                deltaX,
-                0,
-                deltaY,
-                0,
-                payloads)
-        else -> ItemMoveAndFadeAnimation(
-                holder,
-                deltaX,
-                0,
-                deltaY,
-                0,
-                1f,
-                1f)
-    }
+    ): JackItemAnimation =
+            if (holder is NormalTravelinoItemViewHolder && payloads.isNotEmpty())
+                TravelinoItemMoveAndChangeAnimation(
+                        holder.view,
+                        holder.view.price,
+                        holder.view.discountPercentage,
+                        holder.view.infoMessage,
+                        deltaX,
+                        0,
+                        deltaY,
+                        0,
+                        createCombinedPayload(payloads as List<Change<TravelinoItemViewModel>>))
+            else if (holder is SquareTravelinoItemViewHolder && payloads.isNotEmpty())
+                TravelinoItemMoveAndChangeAnimation(
+                        holder.view,
+                        holder.view.price,
+                        holder.view.discountPercentage,
+                        holder.view.infoMessage,
+                        deltaX,
+                        0,
+                        deltaY,
+                        0,
+                        createCombinedPayload(payloads as List<Change<TravelinoItemViewModel>>))
+            else ItemMoveAndFadeAnimation(
+                    holder,
+                    deltaX,
+                    0,
+                    deltaY,
+                    0,
+                    1f,
+                    1f)
 
     override fun createDifferentHolderItemChange(
             oldHolder: RecyclerView.ViewHolder,
@@ -126,7 +128,8 @@ class CustomJackItemAnimator : JackItemAnimator() {
             appearKnownFirstPositionHolderAnimators: List<HolderAnimator>,
             addHolderAnimators: List<HolderAnimator>,
             moveHolderAnimators: List<HolderAnimator>,
-            changeHolderAnimators: List<HolderAnimator>) {
+            changeHolderAnimators: List<HolderAnimator>
+    ) {
         val sortedRemoveHolderAnimators = removeHolderAnimators
                 .sortedWith(Comparator { o1, o2 ->
                     o1.holder.itemView.y.compareTo(o2.holder.itemView.y)

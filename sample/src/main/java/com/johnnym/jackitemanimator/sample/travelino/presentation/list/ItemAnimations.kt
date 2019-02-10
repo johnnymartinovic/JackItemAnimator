@@ -136,7 +136,7 @@ class FadeInFromLeftAnimation(
 }
 
 class TravelinoItemMoveAndChangeAnimation(
-        private val holder: RecyclerView.ViewHolder,
+        private val itemView: View,
         private val priceTextView: TextView,
         private val discountPercentageTextView: TextView,
         private val infoMessageTextView: TextView,
@@ -144,13 +144,11 @@ class TravelinoItemMoveAndChangeAnimation(
         private val endTranslationX: Int,
         private val startTranslationY: Int,
         private val endTranslationY: Int,
-        private val payloads: List<Any>
+        private val change: Change<TravelinoItemViewModel>
 ) : JackItemAnimation() {
 
-    private val itemView = holder.itemView
-    private val combinedChange = createCombinedPayload(payloads as List<Change<TravelinoItemViewModel>>)
-    private val oldData = combinedChange.oldData
-    private val newData = combinedChange.newData
+    private val oldData = change.oldData
+    private val newData = change.newData
 
     private val isPriceChanged = newData.price != oldData.price
     private val isDiscountPercentageChanged = newData.discountPercentage != oldData.discountPercentage
